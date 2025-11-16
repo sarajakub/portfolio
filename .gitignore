@@ -37,3 +37,7 @@ dist/
 # If you accidentally committed a file you want to ignore, run:
 # git rm --cached path/to/file    # stops tracking but keeps local file
 # git commit -m "Stop tracking <file>"
+
+# Keep source logo JPGs out of the repo (we use optimized PNGs/icons)
+/public/sj_logobig.jpg
+/public/sj_logosmall.jpg
