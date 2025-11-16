@@ -131,13 +131,13 @@ export default function Portfolio() {
       <section id="home" className="min-h-screen flex items-center justify-center px-6 pt-20">
         <div className="max-w-4xl text-center">
           <div className="inline-block mb-6 px-4 py-2 bg-violet-100 text-violet-700 rounded-full text-sm font-medium">
-            Product Designer & Researcher
+            Product Designer & UX Researcher
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-violet-800 to-indigo-900 bg-clip-text text-transparent">
             Designing experiences that matter
           </h1>
           <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-            I create intuitive digital products backed by research, with a focus on accessibility and user empowerment.
+            I create intuitive products backed by research, with a focus on accessibility and user empowerment.
           </p>
           <button
             onClick={() => scrollToSection('work')}
