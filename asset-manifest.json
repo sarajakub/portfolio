@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/portfolio/static/css/main.20394ddc.css",
-    "main.js": "/portfolio/static/js/main.957741fb.js",
+    "main.js": "/portfolio/static/js/main.398bcfb7.js",
     "static/js/453.6264690d.chunk.js": "/portfolio/static/js/453.6264690d.chunk.js",
     "static/media/og_altcontroller.png": "/portfolio/static/media/og_altcontroller.7717f5d563abd9de555b.png",
     "static/media/cells_study.png": "/portfolio/static/media/cells_study.0a88e7c27253490b7790.png",
@@ -15,11 +15,11 @@
     "static/media/foodfighter_homepage.png": "/portfolio/static/media/foodfighter_homepage.994c6fa69d817889a7ee.png",
     "index.html": "/portfolio/index.html",
     "main.20394ddc.css.map": "/portfolio/static/css/main.20394ddc.css.map",
-    "main.957741fb.js.map": "/portfolio/static/js/main.957741fb.js.map",
+    "main.398bcfb7.js.map": "/portfolio/static/js/main.398bcfb7.js.map",
     "453.6264690d.chunk.js.map": "/portfolio/static/js/453.6264690d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.20394ddc.css",
-    "static/js/main.957741fb.js"
+    "static/js/main.398bcfb7.js"
   ]
 }
