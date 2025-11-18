@@ -1,3 +1,28 @@
+.animated-blobs .blob-3 { background: radial-gradient(circle at 30% 30%, rgba(96,165,250,0.35), transparent 40%), linear-gradient(135deg, rgba(99,102,241,0.18), transparent); }
+
+/* SVG stroke CSS fallback animation */
+.animated-svg path, .animated-svg .chart-path {
+  /* ensure hidden initially; JS will set stroke-dasharray to exact length */
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 850ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animated-svg path.is-hovering, .animated-svg .chart-path.is-hovering {
+  stroke-dashoffset: 0 !important;
+}
+
+/* small debug overlay (temporary) */
+.anim-debug {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
 .App {
   text-align: center;
 }
@@ -35,4 +60,82 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Animated soft blobs for subtle background motion */
+.animated-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.animated-blobs .blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.6;
+  transform: translate3d(0,0,0);
+  will-change: transform, opacity;
+}
+.animated-blobs .blob-1 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle at 30% 30%, rgba(192,132,252,0.9), rgba(99,102,241,0.75));
+  top: -8%;
+  left: -6%;
+  animation: blob-move-1 20s ease-in-out infinite;
+}
+.animated-blobs .blob-2 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle at 70% 70%, rgba(96,165,250,0.9), rgba(168,85,247,0.65));
+  bottom: -12%;
+  right: -6%;
+  animation: blob-move-2 24s ease-in-out infinite;
+}
+.animated-blobs .blob-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle at 40% 60%, rgba(236,72,153,0.85), rgba(245,158,11,0.5));
+  top: 40%;
+  right: 10%;
+  animation: blob-move-3 18s ease-in-out infinite;
+}
+
+@keyframes blob-move-1 {
+  0% { transform: translate3d(0,0,0) scale(1); opacity:0.7; }
+  25% { transform: translate3d(60px, -40px, 0) scale(1.08); opacity:0.85; }
+  50% { transform: translate3d(0,20px,0) scale(1.03); opacity:0.65; }
+  75% { transform: translate3d(-40px,-10px,0) scale(1.06); opacity:0.8; }
+  100% { transform: translate3d(0,0,0) scale(1); opacity:0.7; }
+}
+@keyframes blob-move-2 {
+  0% { transform: translate3d(0,0,0) scale(1); opacity:0.7 }
+  25% { transform: translate3d(-50px, 60px, 0) scale(1.1); opacity:0.85 }
+  50% { transform: translate3d(10px,-10px,0) scale(1.02); opacity:0.6 }
+  75% { transform: translate3d(30px,30px,0) scale(1.07); opacity:0.78 }
+  100% { transform: translate3d(0,0,0) scale(1); opacity:0.7 }
+}
+@keyframes blob-move-3 {
+  0% { transform: translate3d(0,0,0) scale(1); opacity:0.65 }
+  25% { transform: translate3d(-30px, -10px, 0) scale(1.07); opacity:0.8 }
+  50% { transform: translate3d(20px,20px,0) scale(1.03); opacity:0.6 }
+  75% { transform: translate3d(-10px,-30px,0) scale(1.05); opacity:0.75 }
+  100% { transform: translate3d(0,0,0) scale(1); opacity:0.65 }
+}
+
+/* Slightly smaller blur and opacity on reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animated-blobs .blob { animation: none; filter: blur(30px); opacity: 0.45; }
+}
+
+/* Style for the custom cursor (larger radius) */
+.custom-cursor {
+  mix-blend-mode: difference;
+  background: #ffffff;
+  border: 0;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.0);
 }
