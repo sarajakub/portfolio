@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
-import { ArrowRight, ArrowLeft, Mail, Linkedin, Github, GraduationCap, ExternalLink, Sparkles, Play, Activity, Smartphone, Brain, Eye, Users, Code, Home, Gamepad2, Menu, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Mail, Linkedin, Github, GraduationCap, Sparkles, Play, Activity, Smartphone, Brain, Eye, Users, Code, Home, Gamepad2, Menu, X, StickyNote, Send } from 'lucide-react';
 import profileImage from './assets/akvan-16_EDIT.png';
 import cosmosImage from './assets/cosmossim.png';
 import courseaiImage from './assets/courseai_progress.png';
 import foodfighterImage from './assets/foodfighter_homepage.png';
+import foodfighterArchImage from './assets/foodfighter_architecture.png';
+import foodfighterARImage from './assets/foodfighter_ar.png';
+import foodfighterPersonasImage from './assets/foodfighter_personas.png';
 import stresscamImage from './assets/stresscam_sim.png';
 import smartlightsImage from './assets/smartlights1.jpg';
 import altcontrollerImage from './assets/og_altcontroller.png';
 import aycetImage from './assets/aycet_study.png';
 import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
+import { supabase } from './supabaseClient';
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -18,6 +22,10 @@ export default function Portfolio() {
   const [designHover, setDesignHover] = useState(false);
   const [researchHover, setResearchHover] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [guestbookNotes, setGuestbookNotes] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const nameInputRef = useRef(null);
+  const messageInputRef = useRef(null);
 
   // Check URL on mount
   useEffect(() => {
@@ -40,6 +48,8 @@ export default function Portfolio() {
       setCurrentPage('research');
     } else if (path === '/maker') {
       setCurrentPage('maker');
+    } else if (path === '/guestbook') {
+      setCurrentPage('guestbook');
     }
   }, []);
 
@@ -57,6 +67,7 @@ export default function Portfolio() {
     window.history.pushState({}, '', `/${type}/${id}`);
     setSelectedProjectId(id);
     setMenuOpen(false);
+    window.scrollTo(0, 0);
   };
 
   const navigateToPage = (page) => {
@@ -64,6 +75,50 @@ export default function Portfolio() {
     setCurrentPage(page);
     setSelectedProjectId(null);
     setMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  const fetchNotes = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('guestbook')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching notes:', error);
+    } else {
+      setGuestbookNotes(data || []);
+    }
+  }, []);
+
+  // Fetch guestbook notes
+  useEffect(() => {
+    if (currentPage === 'guestbook') {
+      fetchNotes();
+    }
+  }, [currentPage, fetchNotes]);
+
+  const submitNote = async (e) => {
+    e.preventDefault();
+    const name = nameInputRef.current?.value.trim();
+    const message = messageInputRef.current?.value.trim();
+    
+    if (!name || !message) return;
+    
+    setIsSubmitting(true);
+    const { error } = await supabase
+      .from('guestbook')
+      .insert([{ name, message }]);
+    
+    if (error) {
+      console.error('Error submitting note:', error);
+      alert('Failed to post note. Please try again!');
+    } else {
+      if (nameInputRef.current) nameInputRef.current.value = '';
+      if (messageInputRef.current) messageInputRef.current.value = '';
+      fetchNotes();
+    }
+    setIsSubmitting(false);
   };
 
   const designProjects = [
@@ -102,11 +157,11 @@ An immersive VR experience where students become space explorers, manipulating p
 
 - Adopted by 15+ classrooms in pilot program
 - Teachers reported measurably higher student engagement
-- "This is the first time astronomy clicked for me!" — 8th grade student
+- "This is the first time astronomy clicked for me!" - 8th grade student
 
 **What I Learned**
 
-Early testing with actual students (not just teachers) was critical. Our first prototype was too game-like and distracted from learning—student feedback helped us find the right balance between fun and education.`
+Early testing with actual students (not just teachers) was critical. Our first prototype was too game-like and distracted from learning - student feedback helped us find the right balance between fun and education.`
     },
     {
       id: 2,
@@ -142,42 +197,82 @@ As Prototyper, I designed and tested an AI-powered lesson builder that helps edu
 
 Reduced course creation time from 4 hours to 45 minutes while maintaining pedagogical quality. Educators praised the balance of AI assistance with creative control.
 
-"It's like having a teaching assistant who knows learning design." — High school teacher`
+"It's like having a teaching assistant who knows learning design." - High school teacher`
     },
     {
       id: 3,
-      title: "Foodfighter Game",
-      company: "Indie Project",
-      tagline: "Battle for your health while learning nutrition",
+      title: "Food-Fighter: Battle for Health",
+      company: "NYU Learning Game Design",
+      tagline: "Transforming nutrition education through strategic gameplay",
       image: foodfighterImage,
       thumbnail: foodfighterImage,
+      arImage: foodfighterARImage,
+      archImage: foodfighterArchImage,
+      personasImage: foodfighterPersonasImage,
       icon: Smartphone,
       details: [
-        { label: "Role", value: "Designer" },
-        { label: "Duration", value: "2 months" },
-        { label: "Platform", value: "Mobile" }
+        { label: "Role", value: "UX/Game Designer" },
+        { label: "Duration", value: "3 months" },
+        { label: "Platform", value: "iOS" }
       ],
-      tags: ["Game Design", "Education", "Nutrition"],
+      tags: ["Game Design", "UX Design", "Learning Design"],
       color: "from-violet-500 via-purple-500 to-indigo-500",
       description: `**The Challenge**
 
-Kids learn about nutrition through boring lectures and food pyramids. We wanted to make healthy eating fun and memorable.
+Kids don't have access to engaging nutrition education - 40 out of 50 US states don't mandate it in schools. Existing "learning games" use boring drag-and-drop mechanics that fail to create lasting behavior change.
 
-**My Approach**
+**My Role**
 
-I designed a mobile game that teaches nutrition through engaging gameplay. Players "battle" by choosing healthy foods, learning nutritional values while having fun.
+UX/Game Designer on a 3-person team. I led user research, designed the complete gameplay system, created high-fidelity prototypes, and developed the visual design language.
 
-**The Design Process**
+**Understanding Our Players**
 
-- User research with 20 kids (ages 8-12) and parents
-- Created 3 game mechanic prototypes
-- Playtesting sessions revealed kids learned more when food choices had immediate visual feedback
+[PERSONAS_IMAGE]
 
-**The Impact**
+I created 3 user personas to guide our design decisions - each representing a different motivation for learning about nutrition:
 
-Kids who played for 2 weeks could identify healthy vs. unhealthy foods significantly better than the control group. Parents reported kids asking for healthier snacks.
+**Clare (13)** needs practical knowledge to make better lunch choices at school
+**Blake (12)** wants to understand the science behind cooking with his dad  
+**Elliot (10)** loves Pokemon but needs to study for health class
 
-"My daughter now reads nutrition labels at the store!" — Parent feedback`
+Their different needs shaped our core insight: the game had to be fun first, educational second.
+
+**Designing the System**
+
+[ARCH_IMAGE]
+
+I mapped out the complete technical architecture - from how kids would use their phone cameras to collect ingredients in the real world, to how those ingredients would translate into battle mechanics, to the backend systems managing multiplayer matches and card progression. This blueprint kept our ambitions grounded in what was technically feasible.
+
+**The Solution: AR Nutrition Game Meets Pokemon Go**
+
+[AR_IMAGE]
+
+A mobile game where players discover and collect real ingredients using AR, build customizable "plate warriors" from 5 food groups, and battle friends. Nutrition facts become gameplay mechanics: carbs = health, protein = attack, vitamins = special moves.
+
+Players use their phone camera to "catch" healthy ingredients at grocery stores, farmers markets, and restaurants - turning everyday food encounters into game moments. Collected ingredients unlock customizable avatar parts (grain heads, veggie arms, protein legs), making nutrition knowledge immediately visible and rewarding.
+
+**Design Decisions That Solved Real Problems**
+
+**Cognitive Load Problem:** Players were overwhelmed choosing from 50+ ingredient cards during battles.
+**Solution:** Segmented selection by food group first, then show 5-8 cards max. Testing showed 60% faster decision-making.
+
+**Motivation Problem:** How do you make broccoli exciting?
+**Solution:** Social competition + unlockable abilities. Friend battles and card trading created intrinsic motivation beyond "eating healthy."
+
+**Transfer Problem:** Would gameplay actually change real-world food choices?
+**Solution:** Photo recognition mechanic that rewards photographing actual meals. Early testing showed kids asking parents about ingredient nutrients at dinner.
+
+**Key Learnings**
+
+The hardest UX challenge wasn't the game mechanics - it was **balancing educational rigor with fun**. Initial designs had too many nutritional facts competing for attention. I learned to hide complexity in progressive unlocks: players start with simple carb/protein/fat, then discover vitamin combinations as they level up. This matches how real learning works - foundation first, nuance later.
+
+Also learned that **cultural food representation matters deeply**. When testing showed players disengaging with unfamiliar ingredients, I redesigned the unlock system to start with universal foods and introduce regional ingredients at higher levels.
+
+**Design Presentation**
+
+<iframe src="https://docs.google.com/presentation/d/14kIOTQM-TcxU-sGgpbpXq6AT6XBDd5-WaIPcpb91Q48/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+→ [Full Design Document](https://docs.google.com/document/d/1HZvi4Sdot2Ku082ph5T4A4iM5EMEH-_7UpGCMbljVxI/edit?usp=sharing)`
     }
   ];
 
@@ -198,6 +293,7 @@ Kids who played for 2 weeks could identify healthy vs. unhealthy foods significa
         { label: "Participants", value: "39 students" },
         { label: "Publication", value: "AAAI 2025" }
       ],
+      link: "https://ojs.aaai.org/index.php/AAAI/article/view/35182",
       description: `**Research Question**
 
 How do middle and high school students integrate AI tools into creative character design workflows, and what factors influence their adoption patterns, creative agency, and perception of AI as a collaborator?
@@ -230,6 +326,7 @@ AI literacy in creative education requires scaffolded activities that preserve s
         { label: "Total Participants", value: "44 users" },
         { label: "Publication", value: "GALA 2024" }
       ],
+      link: "https://link.springer.com/chapter/10.1007/978-3-031-78269-5_32",
       description: `**Research Question**
 
 How do NPC motion patterns (path complexity and trajectory) in VR environments affect users' emotional responses and cognitive performance?
@@ -265,6 +362,7 @@ Character animation trajectory is a powerful design lever for controlling user a
         { label: "Participants", value: "9 users" },
         { label: "Publication", value: "AERA 2025" }
       ],
+      link: "https://doi.org/10.3102/2197501",
       description: `**Research Question**
 
 How do VR design features facilitate affective learning experiences in a biology simulation, and what design factors influence emotions, cognitive load, and engagement?
@@ -279,11 +377,11 @@ Led mixed-methods research with **9 participants** (ages 16-25) using **think-al
 
 **Key Findings**
 
-Relationship mapping revealed **lighting and feedback mechanisms significantly influenced** both positive and negative emotional responses. **74% of design-emotion connections** occurred during the structured Mitosis activity versus the open-ended Animal Cell activity, showing that **clear task design** (objectives, level unlock mechanics, progress bars) **drives stronger engagement and motivation**. Negative emotions clustered around **unclear task demands and repetition**, while positive emotions connected to design factors like **particles, bright lighting, and novel interactions**. Users' mental associations with object designs (e.g., spindle fibers perceived as "spiders" vs. "octopuses") **directly influenced emotional responses**—negative associations correlated with disgust/fear, positive associations with joy. Participants requested more **spatial interaction like 3D rotation** to better leverage the immersive environment. One participant described a breakthrough moment as **"something magical is happening"** when design successfully supported their understanding.
+Relationship mapping revealed **lighting and feedback mechanisms significantly influenced** both positive and negative emotional responses. **74% of design-emotion connections** occurred during the structured Mitosis activity versus the open-ended Animal Cell activity, showing that **clear task design** (objectives, level unlock mechanics, progress bars) **drives stronger engagement and motivation**. Negative emotions clustered around **unclear task demands and repetition**, while positive emotions connected to design factors like **particles, bright lighting, and novel interactions**. Users' mental associations with object designs (e.g., spindle fibers perceived as "spiders" vs. "octopuses") **directly influenced emotional responses** - negative associations correlated with disgust/fear, positive associations with joy. Participants requested more **spatial interaction like 3D rotation** to better leverage the immersive environment. One participant described a breakthrough moment as **"something magical is happening"** when design successfully supported their understanding.
 
 **Implications**
 
-VR learning design should prioritize structured tasks with clear objectives and feedback mechanisms to enhance engagement and self-efficacy. Design recommendations for positive affect in VR learning: use bright lighting, particles for interactivity, gradual feature introduction to manage cognitive load, narrative framing, spatial contiguity for scaffolds, and careful object design considering learners' potential schema associations. Negative affect stems primarily from unclear task expectations and poor action-outcome feedback—addressable through progress indicators and signaling. These findings extend emotional design principles from 2D multimedia to immersive 3D environments, establishing initial design heuristics for VR educational experiences that balance affective engagement with cognitive load management.`
+VR learning design should prioritize structured tasks with clear objectives and feedback mechanisms to enhance engagement and self-efficacy. Design recommendations for positive affect in VR learning: use bright lighting, particles for interactivity, gradual feature introduction to manage cognitive load, narrative framing, spatial contiguity for scaffolds, and careful object design considering learners' potential schema associations. Negative affect stems primarily from unclear task expectations and poor action-outcome feedback - addressable through progress indicators and signaling. These findings extend emotional design principles from 2D multimedia to immersive 3D environments, establishing initial design heuristics for VR educational experiences that balance affective engagement with cognitive load management.`
     }
   ];
 
@@ -324,7 +422,7 @@ Built with MVVM pattern: BiometricViewModel orchestrates HealthKit + ThresholdMa
 
 **What I Learned**
 
-HealthKit authorization and data access patterns are complex—simulator requires mock data streams. Statistical anomaly detection needs careful tuning to avoid false positives. Real-time biometric data is noisy; smoothing and debouncing are critical for usable UX.`
+HealthKit authorization and data access patterns are complex - simulator requires mock data streams. Statistical anomaly detection needs careful tuning to avoid false positives. Real-time biometric data is noisy; smoothing and debouncing are critical for usable UX.`
     },
     {
       id: 2,
@@ -381,7 +479,7 @@ Built a custom rotary encoder controller to investigate how embodied, physical i
 Iterated through three hardware versions based on user testing and technical constraints:
 - Version 0: Gyroscope-based handheld sphere (Arduino Nano 33 BLE). Created vacuum-formed moon-shaped housing, but gyroscope calibration instability and arm fatigue made it impractical.
 - Version 1: Joystick-based HID controller (Teensy 4.1) mimicking mouse behavior. Mounted on phone stand for stability, but precision issues and sustained finger pressure caused user fatigue.
-- Version 2: Rotary encoder with custom thermoplastic housing (final design). Physical rotation directly maps to celestial motion—turn the knob to rotate the moon/Earth. Added two-button system: short press for pause/play, long press to toggle between Moon and Earth control modes.
+- Version 2: Rotary encoder with custom thermoplastic housing (final design). Physical rotation directly maps to celestial motion - turn the knob to rotate the moon/Earth. Added two-button system: short press for pause/play, long press to toggle between Moon and Earth control modes.
 
 **Technical Implementation**
 
@@ -393,7 +491,7 @@ Formative testing showed strongest engagement with rotary encoder version. Users
 
 **Design Principles Applied**
 
-Embodied cognition theory: physical rotation encodes orbital dynamics kinesthetically. Universal Design for Learning: one-handed operation, tactile feedback, reduced fine motor demands. Affordance mapping: controller form suggests its function—rotation feels natural for representing celestial motion.
+Embodied cognition theory: physical rotation encodes orbital dynamics kinesthetically. Universal Design for Learning: one-handed operation, tactile feedback, reduced fine motor demands. Affordance mapping: controller form suggests its function - rotation feels natural for representing celestial motion.
 
 **Next Steps**
 
@@ -617,10 +715,10 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
           <div className="inline-block mb-6 px-6 py-2.5 bg-purple-500/20 backdrop-blur-sm text-purple-300 rounded-full text-base font-medium border-2 border-purple-400/30">
             Designer • Researcher • Maker
           </div>
-          <h1 className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent leading-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-black mb-6 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent leading-tight">
             Sara Jakubowicz
           </h1>
-          <p className="text-2xl md:text-3xl text-purple-200 max-w-3xl mx-auto font-light">
+          <p className="text-xl md:text-2xl lg:text-3xl text-purple-200 max-w-3xl mx-auto font-light px-4">
             I design delightful experiences & uncover insights that make products sing
           </p>
         </div>
@@ -630,7 +728,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
             onClick={() => navigateToPage('design')}
             onMouseEnter={() => handleDesignHover(true)}
             onMouseLeave={() => handleDesignHover(false)}
-            className="group relative bg-slate-900/40 backdrop-blur-md p-14 rounded-[2.5rem] border-2 border-purple-500/30 hover:border-purple-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-96 shadow-2xl hover:shadow-purple-500/30 hover:scale-105 transform"
+            className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-purple-500/30 hover:border-purple-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-purple-500/30 md:hover:scale-105 transform"
           >
             <AnimatedLine isHovering={designHover} color="rgb(192, 132, 252)" />
             
@@ -638,8 +736,8 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               <div className="mb-6 text-purple-300">
                 <Sparkles size={56} strokeWidth={1.5} />
               </div>
-              <h2 className="text-5xl font-black mb-4 text-white">Design</h2>
-              <p className="text-purple-200 text-lg mb-8 font-light">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">Design</h2>
+              <p className="text-purple-200 text-base md:text-lg mb-6 md:mb-8 font-light">
                 Product design that moves the needle
               </p>
               
@@ -656,7 +754,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
             onClick={() => navigateToPage('research')}
             onMouseEnter={() => handleResearchHover(true)}
             onMouseLeave={() => handleResearchHover(false)}
-            className="group relative bg-slate-900/40 backdrop-blur-md p-14 rounded-[2.5rem] border-2 border-blue-500/30 hover:border-blue-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-96 shadow-2xl hover:shadow-blue-500/30 hover:scale-105 transform"
+            className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-blue-500/30 hover:border-blue-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-blue-500/30 md:hover:scale-105 transform"
           >
             <AnimatedChart isHovering={researchHover} />
             
@@ -664,8 +762,8 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               <div className="mb-6 text-blue-300">
                 <Brain size={56} strokeWidth={1.5} />
               </div>
-              <h2 className="text-5xl font-black mb-4 text-white">Research</h2>
-              <p className="text-blue-200 text-lg mb-8 font-light">
+              <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">Research</h2>
+              <p className="text-blue-200 text-base md:text-lg mb-6 md:mb-8 font-light">
                 Understanding humans, one study at a time
               </p>
               
@@ -748,7 +846,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   <h1 className="text-5xl font-black text-white">{selectedProject.title}</h1>
                 </div>
               </div>
-              <p className="text-2xl text-purple-200 font-light mb-8">{selectedProject.tagline}</p>
+              <p className="text-lg md:text-2xl text-purple-200 font-light mb-8">{selectedProject.tagline}</p>
             </div>
 
             {selectedProject.id === 1 && (
@@ -795,7 +893,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               </div>
             )}
 
-            <div className="grid grid-cols-3 gap-6 mb-12 p-8 bg-slate-900/50 backdrop-blur-sm rounded-3xl border-2 border-purple-500/30">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 p-6 md:p-8 bg-slate-900/50 backdrop-blur-sm rounded-3xl border-2 border-purple-500/30">
               {selectedProject.details.map((detail, idx) => (
                 <div key={idx} className="text-center">
                   <div className="text-4xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent mb-2">{detail.value}</div>
@@ -803,6 +901,20 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                 </div>
               ))}
             </div>
+
+            {selectedProject.link && (
+              <div className="flex justify-center mb-8">
+                <a 
+                  href={selectedProject.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                >
+                  <span>Read Publication</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            )}
 
             <div className="flex flex-wrap gap-3 mb-12">
               {selectedProject.tags.map((tag, idx) => (
@@ -820,6 +932,24 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   }
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
+                  }
+                  // Handle special image placeholders
+                  if (line === '[AR_IMAGE]' && selectedProject.arImage) {
+                    return <img key={idx} src={selectedProject.arImage} alt="AR ingredient collection and avatar customization" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[ARCH_IMAGE]' && selectedProject.archImage) {
+                    return <img key={idx} src={selectedProject.archImage} alt="Food-Fighter technical architecture" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[PERSONAS_IMAGE]' && selectedProject.personasImage) {
+                    return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle iframe embeds
+                  if (line.startsWith('<iframe')) {
+                    return <div key={idx} className="my-8 w-full aspect-video rounded-2xl overflow-hidden border-2 border-purple-500/30" dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
+                  // Handle img tags
+                  if (line.startsWith('<img')) {
+                    return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Parse markdown links [text](url) and inline bold **text**
                   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -848,7 +978,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
             </div>
 
             <div className="mb-12">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-purple-500/30" />
+              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 md:h-[600px] object-cover object-center rounded-3xl border-2 border-purple-500/30" />
             </div>
           </div>
 
@@ -862,10 +992,10 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
         <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
         <AnimatedBorderLines />
 
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
-            <h1 className="text-6xl font-black mb-4 text-white">Design Work</h1>
-            <p className="text-2xl text-purple-200 font-light">Where research meets pixels</p>
+            <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Design Work</h1>
+            <p className="text-lg md:text-2xl text-purple-200 font-light">Where research meets pixels</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
@@ -881,7 +1011,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   ]
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-purple-900/90 group-hover:via-purple-900/70 transition-all duration-500" />
                   
-                  <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
                       <Icon size={36} className="text-purple-300 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                       <div className="px-3 py-1 bg-purple-500/30 backdrop-blur-sm text-purple-200 text-xs font-bold rounded-full border border-purple-400/40">
@@ -890,13 +1020,13 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                     </div>
                     
                     <div>
-                      <h3 className="text-3xl font-black text-white mb-2">{project.title}</h3>
+                      <h3 className="text-2xl md:text-3xl font-black text-white mb-2">{project.title}</h3>
                       <p className="text-purple-200 text-sm mb-4 font-medium">{project.tagline}</p>
                       
-                      <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
                         {project.details.map((detail, idx) => (
                           <div key={idx} className="text-center bg-black/30 backdrop-blur-sm rounded-xl p-2 border border-purple-400/20">
-                            <div className="text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">{detail.value}</div>
+                            <div className="text-lg md:text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">{detail.value}</div>
                             <div className="text-xs text-purple-300">{detail.label}</div>
                           </div>
                         ))}
@@ -961,7 +1091,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               <div className="text-3xl font-black text-white">{selectedProject.finding}</div>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mb-12 p-8 bg-slate-900/50 backdrop-blur-sm rounded-3xl border-2 border-blue-500/30">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 p-6 md:p-8 bg-slate-900/50 backdrop-blur-sm rounded-3xl border-2 border-blue-500/30">
               {selectedProject.details.map((detail, idx) => (
                 <div key={idx} className="text-center">
                   <div className="text-4xl font-black bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent mb-2">{detail.value}</div>
@@ -978,6 +1108,20 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               ))}
             </div>
 
+            {selectedProject.link && (
+              <div className="flex justify-center mb-8">
+                <a 
+                  href={selectedProject.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
+                >
+                  <span>Read Publication</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            )}
+
             <div className="prose prose-invert prose-lg max-w-none mb-12">
               <div className="text-blue-100 text-lg leading-relaxed whitespace-pre-line">
                 {selectedProject.description.split('\n').map((line, idx) => {
@@ -986,6 +1130,14 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   }
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
+                  }
+                  // Handle iframe embeds
+                  if (line.startsWith('<iframe')) {
+                    return <div key={idx} className="my-8 w-full aspect-video rounded-2xl overflow-hidden border-2 border-blue-500/30" dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
+                  // Handle img tags
+                  if (line.startsWith('<img')) {
+                    return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Parse markdown links [text](url) and inline bold **text**
                   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -1028,10 +1180,10 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
         <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
         <AnimatedBorderLines />
 
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
-            <h1 className="text-6xl font-black mb-4 text-white">Research</h1>
-            <p className="text-2xl text-blue-200 font-light">Curiosity-driven insights</p>
+            <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Research</h1>
+            <p className="text-lg md:text-2xl text-blue-200 font-light">Curiosity-driven insights</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
@@ -1047,7 +1199,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   
                   <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-70 group-hover:opacity-80 transition-opacity duration-500`} />
                   
-                  <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
                     <div className="flex justify-between items-start">
                       <Icon size={36} className="text-white group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                       <div className="px-3 py-1 bg-white/30 backdrop-blur-sm text-white text-xs font-bold rounded-full border border-white/40">
@@ -1056,12 +1208,12 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                     </div>
                     
                     <div>
-                      <h3 className="text-3xl font-black text-white mb-2 leading-tight">{project.title}</h3>
+                      <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">{project.title}</h3>
                       <p className="text-blue-100 text-sm mb-4 font-medium">{project.tagline}</p>
                       
-                      <div className="mb-4 bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                      <div className="mb-4 bg-black/30 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-white/20">
                         <div className="text-sm text-white/80 mb-1">{project.stat}</div>
-                        <div className="text-xl font-black text-white">{project.finding}</div>
+                        <div className="text-lg md:text-xl font-black text-white">{project.finding}</div>
                       </div>
                       
                       <div className="flex flex-wrap gap-2">
@@ -1138,6 +1290,14 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
                   }
+                  // Handle iframe embeds
+                  if (line.startsWith('<iframe')) {
+                    return <div key={idx} className="my-8 w-full aspect-video rounded-2xl overflow-hidden border-2 border-emerald-500/30" dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
+                  // Handle img tags
+                  if (line.startsWith('<img')) {
+                    return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
                   // Parse markdown links [text](url) and inline bold **text**
                   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
                   const boldRegex = /\*\*([^*]+)\*\*/g;
@@ -1179,13 +1339,13 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
         <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
         <AnimatedBorderLines />
 
-        <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
-            <h1 className="text-6xl font-black mb-4 text-white">Maker Projects</h1>
-            <p className="text-2xl text-emerald-200 font-light">Built for fun, learned a ton</p>
+            <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Maker Projects</h1>
+            <p className="text-lg md:text-2xl text-emerald-200 font-light">Built for fun, learned a ton</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {makerProjects.map((project) => {
               const Icon = project.icon;
               return (
@@ -1202,7 +1362,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                     <Icon size={32} className="text-emerald-300 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
                     
                     <div>
-                      <h3 className="text-2xl font-black text-white mb-2">{project.title}</h3>
+                      <h3 className="text-xl md:text-2xl font-black text-white mb-2">{project.title}</h3>
                       <p className="text-emerald-200 text-sm mb-4 font-medium">{project.tagline}</p>
                       
                       <div className="flex flex-wrap gap-2">
@@ -1221,6 +1381,104 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
         </div>
 
         <div className="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-40" />
+      </div>
+    );
+  };
+
+  const noteColors = [
+    'bg-yellow-200',
+    'bg-pink-200', 
+    'bg-blue-200',
+    'bg-green-200',
+    'bg-purple-200',
+    'bg-orange-200'
+  ];
+
+  const GuestbookPage = () => {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-24 pb-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+              Guestbook
+            </h1>
+            <p className="text-lg md:text-2xl text-purple-200">
+              Leave a note on the wall! ✨
+            </p>
+          </div>
+
+          {/* Submit Form */}
+          <div className="max-w-2xl mx-auto mb-16">
+            <form onSubmit={submitNote} className="bg-slate-800/50 backdrop-blur-sm rounded-3xl p-8 border-2 border-yellow-500/30">
+              <div className="mb-6">
+                <label htmlFor="guestbook-name" className="block text-yellow-200 font-bold mb-2">Your Name</label>
+                <input
+                  ref={nameInputRef}
+                  id="guestbook-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  className="w-full px-4 py-3 bg-slate-900/50 border-2 border-yellow-500/30 rounded-xl text-white placeholder-slate-400 focus:border-yellow-400 focus:outline-none"
+                  placeholder="Sara was here"
+                  maxLength={50}
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label htmlFor="guestbook-message" className="block text-yellow-200 font-bold mb-2">Message</label>
+                <textarea
+                  ref={messageInputRef}
+                  id="guestbook-message"
+                  name="message"
+                  autoComplete="off"
+                  className="w-full px-4 py-3 bg-slate-900/50 border-2 border-yellow-500/30 rounded-xl text-white placeholder-slate-400 focus:border-yellow-400 focus:outline-none resize-none"
+                  placeholder="Leave your mark..."
+                  rows={4}
+                  maxLength={200}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-yellow-500 to-pink-500 hover:from-yellow-600 hover:to-pink-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="w-5 h-5" />
+                <span>{isSubmitting ? 'Posting...' : 'Post Note'}</span>
+              </button>
+            </form>
+          </div>
+
+          {/* Notes Wall */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {guestbookNotes.map((note, index) => (
+              <div
+                key={note.id}
+                className={`${noteColors[index % noteColors.length]} p-6 rounded-lg shadow-xl transform hover:scale-105 hover:rotate-1 transition-all duration-300 relative`}
+                style={{
+                  transform: `rotate(${(index % 2 === 0 ? 1 : -1) * (Math.random() * 3)}deg)`
+                }}
+              >
+                <StickyNote className="absolute top-2 right-2 w-6 h-6 text-slate-700/20" />
+                <div className="font-handwriting text-slate-900">
+                  <p className="text-lg mb-3 break-words">{note.message}</p>
+                  <p className="text-sm font-bold">- {note.name}</p>
+                  <p className="text-xs text-slate-600 mt-2">
+                    {new Date(note.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {guestbookNotes.length === 0 && (
+            <div className="text-center text-purple-300 text-xl mt-12">
+              Be the first to leave a note! 📝
+            </div>
+          )}
+        </div>
+
+        <div className="fixed bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-pink-500 to-purple-500 z-40" />
       </div>
     );
   };
@@ -1274,13 +1532,19 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
               >
                 Maker
               </button>
+              <button
+                onClick={() => navigateToPage('guestbook')}
+                className="text-left px-4 py-3 text-lg font-bold text-yellow-200 hover:text-white hover:bg-yellow-500/20 rounded-xl transition-all"
+              >
+                Guestbook
+              </button>
             </nav>
           </div>
         )}
       </header>
 
       {/* Sticky Contact Button */}
-      <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
+      <div className="fixed bottom-4 md:bottom-8 right-4 md:right-8 z-50 flex flex-col gap-3">
         <a
           href="mailto:sarajakub0@gmail.com"
           className="group p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-2xl hover:shadow-purple-500/50 hover:scale-110 transition-all duration-300"
@@ -1312,6 +1576,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
       {currentPage === 'design' && <DesignPage />}
       {currentPage === 'research' && <ResearchPage />}
       {currentPage === 'maker' && <MakerPage />}
+      {currentPage === 'guestbook' && <GuestbookPage />}
       <Cursor />
     </div>
   );
