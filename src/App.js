@@ -9,8 +9,18 @@ import foodfighterArchImage from './assets/foodfighter_architecture.png';
 import foodfighterARImage from './assets/foodfighter_ar.png';
 import foodfighterPersonasImage from './assets/foodfighter_personas.png';
 import stresscamImage from './assets/stresscam_sim.png';
+import stresscamWatchImage from './assets/stresscam_watch.png';
+import stresscamIphoneImage from './assets/stresscam_iphone2.png';
 import smartlightsImage from './assets/smartlights1.jpg';
+import hueToggleVideo from './assets/hue_io.mov';
+import hueColorVideo from './assets/hue_hue.mov';
 import altcontrollerImage from './assets/og_altcontroller.png';
+import altctrlV0Image from './assets/v0_altctrl.jpg';
+import altctrlV0Gif from './assets/v0_gif.GIF';
+import altctrlV1Image from './assets/v1_altctrl.jpeg';
+import altctrlV2_0Image from './assets/v2.0_altctrl.jpg';
+import altctrlV2_1Image from './assets/v2.1_altctrl.jpeg';
+import altctrlV2_2Image from './assets/v2.2_altctrl.jpeg';
 import aycetImage from './assets/aycet_study.png';
 import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
@@ -124,83 +134,6 @@ export default function Portfolio() {
   const designProjects = [
     {
       id: 1,
-      title: "Cosmos VR Game",
-      company: "CREATE Lab",
-      tagline: "Making learning immersive and fun",
-      image: cosmosImage,
-      thumbnail: cosmosImage,
-      icon: Play,
-      details: [
-        { label: "Role", value: "Lead Designer" },
-        { label: "Duration", value: "1 year" },
-        { label: "Platform", value: "Meta Quest" }
-      ],
-      tags: ["UI/UX Design", "Co-Design", "Learning Design"],
-      color: "from-purple-500 via-pink-500 to-rose-500",
-      description: `**The Challenge**
-
-Middle school students struggled to grasp abstract astronomy concepts like planetary motion and scale when taught through 2D diagrams and textbooks.
-
-**My Design Process**
-
-- Discovery: Conducted 12 student interviews and observed 5 classroom sessions
-- Insight: Students learn best through hands-on manipulation, not passive observation
-- Ideation: Created 3 game mechanic concepts balancing fun with learning objectives
-- Iteration: 3 rounds of co-design with students and teachers
-- Testing: Weekly playtests with 8th graders measuring engagement and comprehension
-
-**The Solution**
-
-An immersive VR experience where students become space explorers, manipulating planets in real-time to understand orbits, gravity, and scale. Guided discovery replaces lectures.
-
-**The Impact**
-
-- Adopted by 15+ classrooms in pilot program
-- Teachers reported measurably higher student engagement
-- "This is the first time astronomy clicked for me!" - 8th grade student
-
-**What I Learned**
-
-Early testing with actual students (not just teachers) was critical. Our first prototype was too game-like and distracted from learning - student feedback helped us find the right balance between fun and education.`
-    },
-    {
-      id: 2,
-      title: "AI Lesson Builder",
-      company: "Stealth Startup",
-      tagline: "Building courses with AI, made easy",
-      image: courseaiImage,
-      thumbnail: courseaiImage,
-      icon: Sparkles,
-      details: [
-        { label: "Role", value: "Prototyper" },
-        { label: "Duration", value: "2 weeks" },
-        { label: "Platform", value: "Web App" }
-      ],
-      tags: ["AI", "EdTech", "Interaction Design"],
-      color: "from-blue-500 via-cyan-500 to-teal-500",
-      description: `**The Challenge**
-
-Educators spend hours creating course materials from scratch, lacking tools that understand pedagogical best practices while saving time.
-
-**My Role**
-
-As Prototyper, I designed and tested an AI-powered lesson builder that helps educators scaffold courses efficiently while maintaining quality.
-
-**The Process**
-
-- 8 interviews with educators across K-12 and higher ed
-- Competitive analysis of 5 existing tools
-- 4 rapid prototyping cycles with weekly user feedback
-- Usability testing with 12 educators
-
-**The Impact**
-
-Reduced course creation time from 4 hours to 45 minutes while maintaining pedagogical quality. Educators praised the balance of AI assistance with creative control.
-
-"It's like having a teaching assistant who knows learning design." - High school teacher`
-    },
-    {
-      id: 3,
       title: "Food-Fighter: Battle for Health",
       company: "NYU Learning Game Design",
       tagline: "Transforming nutrition education through strategic gameplay",
@@ -273,6 +206,83 @@ Also learned that **cultural food representation matters deeply**. When testing 
 <iframe src="https://docs.google.com/presentation/d/14kIOTQM-TcxU-sGgpbpXq6AT6XBDd5-WaIPcpb91Q48/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 → [Full Design Document](https://docs.google.com/document/d/1HZvi4Sdot2Ku082ph5T4A4iM5EMEH-_7UpGCMbljVxI/edit?usp=sharing)`
+    },
+    {
+      id: 2,
+      title: "Cosmos VR Game",
+      company: "CREATE Lab",
+      tagline: "Making learning immersive and fun",
+      image: cosmosImage,
+      thumbnail: cosmosImage,
+      icon: Play,
+      details: [
+        { label: "Role", value: "Lead Designer" },
+        { label: "Duration", value: "1 year" },
+        { label: "Platform", value: "Meta Quest" }
+      ],
+      tags: ["UI/UX Design", "Co-Design", "Learning Design"],
+      color: "from-purple-500 via-pink-500 to-rose-500",
+      description: `**The Challenge**
+
+Middle school students struggled to grasp abstract astronomy concepts like planetary motion and scale when taught through 2D diagrams and textbooks.
+
+**My Design Process**
+
+- Discovery: Conducted 12 student interviews and observed 5 classroom sessions
+- Insight: Students learn best through hands-on manipulation, not passive observation
+- Ideation: Created 3 game mechanic concepts balancing fun with learning objectives
+- Iteration: 3 rounds of co-design with students and teachers
+- Testing: Weekly playtests with 8th graders measuring engagement and comprehension
+
+**The Solution**
+
+An immersive VR experience where students become space explorers, manipulating planets in real-time to understand orbits, gravity, and scale. Guided discovery replaces lectures.
+
+**The Impact**
+
+- Adopted by 15+ classrooms in pilot program
+- Teachers reported measurably higher student engagement
+- "This is the first time astronomy clicked for me!" - 8th grade student
+
+**What I Learned**
+
+Early testing with actual students (not just teachers) was critical. Our first prototype was too game-like and distracted from learning - student feedback helped us find the right balance between fun and education.`
+    },
+    {
+      id: 3,
+      title: "AI Lesson Builder",
+      company: "Stealth Startup",
+      tagline: "Building courses with AI, made easy",
+      image: courseaiImage,
+      thumbnail: courseaiImage,
+      icon: Sparkles,
+      details: [
+        { label: "Role", value: "Prototyper" },
+        { label: "Duration", value: "2 weeks" },
+        { label: "Platform", value: "Web App" }
+      ],
+      tags: ["AI", "EdTech", "Interaction Design"],
+      color: "from-blue-500 via-cyan-500 to-teal-500",
+      description: `**The Challenge**
+
+Educators spend hours creating course materials from scratch, lacking tools that understand pedagogical best practices while saving time.
+
+**My Role**
+
+As Prototyper, I designed and tested an AI-powered lesson builder that helps educators scaffold courses efficiently while maintaining quality.
+
+**The Process**
+
+- 8 interviews with educators across K-12 and higher ed
+- Competitive analysis of 5 existing tools
+- 4 rapid prototyping cycles with weekly user feedback
+- Usability testing with 12 educators
+
+**The Impact**
+
+Reduced course creation time from 4 hours to 45 minutes while maintaining pedagogical quality. Educators praised the balance of AI assistance with creative control.
+
+"It's like having a teaching assistant who knows learning design." - High school teacher`
     }
   ];
 
@@ -387,10 +397,12 @@ VR learning design should prioritize structured tasks with clear objectives and 
 
   const makerProjects = [
     {
-      id: 1,
+      id: 3,
       title: "StressCam",
       tagline: "Real-time stress detection via Apple Watch + AI",
       image: stresscamImage,
+      watchImage: stresscamWatchImage,
+      iphoneImage: stresscamIphoneImage,
       icon: Activity,
       tech: ["Swift", "HealthKit", "WatchConnectivity", "SwiftUI"],
       description: `**The Concept**
@@ -401,7 +413,11 @@ A biometric monitoring system that detects stress in real-time by analyzing Appl
 
 **How It Works**
 
+[WATCH_IMAGE]
+
 **Apple Watch:** Continuously monitors heart rate, HRV (heart rate variability), and SpO2 (oxygen saturation) via HealthKit. Detects anomalies when values exceed personalized thresholds and sends alerts to iPhone via WatchConnectivity.
+
+[IPHONE_IMAGE]
 
 **iPhone App:** Receives biometric streams, calculates personalized baseline from historical data (7-30 days), and computes a composite stress score (0-100) using weighted z-scores. Real-time charts visualize HR, HRV, and SpO2 trends with threshold indicators.
 
@@ -429,6 +445,8 @@ HealthKit authorization and data access patterns are complex - simulator require
       title: "Smart Lights Gesture Control",
       tagline: "Control lights with muscle signals",
       image: smartlightsImage,
+      toggleVideo: hueToggleVideo,
+      colorVideo: hueColorVideo,
       icon: Home,
       tech: ["Python", "Myo Armband", "XGBoost", "Philips Hue API"],
       description: `**The Idea**
@@ -436,6 +454,16 @@ HealthKit authorization and data access patterns are complex - simulator require
 Control my apartment lights with hand gestures. No switches, no voice commands - just flex my hand and the lights respond.
 
 → [GitHub Repository](https://github.com/sarajakub/emg_iot)
+
+**See It In Action**
+
+[TOGGLE_VIDEO]
+
+*Toggling lights on/off with a fist gesture*
+
+[COLOR_VIDEO]
+
+*Changing light hue by holding fist gesture + moving arm left/right*
 
 **Technical Implementation**
 
@@ -461,41 +489,95 @@ The system uses pyomyo for EMG signal processing, XGBoost for gesture classifica
 EMG signal processing requires careful preprocessing and calibration. Combining EMG gestures with IMU motion data creates more expressive control schemes. Designing smooth, gradual changes (like hue adjustment) requires thoughtful rate limiting and motion thresholds to prevent jittery behavior.`
     },
     {
-      id: 3,
+      id: 1,
       title: "alt.ctrl.LRN: Embodied Learning Controller",
       tagline: "Alternative input for astronomy education",
       image: altcontrollerImage,
+      v0Image: altctrlV0Image,
+      v0Gif: altctrlV0Gif,
+      v1Image: altctrlV1Image,
+      v2_0Image: altctrlV2_0Image,
+      v2_1Image: altctrlV2_1Image,
+      v2_2Image: altctrlV2_2Image,
       icon: Gamepad2,
       tech: ["Arduino Nano", "Rotary Encoder", "Web Serial API", "JavaScript"],
-      description: `**Project Goal**
+      description: `**The Challenge**
 
-Built a custom rotary encoder controller to investigate how embodied, physical inputs affect learning of spatial concepts in digital simulations - specifically, understanding lunar phases through tangible rotation that mirrors orbital motion.
+Students learn spatial concepts like lunar phases from 2D screens using a mouse - a mismatch between the physical, circular motion of orbits and the abstract, indirect input method. How might a tangible controller that mimics orbital rotation improve learning and engagement?
 
 → [Thesis Archive](https://www.ectexpo.info/thesis-archive/spring-2025/sara-jakubowicz)
 → [GitHub Repository](https://github.com/sarajakub/alt-learning-ctrl)
 
-**Design Process**
+**The Solution**
 
-Iterated through three hardware versions based on user testing and technical constraints:
-- Version 0: Gyroscope-based handheld sphere (Arduino Nano 33 BLE). Created vacuum-formed moon-shaped housing, but gyroscope calibration instability and arm fatigue made it impractical.
-- Version 1: Joystick-based HID controller (Teensy 4.1) mimicking mouse behavior. Mounted on phone stand for stability, but precision issues and sustained finger pressure caused user fatigue.
-- Version 2: Rotary encoder with custom thermoplastic housing (final design). Physical rotation directly maps to celestial motion - turn the knob to rotate the moon/Earth. Added two-button system: short press for pause/play, long press to toggle between Moon and Earth control modes.
+[V2_2_IMAGE]
+
+A custom rotary encoder controller where turning a physical knob directly rotates the moon/Earth in the simulation - creating a 1:1 mapping between physical and digital motion. Users physically feel the orbital relationship through the controller's form: a thermoplastic moon connected to an upcycled Earth stress ball via metal rod.
+
+**Documentation Video**
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/IYY1LpCZgw8?si=-2eK0_l-sz8UXoLY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**My Process: Iterating Based on User Feedback**
+
+I built and tested three hardware versions, each informed by user testing and usability findings:
+
+**Version 0: Gyroscope Sphere** ❌
+
+[V0_GIF]
+
+- **Concept:** Handheld moon-shaped controller you rotate in your hands
+- **Built:** Vacuum-formed thermoplastic housing with Arduino Nano 33 BLE
+- **User feedback:** Gyroscope calibration drift caused frustration; holding your arm up caused fatigue within 2 minutes
+- **Learning:** Physical constraints matter - cool concept doesn't mean usable product
+
+**Version 1: Joystick** ❌
+
+[V1_IMAGE]
+
+- **Concept:** Familiar joystick input mimicking mouse behavior via Teensy 4.1 HID
+- **Built:** Mounted on phone stand for stability
+- **User feedback:** Precision issues made fine control difficult; sustained finger pressure tired users; felt no different from using a mouse
+- **Learning:** Direct mapping matters - joystick didn't embody the circular motion we were trying to teach
+
+**Version 2: Rotary Encoder** ✅
+
+[V2_0_IMAGE]
+
+[V2_1_IMAGE]
+
+- **Concept:** Turn a physical knob to rotate the moon/Earth - 1:1 mapping of physical to digital motion
+- **Built:** Custom perfboard circuit, laser-cut enclosure, thermoplastic moon connected to upcycled Earth stress ball via metal rod
+- **User feedback:** "This makes the relationship click!" Users experimented freely, physically feeling the orbital motion
+- **Learning:** Affordance = understanding. When the controller's form matches the concept, learning happens naturally
+
+**What Users Told Me**
+
+Tested with 6 students and 2 educators during formative evaluation:
+
+- **Engagement**: Users spent 3x longer exploring with the rotary controller vs. mouse, actively testing hypotheses ("What if I spin it backwards?")
+- **Accessibility**: One educator noted it would be "ideal for neurodiverse learners who benefit from tactile engagement"
+- **Limitation discovered**: Users felt frustrated when some simulation features (time-jump buttons) weren't accessible via controller - they wanted complete control or none at all
 
 **Technical Implementation**
 
-Arduino-powered rotary encoder sends serial commands via Web Serial API to PBS Kids moon phase simulation (modified JavaScript backend). Custom perfboard soldering for clean circuit layout. Laser-cut enclosure houses the circuit board for durability and professional finish. Earth represented by upcycled stress ball, moon by molded thermoplastic, connected via metal rod for visual orbital relationship.
+Arduino-powered rotary encoder sends serial commands via Web Serial API to PBS Kids moon phase simulation (modified JavaScript backend). Two-button system: short press for pause/play, long press toggles between Moon and Earth control modes. Custom perfboard soldering for clean circuit layout with laser-cut enclosure for durability.
 
-**User Research Insights**
+**Design Principles That Guided Me**
 
-Formative testing showed strongest engagement with rotary encoder version. Users actively experimented with how physical motion related to on-screen dynamics. One educator noted it would be "ideal for neurodiverse learners who benefit from tactile engagement." Key limitation: not all simulation functions accessible via controller (e.g., time-jump buttons), which users perceived as loss of agency.
+- **Embodied cognition**: Physical rotation encodes orbital dynamics through muscle memory
+- **Universal Design for Learning**: One-handed operation, tactile feedback, reduced fine motor demands
+- **Affordance mapping**: The controller's circular form suggests rotation - users knew what to do without instructions
 
-**Design Principles Applied**
+**Key Learning**
 
-Embodied cognition theory: physical rotation encodes orbital dynamics kinesthetically. Universal Design for Learning: one-handed operation, tactile feedback, reduced fine motor demands. Affordance mapping: controller form suggests its function - rotation feels natural for representing celestial motion.
+The biggest insight: **Failed prototypes are where the learning happens.** Each "failure" taught me something critical about the gap between conceptual elegance and usable design. The gyroscope seemed brilliant on paper but ignored human factors like arm fatigue. The joystick worked technically but missed the pedagogical point. Only by building, testing, listening, and iterating did I land on a design that actually improved learning.
 
-**Next Steps**
+Also learned: **Partial control is worse than no control.** Users wanted the controller to do everything or clearly define its scope - mixing controller + mouse inputs created cognitive friction.
 
-Planning comparative study (rotary controller vs. mouse) measuring conceptual understanding, cognitive load, and engagement using think-aloud protocols and validated assessments. Thesis presentation: [Watch on YouTube](https://www.youtube.com/watch?v=EYBHNaQVwYQ&t=2s)`
+**Full Thesis Presentation**
+
+<iframe width="100%" height="450" src="https://embed.figma.com/slides/nfAzIjZAwAXM1kVmZxed75/Thesis--alt.ctrl.LRN?node-id=1-350&embed-host=share" allowfullscreen></iframe>`
     }
   ];
 
@@ -729,6 +811,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
             onMouseEnter={() => handleDesignHover(true)}
             onMouseLeave={() => handleDesignHover(false)}
             className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-purple-500/30 hover:border-purple-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-purple-500/30 md:hover:scale-105 transform"
+            style={{ overflow: 'hidden' }}
           >
             <AnimatedLine isHovering={designHover} color="rgb(192, 132, 252)" />
             
@@ -755,6 +838,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
             onMouseEnter={() => handleResearchHover(true)}
             onMouseLeave={() => handleResearchHover(false)}
             className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-blue-500/30 hover:border-blue-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-blue-500/30 md:hover:scale-105 transform"
+            style={{ overflow: 'hidden' }}
           >
             <AnimatedChart isHovering={researchHover} />
             
@@ -788,7 +872,7 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
           </button>
         </div>
 
-        <div className="flex justify-center gap-10 items-center">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-10 items-center px-4">
           <a href="mailto:sarajakub0@gmail.com" className="group flex items-center gap-2 text-purple-300 hover:text-purple-200 transition-colors">
             <Mail size={24} className="group-hover:scale-110 transition-transform" />
             <span className="font-medium">Say hi!</span>
@@ -943,9 +1027,34 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   if (line === '[PERSONAS_IMAGE]' && selectedProject.personasImage) {
                     return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
+                  // Handle video placeholders
+                  if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
+                    return <video key={idx} src={selectedProject.toggleVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[COLOR_VIDEO]' && selectedProject.colorVideo) {
+                    return <video key={idx} src={selectedProject.colorVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  // Handle altctrl version image placeholders
+                  if (line === '[V0_GIF]' && selectedProject.v0Gif) {
+                    return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
+                    return <img key={idx} src={selectedProject.v1Image} alt="Version 1 joystick controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
+                    return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_1_IMAGE]' && selectedProject.v2_1Image) {
+                    return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
+                    return <img key={idx} src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
-                    return <div key={idx} className="my-8 w-full aspect-video rounded-2xl overflow-hidden border-2 border-purple-500/30" dangerouslySetInnerHTML={{ __html: line }} />;
+                    // Use emerald border for maker projects, purple for design/research
+                    const borderColor = currentPage === 'maker' ? 'border-emerald-500/30' : 'border-purple-500/30';
+                    return <div key={idx} className={`my-8 w-full aspect-video rounded-2xl border-2 ${borderColor} p-0`} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Handle img tags
                   if (line.startsWith('<img')) {
@@ -1289,6 +1398,36 @@ Planning comparative study (rotary controller vs. mouse) measuring conceptual un
                   }
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
+                  }
+                  // Handle video placeholders
+                  if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
+                    return <video key={idx} src={selectedProject.toggleVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[COLOR_VIDEO]' && selectedProject.colorVideo) {
+                    return <video key={idx} src={selectedProject.colorVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  // Handle altctrl version image placeholders
+                  if (line === '[V0_GIF]' && selectedProject.v0Gif) {
+                    return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
+                    return <img key={idx} src={selectedProject.v1Image} alt="Version 1 joystick controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
+                    return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_1_IMAGE]' && selectedProject.v2_1Image) {
+                    return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
+                    return <img key={idx} src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  // Handle StressCam image placeholders
+                  if (line === '[WATCH_IMAGE]' && selectedProject.watchImage) {
+                    return <img key={idx} src={selectedProject.watchImage} alt="StressCam Apple Watch interface" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                  }
+                  if (line === '[IPHONE_IMAGE]' && selectedProject.iphoneImage) {
+                    return <img key={idx} src={selectedProject.iphoneImage} alt="StressCam iPhone app" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
