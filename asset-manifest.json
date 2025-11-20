@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/portfolio/static/css/main.20394ddc.css",
-    "main.js": "/portfolio/static/js/main.2bce74f6.js",
+    "main.js": "/portfolio/static/js/main.a863e509.js",
     "static/js/453.6264690d.chunk.js": "/portfolio/static/js/453.6264690d.chunk.js",
     "static/media/hue_hue.mov": "/portfolio/static/media/hue_hue.10ec49bd16ee03f98422.mov",
     "static/media/hue_io.mov": "/portfolio/static/media/hue_io.1ab5c14bf4ff057ba65c.mov",
@@ -22,15 +22,17 @@
     "static/media/courseai_progress.png": "/portfolio/static/media/courseai_progress.7bb477691b35136a5d8f.png",
     "static/media/cosmossim.png": "/portfolio/static/media/cosmossim.591a65d391ddf1d485d1.png",
     "static/media/stresscam_sim.png": "/portfolio/static/media/stresscam_sim.f6403ca5531fbcad224e.png",
+    "static/media/stresscam_iphone2.png": "/portfolio/static/media/stresscam_iphone2.90d376d45691f3988259.png",
     "static/media/aycet_study.png": "/portfolio/static/media/aycet_study.db478c8c3262732e121c.png",
     "static/media/foodfighter_homepage.png": "/portfolio/static/media/foodfighter_homepage.994c6fa69d817889a7ee.png",
+    "static/media/stresscam_watch.png": "/portfolio/static/media/stresscam_watch.d40e0ff0e099d5f35433.png",
     "index.html": "/portfolio/index.html",
     "main.20394ddc.css.map": "/portfolio/static/css/main.20394ddc.css.map",
-    "main.2bce74f6.js.map": "/portfolio/static/js/main.2bce74f6.js.map",
+    "main.a863e509.js.map": "/portfolio/static/js/main.a863e509.js.map",
     "453.6264690d.chunk.js.map": "/portfolio/static/js/453.6264690d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.20394ddc.css",
-    "static/js/main.2bce74f6.js"
+    "static/js/main.a863e509.js"
   ]
 }
