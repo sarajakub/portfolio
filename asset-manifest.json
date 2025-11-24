@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.20394ddc.css",
-    "main.js": "/static/js/main.19453d57.js",
+    "main.js": "/static/js/main.a1a4017b.js",
     "static/js/453.6264690d.chunk.js": "/static/js/453.6264690d.chunk.js",
     "static/media/hue_hue.mov": "/static/media/hue_hue.10ec49bd16ee03f98422.mov",
     "static/media/hue_io.mov": "/static/media/hue_io.1ab5c14bf4ff057ba65c.mov",
@@ -9,11 +9,9 @@
     "static/media/v0_gif.GIF": "/static/media/v0_gif.fa6d969f7154e65c8af6.GIF",
     "static/media/cells_study.png": "/static/media/cells_study.0a88e7c27253490b7790.png",
     "static/media/v1_altctrl.jpeg": "/static/media/v1_altctrl.c2d98bf5871dca644f9f.jpeg",
-    "static/media/mydesk_extension.jpeg": "/static/media/mydesk_extension.58ff1256543c675e31c3.jpeg",
     "static/media/v2.2_altctrl.jpeg": "/static/media/v2.2_altctrl.b007ff8977636a0434de.jpeg",
     "static/media/foodfighter_architecture.png": "/static/media/foodfighter_architecture.67bdb09dc4a503af0ed9.png",
     "static/media/akvan-16_EDIT.png": "/static/media/akvan-16_EDIT.e2e8f746b56c750fb105.png",
-    "static/media/mydesk_lms.jpeg": "/static/media/mydesk_lms.c59d031349899cf6cdba.jpeg",
     "static/media/v2.1_altctrl.jpeg": "/static/media/v2.1_altctrl.bdd60d6d06ea32aa3a4c.jpeg",
     "static/media/foodfighter_ar.png": "/static/media/foodfighter_ar.2c1dbdb326b7ac41f94c.png",
     "static/media/ai_art.png": "/static/media/ai_art.c32b51ffde7a11607faa.png",
@@ -31,11 +29,11 @@
     "static/media/stresscam_watch.png": "/static/media/stresscam_watch.d40e0ff0e099d5f35433.png",
     "index.html": "/index.html",
     "main.20394ddc.css.map": "/static/css/main.20394ddc.css.map",
-    "main.19453d57.js.map": "/static/js/main.19453d57.js.map",
+    "main.a1a4017b.js.map": "/static/js/main.a1a4017b.js.map",
     "453.6264690d.chunk.js.map": "/static/js/453.6264690d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.20394ddc.css",
-    "static/js/main.19453d57.js"
+    "static/js/main.a1a4017b.js"
   ]
 }
