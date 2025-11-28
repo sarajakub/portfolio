@@ -41,6 +41,3 @@ dist/
 # Keep source logo JPGs out of the repo (we use optimized PNGs/icons)
 /public/sj_logobig.jpg
 /public/sj_logosmall.jpg
-src/assets-backup/
-src/assets-optimized/
-optimize-images.js
