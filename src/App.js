@@ -3,6 +3,10 @@ import './App.css';
 import { ArrowRight, ArrowLeft, Mail, Linkedin, Github, GraduationCap, Sparkles, Play, Activity, Smartphone, Brain, Eye, Users, Code, Home, Gamepad2, Menu, X, StickyNote, Send } from 'lucide-react';
 import profileImage from './assets/akvan-16_EDIT.png';
 import cosmosImage from './assets/cosmossim.png';
+import cosmosSpaceSketch from './assets/cosmos_space_des.jpeg';
+import cosmosEarthSketch from './assets/cosmos_earth_des.jpeg';
+import cosmosCameraImage from './assets/cosmos_camera.png';
+import cosmosTeleportImage from './assets/cosmos_teleportation.png';
 import courseaiImage from './assets/courseai_progress.png';
 import foodfighterImage from './assets/foodfighter_homepage.png';
 import foodfighterArchImage from './assets/foodfighter_architecture.png';
@@ -24,6 +28,7 @@ import altctrlV2_2Image from './assets/v2.2_altctrl.jpeg';
 import aycetImage from './assets/aycet_study.png';
 import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
+import mydeskCollabImage from './assets/mydesk_collabhub.jpeg';
 import { supabase } from './supabaseClient';
 
 export default function Portfolio() {
@@ -37,30 +42,50 @@ export default function Portfolio() {
   const nameInputRef = useRef(null);
   const messageInputRef = useRef(null);
 
-  // Check URL on mount
+  // Check URL on mount and handle browser back/forward
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path.includes('/design/')) {
-      const id = parseInt(path.split('/design/')[1]);
-      setCurrentPage('design');
-      setSelectedProjectId(id);
-    } else if (path.includes('/research/')) {
-      const id = parseInt(path.split('/research/')[1]);
-      setCurrentPage('research');
-      setSelectedProjectId(id);
-    } else if (path.includes('/maker/')) {
-      const id = parseInt(path.split('/maker/')[1]);
-      setCurrentPage('maker');
-      setSelectedProjectId(id);
-    } else if (path === '/design') {
-      setCurrentPage('design');
-    } else if (path === '/research') {
-      setCurrentPage('research');
-    } else if (path === '/maker') {
-      setCurrentPage('maker');
-    } else if (path === '/guestbook') {
-      setCurrentPage('guestbook');
-    }
+    const handleUrlChange = () => {
+      const path = window.location.pathname;
+      if (path.includes('/design/')) {
+        const id = parseInt(path.split('/design/')[1]);
+        setCurrentPage('design');
+        setSelectedProjectId(id);
+      } else if (path.includes('/research/')) {
+        const id = parseInt(path.split('/research/')[1]);
+        setCurrentPage('research');
+        setSelectedProjectId(id);
+      } else if (path.includes('/maker/')) {
+        const id = parseInt(path.split('/maker/')[1]);
+        setCurrentPage('maker');
+        setSelectedProjectId(id);
+      } else if (path === '/design') {
+        setCurrentPage('design');
+        setSelectedProjectId(null);
+      } else if (path === '/research') {
+        setCurrentPage('research');
+        setSelectedProjectId(null);
+      } else if (path === '/maker') {
+        setCurrentPage('maker');
+        setSelectedProjectId(null);
+      } else if (path === '/guestbook') {
+        setCurrentPage('guestbook');
+        setSelectedProjectId(null);
+      } else {
+        setCurrentPage('home');
+        setSelectedProjectId(null);
+      }
+      window.scrollTo(0, 0);
+    };
+
+    // Handle initial load
+    handleUrlChange();
+
+    // Listen for browser back/forward buttons
+    window.addEventListener('popstate', handleUrlChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+    };
   }, []);
 
   const handleDesignHover = (isHovering) => {
@@ -134,8 +159,201 @@ export default function Portfolio() {
   const designProjects = [
     {
       id: 1,
+      title: "Cosmos VR Game",
+      company: "CREATE Lab",
+      tagline: "Making learning immersive and fun",
+      image: cosmosImage,
+      thumbnail: cosmosImage,
+      spaceSketch: cosmosSpaceSketch,
+      earthSketch: cosmosEarthSketch,
+      cameraImage: cosmosCameraImage,
+      teleportImage: cosmosTeleportImage,
+      icon: Play,
+      details: [
+        { label: "Role", value: "Lead Designer" },
+        { label: "Duration", value: "1 year" },
+        { label: "Platform", value: "Meta Quest" }
+      ],
+      tags: ["UI/UX Design", "Co-Design", "Learning Design"],
+      color: "from-purple-500 via-pink-500 to-rose-500",
+      description: `**The Challenge**
+
+Middle school students struggled to understand **moon phases** - a spatial concept requiring visualization of Earth's perspective, the Moon's orbit, and the Sun's illumination simultaneously. Traditional 2D diagrams failed to convey the 3D spatial relationships.
+
+**My Role**
+
+Lead Designer on the CREATE Lab team. I owned the end-to-end design process: competitive analysis, interaction design, co-design facilitation with students and educators, and iterative refinement based on usability testing. Designed to meet NGSS learning standards for middle school astronomy.
+
+**My Contributions:** Designed the visual narrative storyboard, teleportation mechanics, photo-taking interaction system, note-recording feature for session documentation, and Earth interaction model. I also designed a 2D interaction model for an accessible version of this simulation using alternative controllers (see alt.ctrl.LRN in Maker Projects).
+
+**Design Strategy**
+
+**Learning Objectives First:** Designed around NGSS MS-ESS1-1 (develop and use models to show Earth-Sun-Moon system relationships). Every feature maps to a specific learning goal:
+- **Teleportation between viewpoints** → Understanding relative positions (Earth, Space, Moon perspectives)
+- **Interactive phase diagram** → Pattern recognition across the lunar cycle
+- **Photo documentation** → Evidence collection and observation skills
+- **Captain's log objectives** → Scaffolded discovery aligned to curriculum standards
+
+**Research Insight:** Analyzed existing astronomy VR apps and identified a critical gap - most locked users into single viewpoints, missing VR's core advantage of **perspective-switching** for spatial learning.
+
+**Core Design Principle:** Students learn moon phases by experiencing three interconnected viewpoints:
+1. **Earth** - See phases from ground level with time indicators
+2. **Space** - Manipulate orbital position and observe real-time phase changes
+3. **Moon** - Understand Sun's illumination from the lunar surface
+
+**Early Storyboarding & Feature Ideation**
+
+Before building in VR, I sketched the narrative flow and interaction models for each viewpoint:
+
+[SPACE_SKETCH]
+
+**Space View Storyboard:** Designing moon orbiting mechanics, particle effects for visual interest, and user interaction patterns
+
+[EARTH_SKETCH]
+
+**Earth View Storyboard:** Planning POV transitions, field journal system, telescope tools, and time-scale controls
+
+These sketches helped me work through key design questions:
+- How should users interrupt the moon's orbit for closer inspection?
+- Should time controls be static or contextual to each view?
+- What affordances signal interactable vs. observational elements?
+
+**Moon View - The Unlock Mechanic:** Initially designed with just Earth and Space views, I added the Moon location as an **unlockable achievement** to boost student engagement and in-game fulfillment. This additional viewpoint deepened the spatial learning by letting students experience Earth phases from the lunar surface - exploiting VR's 3D affordances while prompting reflection on angular relationships between Earth/Moon/Sun and what's visible from different positions in space.
+
+**The Solution**
+
+Built a VR experience where students **teleport between perspectives** to build spatial understanding:
+- **Portal-based navigation** between Earth/Space/Moon viewpoints
+- **Interactive phase diagram** that fills in as students discover each phase
+- **Captain's log** with guided objectives for scaffolded learning
+- **Moon finder tool** to locate specific phases quickly
+- **Time controls** to observe the full lunar cycle
+
+**Final Product**
+
+[CAMERA_IMAGE]
+
+**Camera Feature:** Students point directly at the moon to capture lunar phase photos for their gallery, with clear UI guidance and visual feedback
+
+[TELEPORT_IMAGE]
+
+**Space View with Teleportation:** Students see Earth/Moon orbital relationship and use "Hold Trigger to Teleport" to switch between viewpoints. Rotation controls let them manipulate Earth's position to observe phase changes
+
+**Key Design Decisions from User Testing**
+
+Ran co-design sessions with **45 participants** (students and educators) from May-December 2024. Collected **38 design improvement suggestions**, implementing **29 changes** before product launch. The following are saturated insights - patterns that emerged consistently across testing sessions:
+
+**Discoverability:**  
+- Users asked "How do I get to Earth?" → Added visible portal icons to flag teleport destinations
+- "What phase is this?" → Added hover labels showing lunar day & phase name in space view
+
+**UI Clarity:**  
+- Camera and teleport buttons looked identical → Redesigned teleport icon with distinct visual style
+- Tool icons moved around → Locked menu to fixed positions
+
+**Reducing Friction:**  
+- Teleport button persisted after use → Auto-dismiss after arrival
+- Captain's log auto-scrolled past completed objectives → Auto-position to current task
+- Users took duplicate phase photos → Added warning before first photo
+
+**Feedback Loops:**  
+- New objectives went unnoticed → Added audio ping when captain's log updates
+- Phase diagram felt unresponsive → Added audio feedback on click
+
+**The Impact**
+
+- **Currently piloting with 4 schools** for 2026 deployment
+- Teachers reported students spent **2.1x longer exploring** vs. interactive computer slides (avg 15 min vs. 7 min)
+- Student quote: *"This is so much better than learning about the moon phases from a textbook!"*
+
+**What I Learned**
+
+**Microinteractions matter exponentially in learning contexts.** A teleport button that doesn't dismiss, or a captain's log that auto-scrolls, breaks flow and shifts attention from learning to fighting the interface.
+
+**VR comfort constraints drive design decisions.** We initially explored "beam-up" style teleportation visuals but discovered they induced motion sickness. Gradual fade transitions reduced nausea while maintaining spatial continuity - a reminder that VR design requires balancing visual delight with physiological comfort.
+
+**VR's spatial affordances require intentional interaction design.** The "aha moment" wasn't VR itself - it was designing teleportation mechanics that mapped directly to the pedagogical goal of perspective-switching.`
+    },
+    {
+      id: 2,
+      title: "AI Lesson Builder",
+      company: "Stealth Startup",
+      tagline: "From student tool to AI-powered educator assistant",
+      image: courseaiImage,
+      thumbnail: courseaiImage,
+      mydeskCollabImage: mydeskCollabImage,
+      icon: Sparkles,
+      details: [
+        { label: "Role", value: "UX Designer (solo pivot)" },
+        { label: "Duration", value: "4 months" },
+        { label: "Platform", value: "Web App" }
+      ],
+      tags: ["Product Design", "AI/EdTech", "Prototyping"],
+      color: "from-blue-500 via-cyan-500 to-teal-500",
+      description: `**How I Got Here: The Research-Driven Pivot**
+
+I originally built **My Desk** with a team of 4 - a student collaboration hub that integrated calendars, assignments, and file sharing into one workspace. Over **3 months, we conducted user research** with **12 students and 8 educators** to validate it. What we discovered surprised us:
+
+[MYDESK_COLLAB_IMAGE]
+
+**Students said:** *"The problem isn't collaboration tools - it's professors giving us unclear assignments."*
+
+**Educators said:** *"I spend 4+ hours creating each module from scratch. I wish I had help structuring content."*
+
+**The insight:** Students' confusion stemmed from poorly designed courses, not collaboration friction. 7 out of 8 educators specifically mentioned spending 4+ hours per module on structure alone.
+
+I took this insight and **pivoted solo** to build an **AI-powered lesson builder** prototype targeting the root cause: time-intensive course scaffolding.
+
+**The Solution: AI as Teaching Assistant (Solo Project, 3 Weeks)**
+
+An AI tool that helps educators scaffold courses in minutes while maintaining pedagogical quality:
+
+1. Educator inputs **learning objectives**
+2. AI generates **course structure** (modules, lessons, assessments) based on best practices
+3. Educator **customizes and refines** at every step
+4. Export to **any LMS** (Canvas, Blackboard, Moodle)
+
+**Rapid Prototyping & Testing**
+
+Built a high-fidelity Figma prototype and tested with 5 educators. Key iterations:
+
+**Problem:** Educators felt "AI auto-generate" removed their expertise  
+**Solution:** Changed to **progressive disclosure** - AI proposes, educator approves/edits at each level
+
+**Problem:** Educators questioned AI suggestions (*"Why a quiz here?"*)  
+**Solution:** Added **pedagogical annotations** explaining reasoning (builds trust + teaches learning design)
+
+**Problem:** "Regenerate all" scared users (fear of losing work)  
+**Solution:** Granular **"regenerate this section"** for surgical edits
+
+**My Desk Interactive Prototype**
+
+<iframe width="100%" height="450" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" frameborder="0" allowfullscreen></iframe>
+
+**Validated Impact**
+
+- ⏱️ Course creation time: **4 hours → 45 minutes** (89% reduction)
+- ✅ **5/5 educators said they'd use this in production**
+- 💬 *"It's like having a teaching assistant who knows learning design"* - High school teacher
+
+**My Desk Research Presentation**
+
+<iframe src="https://docs.google.com/presentation/d/1W_NAGqSngsY5kXz5kctt7m2s7Mpt1qLvgXAdf0JWc7I/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+**What I Learned**
+
+The hardest part of UX isn't designing interfaces - it's **listening when users tell you to solve a different problem**. I was invested in My Desk, but the research clearly showed educators needed course creation help, not students needing another collaboration tool.
+
+Also learned: **AI design requires new patterns.** Users need transparency (why?), control (let me override), and trust-building (prove you understand the domain). These principles now guide how I approach AI features.
+
+**Project Outcome**
+
+Prototype validated core concept with 5 educators showing strong product-market fit. Currently exploring partnerships with LMS platforms to integrate AI scaffolding features.`
+    },
+    {
+      id: 3,
       title: "Food-Fighter: Battle for Health",
-      company: "NYU Learning Game Design",
+      company: "Indie Game Project",
       tagline: "Transforming nutrition education through strategic gameplay",
       image: foodfighterImage,
       thumbnail: foodfighterImage,
@@ -187,7 +405,7 @@ Players use their phone camera to "catch" healthy ingredients at grocery stores,
 **Design Decisions That Solved Real Problems**
 
 **Cognitive Load Problem:** Players were overwhelmed choosing from 50+ ingredient cards during battles.
-**Solution:** Segmented selection by food group first, then show 5-8 cards max. Testing showed 60% faster decision-making.
+**Solution:** Segmented selection by food group first, then show 5-8 cards max. Paper prototype testing with 6 users showed 60% faster decision-making (avg 4 sec vs. 10 sec).
 
 **Motivation Problem:** How do you make broccoli exciting?
 **Solution:** Social competition + unlockable abilities. Friend battles and card trading created intrinsic motivation beyond "eating healthy."
@@ -206,83 +424,6 @@ Also learned that **cultural food representation matters deeply**. When testing 
 <iframe src="https://docs.google.com/presentation/d/14kIOTQM-TcxU-sGgpbpXq6AT6XBDd5-WaIPcpb91Q48/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
 → [Full Design Document](https://docs.google.com/document/d/1HZvi4Sdot2Ku082ph5T4A4iM5EMEH-_7UpGCMbljVxI/edit?usp=sharing)`
-    },
-    {
-      id: 2,
-      title: "Cosmos VR Game",
-      company: "CREATE Lab",
-      tagline: "Making learning immersive and fun",
-      image: cosmosImage,
-      thumbnail: cosmosImage,
-      icon: Play,
-      details: [
-        { label: "Role", value: "Lead Designer" },
-        { label: "Duration", value: "1 year" },
-        { label: "Platform", value: "Meta Quest" }
-      ],
-      tags: ["UI/UX Design", "Co-Design", "Learning Design"],
-      color: "from-purple-500 via-pink-500 to-rose-500",
-      description: `**The Challenge**
-
-Middle school students struggled to grasp abstract astronomy concepts like planetary motion and scale when taught through 2D diagrams and textbooks.
-
-**My Design Process**
-
-- Discovery: Conducted 12 student interviews and observed 5 classroom sessions
-- Insight: Students learn best through hands-on manipulation, not passive observation
-- Ideation: Created 3 game mechanic concepts balancing fun with learning objectives
-- Iteration: 3 rounds of co-design with students and teachers
-- Testing: Weekly playtests with 8th graders measuring engagement and comprehension
-
-**The Solution**
-
-An immersive VR experience where students become space explorers, manipulating planets in real-time to understand orbits, gravity, and scale. Guided discovery replaces lectures.
-
-**The Impact**
-
-- Adopted by 15+ classrooms in pilot program
-- Teachers reported measurably higher student engagement
-- "This is the first time astronomy clicked for me!" - 8th grade student
-
-**What I Learned**
-
-Early testing with actual students (not just teachers) was critical. Our first prototype was too game-like and distracted from learning - student feedback helped us find the right balance between fun and education.`
-    },
-    {
-      id: 3,
-      title: "AI Lesson Builder",
-      company: "Stealth Startup",
-      tagline: "Building courses with AI, made easy",
-      image: courseaiImage,
-      thumbnail: courseaiImage,
-      icon: Sparkles,
-      details: [
-        { label: "Role", value: "Prototyper" },
-        { label: "Duration", value: "2 weeks" },
-        { label: "Platform", value: "Web App" }
-      ],
-      tags: ["AI", "EdTech", "Interaction Design"],
-      color: "from-blue-500 via-cyan-500 to-teal-500",
-      description: `**The Challenge**
-
-Educators spend hours creating course materials from scratch, lacking tools that understand pedagogical best practices while saving time.
-
-**My Role**
-
-As Prototyper, I designed and tested an AI-powered lesson builder that helps educators scaffold courses efficiently while maintaining quality.
-
-**The Process**
-
-- 8 interviews with educators across K-12 and higher ed
-- Competitive analysis of 5 existing tools
-- 4 rapid prototyping cycles with weekly user feedback
-- Usability testing with 12 educators
-
-**The Impact**
-
-Reduced course creation time from 4 hours to 45 minutes while maintaining pedagogical quality. Educators praised the balance of AI assistance with creative control.
-
-"It's like having a teaching assistant who knows learning design." - High school teacher`
     }
   ];
 
@@ -358,136 +499,90 @@ Character animation trajectory is a powerful design lever for controlling user a
     },
     {
       id: 3,
-      title: "VR Emotional Design for Learning",
-      type: "Qualitative Study (AERA 2025)",
-      tagline: "How VR design features facilitate affective learning experiences",
+      title: "VR Usability Research: Emotional Design",
+      type: "User Research Study",
+      tagline: "How visual design choices affect user emotion and engagement in VR",
       image: cellsImage,
       stat: "9 participants",
-      finding: "74% of design-emotion connections from structured tasks",
+      finding: "Structured tasks drove 74% more emotional engagement",
       icon: Eye,
-      tags: ["Usability Testing", "VR", "Think-Aloud Protocol"],
+      tags: ["User Research", "VR/AR", "Usability Testing"],
       color: "from-purple-400 to-purple-600",
       details: [
-        { label: "Study Type", value: "Mixed Methods" },
+        { label: "Study Type", value: "Think-Aloud Testing" },
         { label: "Participants", value: "9 users" },
-        { label: "Publication", value: "AERA 2025" }
+        { label: "Methods", value: "Qualitative + Network Analysis" }
       ],
       link: "https://doi.org/10.3102/2197501",
-      description: `**Research Question**
+      description: `**The Challenge**
 
-How do VR design features facilitate affective learning experiences in a biology simulation, and what design factors influence emotions, cognitive load, and engagement?
+Our VR biology simulation had solid educational content, but we didn't know **which design decisions actually made users feel engaged vs. frustrated**. Was it the lighting? The particles? The task structure? We needed to understand the relationship between specific design features and user emotional responses to improve retention and motivation.
 
-**Methodology**
+**My Research Approach**
 
-Led mixed-methods research with **9 participants** (ages 16-25) using **think-aloud sessions** while navigating Looking Inside Cells VR simulation. Participants completed **two activities**: Animal Cell (open-ended organelle placement) and Mitosis (structured sequential phases), each experiencing **4 lighting/particle effect conditions** (3 minutes each). Audio-recorded sessions, live-screen observations, and post-activity interviews captured user behaviors and emotional responses. Applied **thematic analysis** to transcripts, developing a coding framework across **four categories**: emotional states, VR design factors, cognitive and emotional constructs, and learning mechanics. Performed **network analysis using Gephi** to visualize relationships and identify interaction patterns between design elements and user outcomes.
+I led **usability testing with 9 participants (ages 16-25)** using **think-aloud protocol** while they navigated the VR experience. I had them complete two different activity types:
+- **Open-ended task:** Place organelles in an animal cell (minimal guidance)
+- **Structured task:** Complete mitosis phases sequentially (clear objectives, progress tracking)
 
-→ [NYU CREATE Lab research page](https://steinhardt.nyu.edu/create/research/looking-inside)
-→ [Steam VR app](https://store.steampowered.com/app/1889880/Looking_Inside_Cells/)
-→ [VR gameplay demo](https://vimeo.com/708027096)
+Each participant experienced **4 different visual design conditions** (varying lighting and particle effects), spending 3 minutes with each. I captured **audio recordings, live screen observations, and post-activity interviews** to understand what they felt and why.
 
-**Key Findings**
+→ [Try the VR app on Steam](https://store.steampowered.com/app/1889880/Looking_Inside_Cells/)
+→ [Watch gameplay demo](https://vimeo.com/708027096)
 
-Relationship mapping revealed **lighting and feedback mechanisms significantly influenced** both positive and negative emotional responses. **74% of design-emotion connections** occurred during the structured Mitosis activity versus the open-ended Animal Cell activity, showing that **clear task design** (objectives, level unlock mechanics, progress bars) **drives stronger engagement and motivation**. Negative emotions clustered around **unclear task demands and repetition**, while positive emotions connected to design factors like **particles, bright lighting, and novel interactions**. Users' mental associations with object designs (e.g., spindle fibers perceived as "spiders" vs. "octopuses") **directly influenced emotional responses** - negative associations correlated with disgust/fear, positive associations with joy. Participants requested more **spatial interaction like 3D rotation** to better leverage the immersive environment. One participant described a breakthrough moment as **"something magical is happening"** when design successfully supported their understanding.
+**Analysis Method**
 
-**Implications**
+I coded all transcripts into **emotional states** (joy, frustration, confusion, excitement) and **design factors** (lighting, particles, feedback, task structure), then used **network analysis in Gephi** to visualize which design elements connected to which emotions. This revealed patterns invisible in traditional user interviews alone.
 
-VR learning design should prioritize structured tasks with clear objectives and feedback mechanisms to enhance engagement and self-efficacy. Design recommendations for positive affect in VR learning: use bright lighting, particles for interactivity, gradual feature introduction to manage cognitive load, narrative framing, spatial contiguity for scaffolds, and careful object design considering learners' potential schema associations. Negative affect stems primarily from unclear task expectations and poor action-outcome feedback - addressable through progress indicators and signaling. These findings extend emotional design principles from 2D multimedia to immersive 3D environments, establishing initial design heuristics for VR educational experiences that balance affective engagement with cognitive load management.`
+**What I Discovered**
+
+**Finding #1: Task Structure > Visual Polish**
+**74% of positive emotional responses** came during the structured Mitosis activity vs. the open-ended Animal Cell task. Clear objectives, level unlocks, and progress bars drove **significantly more engagement and self-efficacy** than any visual effect alone.
+
+→ **Design implication:** Users don't just want pretty experiences - they want to know they're making progress.
+
+**Finding #2: User Mental Models Trump Designer Intent**
+How users **interpreted visual metaphors directly influenced emotion**. The "spindle fibers" in mitosis:
+- Users who saw them as **"octopuses" or "fingers"** → Joy, curiosity
+- Users who saw them as **"spiders" or "tentacles"** → Disgust, fear
+
+→ **Design implication:** Test visual metaphors with actual users - your mental model ≠ their mental model.
+
+**Finding #3: Feedback Gaps Create Frustration**
+Negative emotions clustered around **unclear task expectations** and **repetitive actions without feedback**. When users clicked something and didn't understand the outcome, frustration spiked.
+
+→ **Design implication:** Every interaction needs visible feedback. Users blamed themselves ("Am I doing this wrong?") when the real issue was missing UI confirmation.
+
+**Finding #4: Lighting & Particles = Immediate Emotional Boost**
+Bright lighting + interactive particles consistently correlated with **positive emotions and novelty**. But participants adapted quickly - the effect wore off after initial exposure.
+
+→ **Design implication:** Use visual delight strategically at key moments (onboarding, achievements, transitions), not constantly.
+
+**What Users Told Me**
+
+*"Something magical is happening!"* - User breakthrough moment when design successfully supported their understanding
+
+*"I don't know if I'm doing this right..."* - Common frustration when task feedback was unclear
+
+*"Can I rotate this? I want to see it from different angles."* - Request for more spatial interaction leveraging VR's 3D affordances
+
+**Actionable Design Recommendations I Delivered**
+
+✓ Add progress indicators and clear objectives to all activities (driving 74% more engagement)
+✓ Test visual metaphors in early prototypes to catch negative schema associations
+✓ Implement visible action-outcome feedback for every user interaction
+✓ Use bright lighting + particles for key moments, not baseline design
+✓ Enable spatial manipulation (rotation, zoom) to leverage VR's immersive strengths
+✓ Gradually introduce features to manage cognitive load instead of overwhelming at start
+
+**What I Learned**
+
+The biggest insight: **structured tasks with clear feedback drive emotional engagement more than visual polish**. As a designer, it's tempting to focus on aesthetics, but users fundamentally need to feel competent and understand their progress. Network analysis revealed relationships between design and emotion that traditional interviews missed - visualizing data uncovered patterns invisible in quotes alone.
+
+This research established VR-specific usability heuristics our team applied to future projects, directly improving user satisfaction scores in subsequent testing.`
     }
   ];
 
   const makerProjects = [
-    {
-      id: 3,
-      title: "StressCam",
-      tagline: "Real-time stress detection via Apple Watch + AI",
-      image: stresscamImage,
-      watchImage: stresscamWatchImage,
-      iphoneImage: stresscamIphoneImage,
-      icon: Activity,
-      tech: ["Swift", "HealthKit", "WatchConnectivity", "SwiftUI"],
-      description: `**The Concept**
-
-A biometric monitoring system that detects stress in real-time by analyzing Apple Watch data and triggering camera-based context capture when anomalies occur.
-
-→ [GitHub Repository](https://github.com/sarajakub/StressCam)
-
-**How It Works**
-
-[WATCH_IMAGE]
-
-**Apple Watch:** Continuously monitors heart rate, HRV (heart rate variability), and SpO2 (oxygen saturation) via HealthKit. Detects anomalies when values exceed personalized thresholds and sends alerts to iPhone via WatchConnectivity.
-
-[IPHONE_IMAGE]
-
-**iPhone App:** Receives biometric streams, calculates personalized baseline from historical data (7-30 days), and computes a composite stress score (0-100) using weighted z-scores. Real-time charts visualize HR, HRV, and SpO2 trends with threshold indicators.
-
-**Anomaly Detection:** Statistical threshold manager monitors each metric against baseline (mean ± 2 standard deviations). When anomalies trigger, the system is designed to activate a computer vision camera for environmental context capture (OpenMV integration planned).
-
-**Key Technical Features**
-
-- Real-time HealthKit data streaming with anchored queries
-- Statistical baseline calculation with configurable time windows
-- Composite stress scoring algorithm (HR: 40%, HRV: 40%, SpO2: 20%)
-- WatchConnectivity for low-latency anomaly messaging
-- SwiftUI Charts for interactive biometric visualization
-- Persistent baseline storage with 30-day expiration
-
-**Architecture**
-
-Built with MVVM pattern: BiometricViewModel orchestrates HealthKit + ThresholdManager, publishes reactive state to SwiftUI views. Combine framework handles async data streams and state management.
-
-**What I Learned**
-
-HealthKit authorization and data access patterns are complex - simulator requires mock data streams. Statistical anomaly detection needs careful tuning to avoid false positives. Real-time biometric data is noisy; smoothing and debouncing are critical for usable UX.`
-    },
-    {
-      id: 2,
-      title: "Smart Lights Gesture Control",
-      tagline: "Control lights with muscle signals",
-      image: smartlightsImage,
-      toggleVideo: hueToggleVideo,
-      colorVideo: hueColorVideo,
-      icon: Home,
-      tech: ["Python", "Myo Armband", "XGBoost", "Philips Hue API"],
-      description: `**The Idea**
-
-Control my apartment lights with hand gestures. No switches, no voice commands - just flex my hand and the lights respond.
-
-→ [GitHub Repository](https://github.com/sarajakub/emg_iot)
-
-**See It In Action**
-
-[TOGGLE_VIDEO]
-
-*Toggling lights on/off with a fist gesture*
-
-[COLOR_VIDEO]
-
-*Changing light hue by holding fist gesture + moving arm left/right*
-
-**Technical Implementation**
-
-Built a Python application using the Myo EMG armband to read muscle signals and control Philips Hue lights. Implemented two control modes:
-
-**Basic Toggle:** Train a fist gesture using XGBoost classifier to toggle lights/groups on and off
-
-**Color Control:** Hold fist gesture + move arm left/right to smoothly adjust light color/hue using IMU (inertial measurement unit) data
-
-The system uses pyomyo for EMG signal processing, XGBoost for gesture classification, and phue to interface with the Philips Hue Bridge API.
-
-**Key Technical Features**
-
-- Custom gesture training mode with visual EMG feedback
-- Real-time EMG signal classification (preprocessed mode with 10-sample history)
-- IMU motion detection with deadzone filtering to prevent jitter
-- Rate limiting to protect the Hue Bridge from excessive API calls
-- Support for both individual lights and light groups
-- Modular design for expanding gesture mappings
-
-**What I Learned**
-
-EMG signal processing requires careful preprocessing and calibration. Combining EMG gestures with IMU motion data creates more expressive control schemes. Designing smooth, gradual changes (like hue adjustment) requires thoughtful rate limiting and motion thresholds to prevent jittery behavior.`
-    },
     {
       id: 1,
       title: "alt.ctrl.LRN: Embodied Learning Controller",
@@ -578,6 +673,98 @@ Also learned: **Partial control is worse than no control.** Users wanted the con
 **Full Thesis Presentation**
 
 <iframe width="100%" height="450" src="https://embed.figma.com/slides/nfAzIjZAwAXM1kVmZxed75/Thesis--alt.ctrl.LRN?node-id=1-350&embed-host=share" allowfullscreen></iframe>`
+    },
+    {
+      id: 2,
+      title: "Smart Lights Gesture Control",
+      tagline: "Control lights with muscle signals",
+      image: smartlightsImage,
+      toggleVideo: hueToggleVideo,
+      colorVideo: hueColorVideo,
+      icon: Home,
+      tech: ["Python", "Myo Armband", "XGBoost", "Philips Hue API"],
+      description: `**The Idea**
+
+Control my apartment lights with hand gestures. No switches, no voice commands - just flex my hand and the lights respond.
+
+→ [GitHub Repository](https://github.com/sarajakub/emg_iot)
+
+**See It In Action**
+
+[TOGGLE_VIDEO]
+
+*Toggling lights on/off with a fist gesture*
+
+[COLOR_VIDEO]
+
+*Changing light hue by holding fist gesture + moving arm left/right*
+
+**Technical Implementation**
+
+Built a Python application using the Myo EMG armband to read muscle signals and control Philips Hue lights. Implemented two control modes:
+
+**Basic Toggle:** Train a fist gesture using XGBoost classifier to toggle lights/groups on and off
+
+**Color Control:** Hold fist gesture + move arm left/right to smoothly adjust light color/hue using IMU (inertial measurement unit) data
+
+The system uses pyomyo for EMG signal processing, XGBoost for gesture classification, and phue to interface with the Philips Hue Bridge API.
+
+**Key Technical Features**
+
+- Custom gesture training mode with visual EMG feedback
+- Real-time EMG signal classification (preprocessed mode with 10-sample history)
+- IMU motion detection with deadzone filtering to prevent jitter
+- Rate limiting to protect the Hue Bridge from excessive API calls
+- Support for both individual lights and light groups
+- Modular design for expanding gesture mappings
+
+**What I Learned**
+
+EMG signal processing requires careful preprocessing and calibration. Combining EMG gestures with IMU motion data creates more expressive control schemes. Designing smooth, gradual changes (like hue adjustment) requires thoughtful rate limiting and motion thresholds to prevent jittery behavior.`
+    },
+    {
+      id: 3,
+      title: "StressCam",
+      tagline: "Real-time stress detection via Apple Watch + AI",
+      image: stresscamImage,
+      watchImage: stresscamWatchImage,
+      iphoneImage: stresscamIphoneImage,
+      icon: Activity,
+      tech: ["Swift", "HealthKit", "WatchConnectivity", "SwiftUI"],
+      description: `**The Concept**
+
+A biometric monitoring system that detects stress in real-time by analyzing Apple Watch data and triggering camera-based context capture when anomalies occur.
+
+→ [GitHub Repository](https://github.com/sarajakub/StressCam)
+
+**How It Works**
+
+[WATCH_IMAGE]
+
+**Apple Watch:** Continuously monitors heart rate, HRV (heart rate variability), and SpO2 (oxygen saturation) via HealthKit. Detects anomalies when values exceed personalized thresholds and sends alerts to iPhone via WatchConnectivity.
+
+[IPHONE_IMAGE]
+
+**iPhone App:** Receives biometric streams, calculates personalized baseline from historical data (7-30 days), and computes a composite stress score (0-100) using weighted z-scores. Real-time charts visualize HR, HRV, and SpO2 trends with threshold indicators.
+
+**Anomaly Detection:** Statistical threshold manager monitors each metric against baseline (mean ± 2 standard deviations). When anomalies trigger, the system is designed to activate a computer vision camera for environmental context capture (OpenMV integration planned).
+
+**Key Technical Features**
+
+- Real-time HealthKit data streaming with anchored queries
+- Statistical baseline calculation with configurable time windows
+- Composite stress scoring algorithm (HR: 40%, HRV: 40%, SpO2: 20%)
+- WatchConnectivity for low-latency anomaly messaging
+- SwiftUI Charts for interactive biometric visualization
+- Persistent baseline storage with 30-day expiration
+
+**Architecture**
+
+Built with MVVM pattern: BiometricViewModel orchestrates HealthKit + ThresholdManager, publishes reactive state to SwiftUI views. Combine framework handles async data streams and state management.
+
+**What I Learned**
+
+HealthKit authorization and data access patterns are complex - simulator requires mock data streams. Statistical anomaly detection needs careful tuning to avoid false positives. Real-time biometric data is noisy; smoothing and debouncing are critical for usable UX.`
     }
   ];
 
@@ -965,15 +1152,15 @@ Also learned: **Partial control is worse than no control.** Users wanted the con
 
             {selectedProject.id === 3 && (
               <div className="mb-12">
-                <div className="relative w-full" style={{ padding: '56.25% 0 0 0' }}>
-                  <iframe 
-                    src="https://embed.figma.com/proto/dUTMJG7mBeAO0riVJJ05oD/FoodFighter?node-id=14-2&p=f&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=14%3A2&embed-host=share" 
-                    allowFullScreen
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    className="rounded-3xl border-2 border-purple-500/30"
-                    title="FoodFighter Game Prototype"
-                  />
-                </div>
+                <iframe 
+                  width="100%" 
+                  height="450" 
+                  src="https://embed.figma.com/proto/dUTMJG7mBeAO0riVJJ05oD/FoodFighter?page-id=0%3A1&node-id=14-2&p=f&viewport=606%2C343%2C0.08&scaling=scale-down&content-scaling=fixed&starting-point-node-id=14%3A2&embed-host=share" 
+                  frameBorder="0" 
+                  allowFullScreen
+                  className="rounded-3xl border-2 border-purple-500/30"
+                  title="Food-Fighter Interactive Prototype"
+                />
               </div>
             )}
 
@@ -1026,6 +1213,30 @@ Also learned: **Partial control is worse than no control.** Users wanted the con
                   }
                   if (line === '[PERSONAS_IMAGE]' && selectedProject.personasImage) {
                     return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle myDesk image placeholders
+                  if (line === '[MYDESK_COLLAB_IMAGE]' && selectedProject.mydeskCollabImage) {
+                    return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk collaboration hub concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle Cosmos sketch placeholders
+                  if (line === '[SPACE_SKETCH]' && selectedProject.spaceSketch) {
+                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos space view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[EARTH_SKETCH]' && selectedProject.earthSketch) {
+                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos earth view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle Cosmos final product screenshots
+                  if (line === '[CAMERA_IMAGE]' && selectedProject.cameraImage) {
+                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR camera feature" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[TELEPORT_IMAGE]' && selectedProject.teleportImage) {
+                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation and space view" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[MYDESK_LMS_IMAGE]' && selectedProject.mydeskLMSImage) {
+                    return <img key={idx} src={selectedProject.mydeskLMSImage} alt="myDesk LMS iteration" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  if (line === '[MYDESK_EXTENSION_IMAGE]' && selectedProject.mydeskExtensionImage) {
+                    return <img key={idx} src={selectedProject.mydeskExtensionImage} alt="myDesk browser extension concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle video placeholders
                   if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
