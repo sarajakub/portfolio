@@ -328,7 +328,7 @@ Built a high-fidelity Figma prototype and tested with 5 educators. Key iteration
 
 **My Desk Interactive Prototype**
 
-<iframe width="100%" height="450" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" frameborder="0" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="450" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe>
 
 **Validated Impact**
 
@@ -1266,6 +1266,10 @@ HealthKit authorization and data access patterns are complex - simulator require
                     // Use emerald border for maker projects, purple for design/research
                     const borderColor = currentPage === 'maker' ? 'border-emerald-500/30' : 'border-purple-500/30';
                     return <div key={idx} className={`my-8 w-full aspect-video rounded-2xl border-2 ${borderColor} p-0`} dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
+                  // Handle div wrappers (for responsive iframes)
+                  if (line.startsWith('<div')) {
+                    return <div key={idx} className="my-8" dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Handle img tags
                   if (line.startsWith('<img')) {
