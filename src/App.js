@@ -328,7 +328,7 @@ Built a high-fidelity Figma prototype and tested with 5 educators. Key iteration
 
 **My Desk Interactive Prototype**
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="450" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe>
+<div style="position: relative; width: 100%; padding-bottom: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid rgba(0, 0, 0, 0.1);" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe></div>
 
 **Validated Impact**
 
@@ -977,6 +977,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                 src={profileImage}
                 alt="Sara Jakubowicz"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>
@@ -1206,31 +1207,31 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle special image placeholders
                   if (line === '[AR_IMAGE]' && selectedProject.arImage) {
-                    return <img key={idx} src={selectedProject.arImage} alt="AR ingredient collection and avatar customization" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.arImage} alt="AR ingredient collection and avatar customization" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   if (line === '[ARCH_IMAGE]' && selectedProject.archImage) {
-                    return <img key={idx} src={selectedProject.archImage} alt="Food-Fighter technical architecture" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.archImage} alt="Food-Fighter technical architecture" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   if (line === '[PERSONAS_IMAGE]' && selectedProject.personasImage) {
-                    return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   // Handle myDesk image placeholders
                   if (line === '[MYDESK_COLLAB_IMAGE]' && selectedProject.mydeskCollabImage) {
-                    return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk collaboration hub concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk collaboration hub concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   // Handle Cosmos sketch placeholders
                   if (line === '[SPACE_SKETCH]' && selectedProject.spaceSketch) {
-                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos space view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos space view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   if (line === '[EARTH_SKETCH]' && selectedProject.earthSketch) {
-                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos earth view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos earth view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   // Handle Cosmos final product screenshots
                   if (line === '[CAMERA_IMAGE]' && selectedProject.cameraImage) {
-                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR camera feature" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR camera feature" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   if (line === '[TELEPORT_IMAGE]' && selectedProject.teleportImage) {
-                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation and space view" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation and space view" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" loading="lazy" />;
                   }
                   if (line === '[MYDESK_LMS_IMAGE]' && selectedProject.mydeskLMSImage) {
                     return <img key={idx} src={selectedProject.mydeskLMSImage} alt="myDesk LMS iteration" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
@@ -1302,7 +1303,7 @@ HealthKit authorization and data access patterns are complex - simulator require
             </div>
 
             <div className="mb-12">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 md:h-[600px] object-cover object-center rounded-3xl border-2 border-purple-500/30" />
+              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 md:h-[600px] object-cover object-center rounded-3xl border-2 border-purple-500/30" loading="lazy" />
             </div>
           </div>
 
@@ -1331,7 +1332,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                   onClick={() => navigateToProject(project.id, 'design')}
                   className="group relative aspect-[4/3] rounded-3xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-400/60 transition-all duration-500 hover:scale-105 transform shadow-2xl hover:shadow-purple-500/40"
                 >
-                  <img src={project.thumbnail} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={project.thumbnail} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                   ]
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-purple-900/90 group-hover:via-purple-900/70 transition-all duration-500" />
                   
@@ -1490,7 +1491,7 @@ HealthKit authorization and data access patterns are complex - simulator require
             </div>
 
             <div className="mb-12">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-blue-500/30" />
+              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-blue-500/30" loading="lazy" />
             </div>
           </div>
 
@@ -1519,7 +1520,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                   onClick={() => navigateToProject(project.id, 'research')}
                   className="group relative aspect-[4/3] rounded-3xl overflow-hidden border-2 border-blue-500/30 hover:border-blue-400/60 transition-all duration-500 cursor-pointer hover:scale-105 transform shadow-2xl hover:shadow-blue-500/40"
                 >
-                  <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90 contrast-110" />
+                  <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90 contrast-110" loading="lazy" />
                   
                   <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-70 group-hover:opacity-80 transition-opacity duration-500`} />
                   
@@ -1639,10 +1640,10 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle StressCam image placeholders
                   if (line === '[WATCH_IMAGE]' && selectedProject.watchImage) {
-                    return <img key={idx} src={selectedProject.watchImage} alt="StressCam Apple Watch interface" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.watchImage} alt="StressCam Apple Watch interface" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" loading="lazy" />;
                   }
                   if (line === '[IPHONE_IMAGE]' && selectedProject.iphoneImage) {
-                    return <img key={idx} src={selectedProject.iphoneImage} alt="StressCam iPhone app" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.iphoneImage} alt="StressCam iPhone app" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" loading="lazy" />;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
@@ -1679,7 +1680,7 @@ HealthKit authorization and data access patterns are complex - simulator require
             </div>
 
             <div className="mb-12">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-emerald-500/30" />
+              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-emerald-500/30" loading="lazy" />
             </div>
           </div>
 
@@ -1708,7 +1709,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                   onClick={() => navigateToProject(project.id, 'maker')}
                   className="group relative aspect-[3/4] rounded-3xl overflow-hidden border-2 border-emerald-500/30 hover:border-emerald-400/60 transition-all duration-500 cursor-pointer hover:scale-105 transform shadow-2xl hover:shadow-emerald-500/40"
                 >
-                  <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                   
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-emerald-900/90 group-hover:via-emerald-900/70 transition-all duration-500" />
                   
