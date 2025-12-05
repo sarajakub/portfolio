@@ -30,6 +30,7 @@ import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
 import mydeskCollabImage from './assets/mydesk_collabhub.jpeg';
 import { supabase } from './supabaseClient';
+import genAI from './geminiClient';
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -39,8 +40,13 @@ export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [guestbookNotes, setGuestbookNotes] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [isChatLoading, setIsChatLoading] = useState(false);
   const nameInputRef = useRef(null);
   const messageInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   // Check URL on mount and handle browser back/forward
   useEffect(() => {
@@ -155,6 +161,80 @@ export default function Portfolio() {
     }
     setIsSubmitting(false);
   };
+
+  // Build context from portfolio data for AI
+  const buildPortfolioContext = () => {
+    const projects = designProjects.map(p => `
+Project: ${p.title} at ${p.company}
+Role: ${p.role}
+Summary: ${p.description.join(' ')}
+`).join('\n');
+
+    return `You are Sara Jakubowicz's portfolio assistant. Help recruiters and visitors learn about Sara's UX design and research work.
+
+About Sara:
+- UX Designer & Researcher specializing in EdTech and immersive experiences
+- CMU Entertainment Technology Center graduate (Spring 2025)
+- Experience in VR/AR, AI-powered tools, and user research
+- Passionate about designing delightful experiences that make products sing
+
+Projects:
+${projects}
+
+Skills: User Research, Prototyping, VR/AR Design, EdTech, Co-design, Figma, Unity, React
+
+Be helpful, concise, and enthusiastic about Sara's work. If asked something you don't know, be honest and suggest contacting Sara directly via email or LinkedIn.`;
+  };
+
+  const sendChatMessage = async (e) => {
+    e.preventDefault();
+    if (!chatInput.trim() || isChatLoading) return;
+
+    const userMessage = { role: 'user', content: chatInput };
+    setChatMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    setIsChatLoading(true);
+
+    try {
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      
+      // Build conversation history for Gemini
+      const history = chatMessages.map(msg => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
+      }));
+
+      const chat = model.startChat({
+        history: history,
+        systemInstruction: buildPortfolioContext()
+      });
+
+      const result = await chat.sendMessage(chatInput);
+      const response = await result.response;
+      
+      const assistantMessage = {
+        role: 'assistant',
+        content: response.text()
+      };
+      
+      setChatMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again or contact Sara directly!'
+      }]);
+    } finally {
+      setIsChatLoading(false);
+    }
+  };
+
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
 
   const designProjects = [
     {
@@ -328,7 +408,7 @@ Built a high-fidelity Figma prototype and tested with 5 educators. Key iteration
 
 **My Desk Interactive Prototype**
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="100%" height="450" src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe>
+[MYDESK_PROTOTYPE]
 
 **Validated Impact**
 
@@ -972,13 +1052,20 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="text-center mb-20">
           {/* Profile Picture */}
           <div className="mb-8 flex justify-center">
-            <div className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300">
+            <button 
+              onClick={() => setChatOpen(true)}
+              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+              aria-label="Chat with AI assistant about Sara's work"
+            >
               <img
                 src={profileImage}
                 alt="Sara Jakubowicz"
                 className="w-full h-full object-cover"
               />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                <span className="text-white text-sm font-bold">Ask AI about me</span>
+              </div>
+            </button>
           </div>
 
           <div className="inline-block mb-6 px-6 py-2.5 bg-purple-500/20 backdrop-blur-sm text-purple-300 rounded-full text-base font-medium border-2 border-purple-400/30">
@@ -1217,6 +1304,22 @@ HealthKit authorization and data access patterns are complex - simulator require
                   // Handle myDesk image placeholders
                   if (line === '[MYDESK_COLLAB_IMAGE]' && selectedProject.mydeskCollabImage) {
                     return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk collaboration hub concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle My Desk prototype embed
+                  if (line === '[MYDESK_PROTOTYPE]') {
+                    return (
+                      <div key={idx} className="my-8">
+                        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%' }}>
+                          <iframe 
+                            src="https://embed.figma.com/proto/QAH4Neosbz9Uoass00EQfO/My-Desk-Prototype?page-id=0%3A1&node-id=51-21&p=f&viewport=439%2C210%2C0.03&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A21&embed-host=share"
+                            allowFullScreen
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                            className="rounded-3xl border-2 border-purple-500/30"
+                            title="My Desk Interactive Prototype"
+                          />
+                        </div>
+                      </div>
+                    );
                   }
                   // Handle Cosmos sketch placeholders
                   if (line === '[SPACE_SKETCH]' && selectedProject.spaceSketch) {
@@ -1931,6 +2034,111 @@ HealthKit authorization and data access patterns are complex - simulator require
       {currentPage === 'research' && <ResearchPage />}
       {currentPage === 'maker' && <MakerPage />}
       {currentPage === 'guestbook' && <GuestbookPage />}
+
+      {/* AI Chat Sidebar */}
+      <div className={`fixed top-0 right-0 h-full w-full md:w-96 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${chatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-purple-500/30">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-6 h-6 text-pink-400" />
+              <h2 className="text-xl font-bold text-white">Ask About Sara</h2>
+            </div>
+            <button
+              onClick={() => setChatOpen(false)}
+              className="p-2 hover:bg-purple-500/20 rounded-full transition-colors"
+              aria-label="Close chat"
+            >
+              <X className="w-6 h-6 text-purple-300" />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
+            {chatMessages.length === 0 && (
+              <div className="text-center py-12">
+                <Sparkles className="w-12 h-12 text-pink-400 mx-auto mb-4" />
+                <p className="text-purple-200 mb-2">Hi! I'm Sara's AI assistant.</p>
+                <p className="text-purple-300 text-sm">Ask me anything about her work, projects, or experience!</p>
+                <div className="mt-6 space-y-2">
+                  <button
+                    onClick={() => setChatInput("Tell me about Sara's VR projects")}
+                    className="block w-full text-left px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-200 text-sm transition-colors"
+                  >
+                    Tell me about Sara's VR projects
+                  </button>
+                  <button
+                    onClick={() => setChatInput("What research methods does Sara use?")}
+                    className="block w-full text-left px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-200 text-sm transition-colors"
+                  >
+                    What research methods does Sara use?
+                  </button>
+                  <button
+                    onClick={() => setChatInput("What's Sara's design philosophy?")}
+                    className="block w-full text-left px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-200 text-sm transition-colors"
+                  >
+                    What's Sara's design philosophy?
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            {chatMessages.map((msg, idx) => (
+              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl ${
+                  msg.role === 'user' 
+                    ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' 
+                    : 'bg-slate-800/50 text-purple-100 border border-purple-500/30'
+                }`}>
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              </div>
+            ))}
+            
+            {isChatLoading && (
+              <div className="flex justify-start">
+                <div className="bg-slate-800/50 border border-purple-500/30 p-3 rounded-2xl">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input */}
+          <form onSubmit={sendChatMessage} className="p-6 border-t border-purple-500/30">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask me anything..."
+                className="flex-1 px-4 py-3 bg-slate-800/50 border border-purple-500/30 rounded-xl text-white placeholder-purple-300/50 focus:border-pink-400 focus:outline-none"
+                disabled={isChatLoading}
+              />
+              <button
+                type="submit"
+                disabled={isChatLoading || !chatInput.trim()}
+                className="px-4 py-3 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 rounded-xl text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Overlay when chat is open */}
+      {chatOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setChatOpen(false)}
+        />
+      )}
+
       <Cursor />
     </div>
   );
