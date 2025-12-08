@@ -76,6 +76,9 @@ export default function Portfolio() {
       } else if (path === '/guestbook') {
         setCurrentPage('guestbook');
         setSelectedProjectId(null);
+      } else if (path === '/about') {
+        setCurrentPage('about');
+        setSelectedProjectId(null);
       } else {
         setCurrentPage('home');
         setSelectedProjectId(null);
@@ -164,26 +167,86 @@ export default function Portfolio() {
 
   // Build context from portfolio data for AI
   const buildPortfolioContext = () => {
-    const projects = designProjects.map(p => `
-Project: ${p.title} at ${p.company}
-Role: ${p.role}
-Summary: ${p.description.join(' ')}
-`).join('\n');
+    return `You are Sara's portfolio assistant. Answer questions concisely (2-3 sentences max). Use the information below to synthesize thoughtful answers.
 
-    return `You are Sara Jakubowicz's portfolio assistant. Help recruiters and visitors learn about Sara's UX design and research work.
+Sara Jakubowicz - UX Researcher & Product Designer
+Education: M.A. Learning Technology & Experience Design, NYU (graduated May 2025); B.S. Middle School Education, Penn State (2021)
+Current Roles: AI Hardware UX Researcher at Exponent, Product Designer & Researcher at MIT Media Lab (brain-computer interfaces, AI co-creativity)
+Previous: Product Designer at NYU CREATE Lab (XR learning tools, ended May 2025); Middle school teacher (6th-8th grade, all subjects)
+Contact & Links:
+- Email: sarajakub0@gmail.com
+- LinkedIn: linkedin.com/in/sara-jakubowicz
+- GitHub: github.com/sarajakub
+- Google Scholar: scholar.google.com/citations?user=ckN30ogAAAAJ
+- YouTube: youtube.com/@SaraJakubowicz/videos
+- Portfolio: sarajakub.com
+Research Methods: Mixed-methods, interviews, usability testing, A/B testing, diary studies, contextual inquiry, biometric analysis, comparative studies
+Design Skills: Figma, prototyping, IA, wireframing, design systems
+Technical: Arduino, sensors, microcontrollers, hardware prototyping, Python, Google Colab, wearable electronics
+Design Projects: Cosmos VR (astronomy learning game), AI Lesson Builder, Food-Fighter, StressCam, Smart Lights, Alt Controller
+Research Projects: AI-Assisted Character Design (AAAI 2025, 39 participants), Motion Design for Emotion Design (GALA 2024, 44 participants), VR Usability Research
+Wearable/Maker Projects: Interactive glove interfacing with digital systems, Muse headset + Ableton (brainwave-controlled music), Light-up interactive bag (lights activated by clasping), Musical bag with keyboard switches (repurposed mechanical keyboard keys as buttons)
 
-About Sara:
-- UX Designer & Researcher specializing in EdTech and immersive experiences
-- CMU Entertainment Technology Center graduate (Spring 2025)
-- Experience in VR/AR, AI-powered tools, and user research
-- Passionate about designing delightful experiences that make products sing
+Sara's Design Philosophy (inferred from work):
+- Research-backed decisions: All design choices grounded in user research data (co-design, usability testing, mixed-methods)
+- Human-centered empathy: Teaching background provides deep understanding of user needs, learning patterns, and behavior
+- Technically informed: Developer knowledge (Python, Arduino, hardware) ensures designs are feasible and implementable
+- Iterative refinement: Multiple rounds of testing and improvement evident across all projects
+- Inclusive design: Hardware prototyping for accessibility, diverse participant pools in research
+- Purpose-driven: Focus on EdTech and tools that empower learning and decision-making
+- Maker mindset: Physical computing, wearables, exploring novel interaction modalities
 
-Projects:
-${projects}
+When asked about contact/reaching out:
+- Provide email and LinkedIn
+- Add CONTACT action to show contact buttons
 
-Skills: User Research, Prototyping, VR/AR Design, EdTech, Co-design, Figma, Unity, React
+When asked about portfolio links, GitHub, publications, or where to find more work:
+- GitHub: github.com/sarajakub
+- Google Scholar (publications): scholar.google.com/citations?user=ckN30ogAAAAJ
+- YouTube (demos/videos): youtube.com/@SaraJakubowicz/videos
+- LinkedIn (professional profile): linkedin.com/in/sara-jakubowicz
+- Portfolio: sarajakub.com
 
-Be helpful, concise, and enthusiastic about Sara's work. If asked something you don't know, be honest and suggest contacting Sara directly via email or LinkedIn.`;
+When asked about fit for specific companies:
+If company details provided → weave their mission/values with Sara's skills
+If no company details → ask user to share company name or mission so you can explain fit
+
+When asked about strengths/why hire Sara:
+- Unique background: Teaching → deep user empathy + observational research skills
+- Research rigor: Published studies (AAAI, GALA), large participant pools, mixed-methods
+- Technical versatility: Hardware + software, Python, AI tools, VR/AR, wearable electronics
+- Cross-functional: Generative research, evaluative testing, hands-on design, physical prototyping
+
+After your response, recommend ONE relevant project OR contact action and format EXACTLY like this on a new line:
+RECOMMEND: [ProjectType]|[ProjectName]
+OR
+CONTACT: true
+
+ProjectType: design or research
+Design projects: Cosmos VR, AI Lesson Builder, Food-Fighter, StressCam, Smart Lights, Alt Controller
+Research projects: AI-Assisted Character Design, Motion Design for Emotion Design, VR Usability Research
+
+Be helpful and synthesize insights. If asked something truly unknowable, suggest contacting Sara directly.`;
+  };
+
+  // Helper to get project IDs
+  const getProjectId = (projectType, projectName) => {
+    if (projectType === 'design') {
+      const projectMap = {
+        'Cosmos VR': 1,
+        'AI Lesson Builder': 2,
+        'Food-Fighter': 3
+      };
+      return projectMap[projectName] || null;
+    } else if (projectType === 'research') {
+      const projectMap = {
+        'AI-Assisted Character Design': 1,
+        'Motion Design for Emotion Design': 2,
+        'VR Usability Research': 3
+      };
+      return projectMap[projectName] || null;
+    }
+    return null;
   };
 
   const sendChatMessage = async (e) => {
@@ -196,7 +259,10 @@ Be helpful, concise, and enthusiastic about Sara's work. If asked something you 
     setIsChatLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-2.5-flash',
+        systemInstruction: buildPortfolioContext()
+      });
       
       // Build conversation history for Gemini
       const history = chatMessages.map(msg => ({
@@ -205,24 +271,49 @@ Be helpful, concise, and enthusiastic about Sara's work. If asked something you 
       }));
 
       const chat = model.startChat({
-        history: history,
-        systemInstruction: buildPortfolioContext()
+        history: history
       });
 
       const result = await chat.sendMessage(chatInput);
       const response = await result.response;
+      const responseText = response.text();
+      
+      // Parse recommendation or contact action if present
+      let messageContent = responseText;
+      let recommendation = null;
+      let showContact = false;
+      
+      const recommendMatch = responseText.match(/RECOMMEND:\s*(\w+)\|([^|\n]+)/);
+      const contactMatch = responseText.match(/CONTACT:\s*true/i);
+      
+      if (recommendMatch) {
+        const [, projectType, projectName] = recommendMatch;
+        messageContent = responseText.replace(/RECOMMEND:.*$/m, '').trim();
+        recommendation = {
+          type: projectType,
+          name: projectName.trim(),
+          id: getProjectId(projectType, projectName.trim())
+        };
+      } else if (contactMatch) {
+        messageContent = responseText.replace(/CONTACT:.*$/m, '').trim();
+        showContact = true;
+      }
       
       const assistantMessage = {
         role: 'assistant',
-        content: response.text()
+        content: messageContent,
+        recommendation: recommendation,
+        showContact: showContact
       };
       
       setChatMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Chat error:', error);
+      console.error('Chat error details:', error);
+      console.error('Error message:', error.message);
+      console.error('Error response:', error.response);
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again or contact Sara directly!'
+        content: `Error: ${error.message || 'Unknown error'}. Please check console for details.`
       }]);
     } finally {
       setIsChatLoading(false);
@@ -370,45 +461,46 @@ Ran co-design sessions with **45 participants** (students and educators) from Ma
       ],
       tags: ["Product Design", "AI/EdTech", "Prototyping"],
       color: "from-blue-500 via-cyan-500 to-teal-500",
-      description: `**How I Got Here: The Research-Driven Pivot**
+      description: `**The Challenge**
 
-I originally built **My Desk** with a team of 4 - a student collaboration hub that integrated calendars, assignments, and file sharing into one workspace. Over **3 months, we conducted user research** with **12 students and 8 educators** to validate it. What we discovered surprised us:
+Educators spend 4+ hours structuring each course module from scratch - organizing learning objectives, lessons, assessments, and activities. This time-intensive scaffolding is a major pain point preventing quality course design.
 
-[MYDESK_COLLAB_IMAGE]
+**The Solution**
 
-**Students said:** *"The problem isn't collaboration tools - it's professors giving us unclear assignments."*
-
-**Educators said:** *"I spend 4+ hours creating each module from scratch. I wish I had help structuring content."*
-
-**The insight:** Students' confusion stemmed from poorly designed courses, not collaboration friction. 7 out of 8 educators specifically mentioned spending 4+ hours per module on structure alone.
-
-I took this insight and **pivoted solo** to build an **AI-powered lesson builder** prototype targeting the root cause: time-intensive course scaffolding.
-
-**The Solution: AI as Teaching Assistant (Solo Project, 3 Weeks)**
-
-An AI tool that helps educators scaffold courses in minutes while maintaining pedagogical quality:
+An AI-powered lesson builder that helps educators scaffold courses in minutes while maintaining pedagogical quality:
 
 1. Educator inputs **learning objectives**
 2. AI generates **course structure** (modules, lessons, assessments) based on best practices
 3. Educator **customizes and refines** at every step
 4. Export to **any LMS** (Canvas, Blackboard, Moodle)
 
+**My Role**
+
+Solo UX Designer. I built a high-fidelity Figma prototype and conducted usability testing with 5 educators over 3 weeks.
+
 **Rapid Prototyping & Testing**
 
-Built a high-fidelity Figma prototype and tested with 5 educators. Key iterations:
+Key iterations based on educator feedback:
 
-**Problem:** Educators felt "AI auto-generate" removed their expertise  
+---
+
+**Problem:** Educators felt "AI auto-generate" removed their expertise
+
 **Solution:** Changed to **progressive disclosure** - AI proposes, educator approves/edits at each level
 
-**Problem:** Educators questioned AI suggestions (*"Why a quiz here?"*)  
+---
+
+**Problem:** Educators questioned AI suggestions (*"Why a quiz here?"*)
+
 **Solution:** Added **pedagogical annotations** explaining reasoning (builds trust + teaches learning design)
 
-**Problem:** "Regenerate all" scared users (fear of losing work)  
+---
+
+**Problem:** "Regenerate all" scared users (fear of losing work)
+
 **Solution:** Granular **"regenerate this section"** for surgical edits
 
-**My Desk Interactive Prototype**
-
-[MYDESK_PROTOTYPE]
+---
 
 **Validated Impact**
 
@@ -416,19 +508,35 @@ Built a high-fidelity Figma prototype and tested with 5 educators. Key iteration
 - ✅ **5/5 educators said they'd use this in production**
 - 💬 *"It's like having a teaching assistant who knows learning design"* - High school teacher
 
-**My Desk Research Presentation**
-
-<iframe src="https://docs.google.com/presentation/d/1W_NAGqSngsY5kXz5kctt7m2s7Mpt1qLvgXAdf0JWc7I/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-
 **What I Learned**
 
-The hardest part of UX isn't designing interfaces - it's **listening when users tell you to solve a different problem**. I was invested in My Desk, but the research clearly showed educators needed course creation help, not students needing another collaboration tool.
-
-Also learned: **AI design requires new patterns.** Users need transparency (why?), control (let me override), and trust-building (prove you understand the domain). These principles now guide how I approach AI features.
+**AI design requires new patterns.** Users need transparency (why?), control (let me override), and trust-building (prove you understand the domain). These principles now guide how I approach AI features.
 
 **Project Outcome**
 
-Prototype validated core concept with 5 educators showing strong product-market fit. Currently exploring partnerships with LMS platforms to integrate AI scaffolding features.`
+Prototype validated core concept with 5 educators showing strong product-market fit. Currently exploring partnerships with LMS platforms to integrate AI scaffolding features.
+
+---
+
+**Background: How I Got Here**
+
+This project emerged from user research on a different product. I originally built **My Desk** with a team of 4 - a student collaboration hub. Over 3 months of research with 12 students and 8 educators, we discovered:
+
+[MYDESK_COLLAB_IMAGE]
+
+**Students said:** *"The problem isn't collaboration tools - it's professors giving us unclear assignments."*
+
+**Educators said:** *"I spend 4+ hours creating each module from scratch. I wish I had help structuring content."*
+
+**The insight:** Students' confusion stemmed from poorly designed courses, not collaboration friction. This led me to pivot solo to the AI Lesson Builder.
+
+**My Desk Prototype (Original Concept)**
+
+[MYDESK_PROTOTYPE]
+
+**My Desk Research Presentation**
+
+<iframe src="https://docs.google.com/presentation/d/1W_NAGqSngsY5kXz5kctt7m2s7Mpt1qLvgXAdf0JWc7I/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>`
     },
     {
       id: 3,
@@ -1012,6 +1120,87 @@ HealthKit authorization and data access patterns are complex - simulator require
     );
   };
 
+  const AboutPage = () => (
+    <div className="min-h-screen px-6 pt-32 pb-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
+          About Me
+        </h1>
+        
+        <div className="space-y-8 text-lg text-purple-100 leading-relaxed">
+          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
+            <h2 className="text-2xl font-bold text-white mb-4">What I Do</h2>
+            <p className="mb-4">
+              I'm an <span className="text-pink-300 font-semibold">AI Hardware UX Researcher at Exponent</span> and <span className="text-pink-300 font-semibold">Product Designer & Researcher at MIT Media Lab</span>, where I work on <span className="text-purple-300 font-semibold">brain-computer interfaces</span> and <span className="text-purple-300 font-semibold">AI co-creativity tools</span>.
+            </p>
+            <p>
+              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI and GALA on AI-assisted creativity and VR emotional design. My work sits at the intersection of cutting-edge technology and human-centered design.
+            </p>
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
+            <h2 className="text-2xl font-bold text-white mb-4">My Approach</h2>
+            <p className="mb-4">
+              I believe great design sits at the intersection of <span className="text-pink-300 font-semibold">rigorous research</span>, <span className="text-pink-300 font-semibold">technical feasibility</span>, and <span className="text-pink-300 font-semibold">human empathy</span>.
+            </p>
+            <ul className="space-y-3 ml-6">
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">Research-backed:</strong> Every design decision grounded in user data — from 247-participant studies to intimate co-design sessions</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">Technically informed:</strong> I code (Python, Arduino, Unity) so my designs are actually buildable</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">Maker mindset:</strong> From VR prototypes to interactive wearables, I build to understand</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
+            <h2 className="text-2xl font-bold text-white mb-4">Beyond Work</h2>
+            <p>
+              When I'm not designing, you'll find me tinkering with hardware projects (like brainwave-controlled music with a Muse headset), exploring VR worlds, or diving into the latest AI tools. I'm endlessly curious about how technology can amplify human potential — especially in learning and education.
+            </p>
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
+            <h2 className="text-2xl font-bold text-white mb-4">Where I Come From</h2>
+            <p>
+              Before tech, I was a middle school teacher — an experience that taught me how to deeply understand users and design for real human needs. That classroom experience gave me an edge in empathy-driven research and design thinking that shapes everything I build today.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md p-8 rounded-2xl border border-purple-400/50 text-center">
+            <p className="text-xl mb-6">
+              Want to chat about research, design, or weird maker projects?
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a
+                href="mailto:sarajakub0@gmail.com"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-full hover:scale-105 transition-transform"
+              >
+                <Mail size={20} />
+                Email Me
+              </a>
+              <a
+                href="https://linkedin.com/in/sara-jakubowicz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-full hover:scale-105 transition-transform"
+              >
+                <Linkedin size={20} />
+                Connect on LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const Cursor = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -1063,7 +1252,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                <span className="text-white text-sm font-bold">Ask AI about me</span>
+                <span className="text-white text-sm font-bold">Ask about me</span>
               </div>
             </button>
           </div>
@@ -1995,6 +2184,12 @@ HealthKit authorization and data access patterns are complex - simulator require
               >
                 Guestbook
               </button>
+              <button
+                onClick={() => navigateToPage('about')}
+                className="text-left px-4 py-3 text-lg font-bold text-blue-200 hover:text-white hover:bg-blue-500/20 rounded-xl transition-all"
+              >
+                About
+              </button>
             </nav>
           </div>
         )}
@@ -2033,6 +2228,7 @@ HealthKit authorization and data access patterns are complex - simulator require
       {currentPage === 'design' && <DesignPage />}
       {currentPage === 'research' && <ResearchPage />}
       {currentPage === 'maker' && <MakerPage />}
+      {currentPage === 'about' && <AboutPage />}
       {currentPage === 'guestbook' && <GuestbookPage />}
 
       {/* AI Chat Sidebar */}
@@ -2084,14 +2280,56 @@ HealthKit authorization and data access patterns are complex - simulator require
             )}
             
             {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 rounded-2xl ${
-                  msg.role === 'user' 
-                    ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' 
-                    : 'bg-slate-800/50 text-purple-100 border border-purple-500/30'
-                }`}>
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              <div key={idx} className="space-y-2">
+                <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] p-3 rounded-2xl ${
+                    msg.role === 'user' 
+                      ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' 
+                      : 'bg-slate-800/50 text-purple-100 border border-purple-500/30'
+                  }`}>
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  </div>
                 </div>
+                
+                {/* Recommendation button */}
+                {msg.recommendation && msg.recommendation.id && (
+                  <div className="flex justify-start">
+                    <button
+                      onClick={() => {
+                        setChatOpen(false);
+                        setCurrentPage(msg.recommendation.type);
+                        setSelectedProjectId(msg.recommendation.id);
+                        window.history.pushState({}, '', `/${msg.recommendation.type}/${msg.recommendation.id}`);
+                      }}
+                      className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border border-pink-400/30 rounded-lg text-pink-200 text-sm transition-all"
+                    >
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <span>View {msg.recommendation.name}</span>
+                    </button>
+                  </div>
+                )}
+                
+                {/* Contact buttons */}
+                {msg.showContact && (
+                  <div className="flex justify-start gap-2">
+                    <a
+                      href="mailto:sarajakub0@gmail.com"
+                      className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border border-pink-400/30 rounded-lg text-pink-200 text-sm transition-all"
+                    >
+                      <Mail className="w-4 h-4" />
+                      <span>Email Sara</span>
+                    </a>
+                    <a
+                      href="https://linkedin.com/in/sara-jakubowicz"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 rounded-lg text-blue-200 text-sm transition-all"
+                    >
+                      <Linkedin className="w-4 h-4" />
+                      <span>Connect on LinkedIn</span>
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
             
