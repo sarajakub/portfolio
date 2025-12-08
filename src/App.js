@@ -1243,7 +1243,7 @@ HealthKit authorization and data access patterns are complex - simulator require
           <div className="mb-8 flex justify-center">
             <button 
               onClick={() => setChatOpen(true)}
-              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group animate-pulse-subtle"
               aria-label="Chat with AI assistant about Sara's work"
             >
               <img
@@ -1253,6 +1253,10 @@ HealthKit authorization and data access patterns are complex - simulator require
               />
               <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                 <span className="text-white text-sm font-bold">Ask about me</span>
+              </div>
+              {/* Sparkle indicator */}
+              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-2 shadow-lg group-hover:scale-125 transition-transform">
+                <Sparkles size={16} className="text-white" />
               </div>
             </button>
           </div>
@@ -2230,6 +2234,14 @@ HealthKit authorization and data access patterns are complex - simulator require
       {currentPage === 'maker' && <MakerPage />}
       {currentPage === 'about' && <AboutPage />}
       {currentPage === 'guestbook' && <GuestbookPage />}
+
+      {/* Chat Backdrop - Click to close */}
+      {chatOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setChatOpen(false)}
+        />
+      )}
 
       {/* AI Chat Sidebar */}
       <div className={`fixed top-0 right-0 h-full w-full md:w-96 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${chatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
