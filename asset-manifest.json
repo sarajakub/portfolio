@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.badb8adb.css",
-    "main.js": "/static/js/main.bec1aac2.js",
+    "main.css": "/static/css/main.f21fe8ac.css",
+    "main.js": "/static/js/main.f8afb29f.js",
     "static/js/453.6264690d.chunk.js": "/static/js/453.6264690d.chunk.js",
     "static/media/hue_hue.mov": "/static/media/hue_hue.10ec49bd16ee03f98422.mov",
     "static/media/hue_io.mov": "/static/media/hue_io.1ab5c14bf4ff057ba65c.mov",
@@ -32,12 +32,12 @@
     "static/media/stresscam_watch.png": "/static/media/stresscam_watch.00f3d340473e462a5292.png",
     "static/media/aycet_study.png": "/static/media/aycet_study.ba5accb7c82835657983.png",
     "index.html": "/index.html",
-    "main.badb8adb.css.map": "/static/css/main.badb8adb.css.map",
-    "main.bec1aac2.js.map": "/static/js/main.bec1aac2.js.map",
+    "main.f21fe8ac.css.map": "/static/css/main.f21fe8ac.css.map",
+    "main.f8afb29f.js.map": "/static/js/main.f8afb29f.js.map",
     "453.6264690d.chunk.js.map": "/static/js/453.6264690d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.badb8adb.css",
-    "static/js/main.bec1aac2.js"
+    "static/css/main.f21fe8ac.css",
+    "static/js/main.f8afb29f.js"
   ]
 }
