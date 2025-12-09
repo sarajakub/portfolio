@@ -723,9 +723,12 @@ This research established VR-specific usability heuristics our team applied to f
 
 Students learn spatial concepts like lunar phases from 2D screens using a mouse - a mismatch between the physical, circular motion of orbits and the abstract, indirect input method. How might a tangible controller that mimics orbital rotation improve learning and engagement?
 
+**Supported by the NYU Prototyping Fund** — Selected for competitive funding to develop this embodied learning technology.
+
 → [Thesis Archive](https://www.ectexpo.info/thesis-archive/spring-2025/sara-jakubowicz)
 → [GitHub Repository](https://github.com/sarajakub/alt-learning-ctrl)
 → [Published Research: Embodied Game Interactions (JCSG)](https://link.springer.com/chapter/10.1007/978-3-031-74138-8_41)
+→ [NYU Prototyping Fund Showcase](https://engineering.nyu.edu/news/prototyping-fund-showcase-displays-creative-technology)
 
 **The Solution**
 
@@ -1082,7 +1085,7 @@ HealthKit authorization and data access patterns are complex - simulator require
             <ul className="space-y-3 ml-6">
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">Research-backed:</strong> Every design decision grounded in user data — from 247-participant studies to intimate co-design sessions</span>
+                <span><strong className="text-white">Research-backed:</strong> Every design decision grounded in user data — from large-scale studies (2000+ participant targets across NYC and beyond) to intimate co-design sessions</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
@@ -1100,6 +1103,20 @@ HealthKit authorization and data access patterns are complex - simulator require
             <p>
               When I'm not designing, you'll find me tinkering with hardware projects (like brainwave-controlled music with a Muse headset), exploring VR worlds, or diving into the latest AI tools. I'm endlessly curious about how technology can amplify human potential — especially in learning and education.
             </p>
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
+            <h2 className="text-2xl font-bold text-white mb-4">Recognition</h2>
+            <ul className="space-y-3 ml-6">
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">NYU Prototyping Fund Recipient</strong> — Awarded competitive funding for embodied learning controller development</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">NYU Steinhardt Banner Bearer</strong> — Selected for leadership and service contributions to the academic community</span>
+              </li>
+            </ul>
           </div>
 
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">

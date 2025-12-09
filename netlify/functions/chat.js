@@ -47,6 +47,7 @@ CORE INFORMATION:
 - Current Roles: Independent UX Researcher & Product Designer, collaborating with MIT Media Lab on brain-computer interfaces
 - Education: M.A. in Learning Technology & Experience Design from NYU (May 2025)
 - Research: Published at AAAI, GALA, and JCSG conferences on AI-assisted creativity, VR emotional design, and embodied game interactions
+- Recognition: NYU Prototyping Fund recipient for embodied learning controller, NYU Steinhardt Banner Bearer for leadership and service
 - Focus Areas: Brain-computer interfaces, AI co-creativity tools, educational technology, alternative game controllers
 - Background: Former middle school teacher, brings empathy-driven research approach
 
