@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.68bcf113.css",
+    "main.css": "/static/css/main.b7c12903.css",
     "main.js": "/static/js/main.f60fbd6d.js",
     "static/js/453.6264690d.chunk.js": "/static/js/453.6264690d.chunk.js",
     "static/media/hue_hue.mov": "/static/media/hue_hue.10ec49bd16ee03f98422.mov",
@@ -32,12 +32,12 @@
     "static/media/stresscam_watch.png": "/static/media/stresscam_watch.00f3d340473e462a5292.png",
     "static/media/aycet_study.png": "/static/media/aycet_study.ba5accb7c82835657983.png",
     "index.html": "/index.html",
-    "main.68bcf113.css.map": "/static/css/main.68bcf113.css.map",
+    "main.b7c12903.css.map": "/static/css/main.b7c12903.css.map",
     "main.f60fbd6d.js.map": "/static/js/main.f60fbd6d.js.map",
     "453.6264690d.chunk.js.map": "/static/js/453.6264690d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.68bcf113.css",
+    "static/css/main.b7c12903.css",
     "static/js/main.f60fbd6d.js"
   ]
 }
