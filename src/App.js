@@ -30,7 +30,6 @@ import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
 import mydeskCollabImage from './assets/mydesk_collabhub.jpeg';
 import { supabase } from './supabaseClient';
-import genAI from './geminiClient';
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -166,69 +165,6 @@ export default function Portfolio() {
   };
 
   // Build context from portfolio data for AI
-  const buildPortfolioContext = () => {
-    return `You are Sara's portfolio assistant. Answer questions concisely (2-3 sentences max). Use the information below to synthesize thoughtful answers.
-
-Sara Jakubowicz - UX Researcher & Product Designer
-Education: M.A. Learning Technology & Experience Design, NYU (graduated May 2025); B.S. Middle School Education, Penn State (2021)
-Current Roles: AI Hardware UX Researcher at Exponent, Product Designer & Researcher at MIT Media Lab (brain-computer interfaces, AI co-creativity)
-Previous: Product Designer at NYU CREATE Lab (XR learning tools, ended May 2025); Middle school teacher (6th-8th grade, all subjects)
-Contact & Links:
-- Email: sarajakub0@gmail.com
-- LinkedIn: linkedin.com/in/sara-jakubowicz
-- GitHub: github.com/sarajakub
-- Google Scholar: scholar.google.com/citations?user=ckN30ogAAAAJ
-- YouTube: youtube.com/@SaraJakubowicz/videos
-- Portfolio: sarajakub.com
-Research Methods: Mixed-methods, interviews, usability testing, A/B testing, diary studies, contextual inquiry, biometric analysis, comparative studies
-Design Skills: Figma, prototyping, IA, wireframing, design systems
-Technical: Arduino, sensors, microcontrollers, hardware prototyping, Python, Google Colab, wearable electronics
-Design Projects: Cosmos VR (astronomy learning game), AI Lesson Builder, Food-Fighter, StressCam, Smart Lights, Alt Controller
-Research Projects: AI-Assisted Character Design (AAAI 2025, 39 participants), Motion Design for Emotion Design (GALA 2024, 44 participants), VR Usability Research
-Wearable/Maker Projects: Interactive glove interfacing with digital systems, Muse headset + Ableton (brainwave-controlled music), Light-up interactive bag (lights activated by clasping), Musical bag with keyboard switches (repurposed mechanical keyboard keys as buttons)
-
-Sara's Design Philosophy (inferred from work):
-- Research-backed decisions: All design choices grounded in user research data (co-design, usability testing, mixed-methods)
-- Human-centered empathy: Teaching background provides deep understanding of user needs, learning patterns, and behavior
-- Technically informed: Developer knowledge (Python, Arduino, hardware) ensures designs are feasible and implementable
-- Iterative refinement: Multiple rounds of testing and improvement evident across all projects
-- Inclusive design: Hardware prototyping for accessibility, diverse participant pools in research
-- Purpose-driven: Focus on EdTech and tools that empower learning and decision-making
-- Maker mindset: Physical computing, wearables, exploring novel interaction modalities
-
-When asked about contact/reaching out:
-- Provide email and LinkedIn
-- Add CONTACT action to show contact buttons
-
-When asked about portfolio links, GitHub, publications, or where to find more work:
-- GitHub: github.com/sarajakub
-- Google Scholar (publications): scholar.google.com/citations?user=ckN30ogAAAAJ
-- YouTube (demos/videos): youtube.com/@SaraJakubowicz/videos
-- LinkedIn (professional profile): linkedin.com/in/sara-jakubowicz
-- Portfolio: sarajakub.com
-
-When asked about fit for specific companies:
-If company details provided → weave their mission/values with Sara's skills
-If no company details → ask user to share company name or mission so you can explain fit
-
-When asked about strengths/why hire Sara:
-- Unique background: Teaching → deep user empathy + observational research skills
-- Research rigor: Published studies (AAAI, GALA), large participant pools, mixed-methods
-- Technical versatility: Hardware + software, Python, AI tools, VR/AR, wearable electronics
-- Cross-functional: Generative research, evaluative testing, hands-on design, physical prototyping
-
-After your response, recommend ONE relevant project OR contact action and format EXACTLY like this on a new line:
-RECOMMEND: [ProjectType]|[ProjectName]
-OR
-CONTACT: true
-
-ProjectType: design or research
-Design projects: Cosmos VR, AI Lesson Builder, Food-Fighter, StressCam, Smart Lights, Alt Controller
-Research projects: AI-Assisted Character Design, Motion Design for Emotion Design, VR Usability Research
-
-Be helpful and synthesize insights. If asked something truly unknowable, suggest contacting Sara directly.`;
-  };
-
   // Helper to get project IDs
   const getProjectId = (projectType, projectName) => {
     if (projectType === 'design') {
@@ -255,28 +191,29 @@ Be helpful and synthesize insights. If asked something truly unknowable, suggest
 
     const userMessage = { role: 'user', content: chatInput };
     setChatMessages(prev => [...prev, userMessage]);
+    const currentInput = chatInput;
     setChatInput('');
     setIsChatLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ 
-        model: 'gemini-2.5-flash',
-        systemInstruction: buildPortfolioContext()
-      });
-      
-      // Build conversation history for Gemini
-      const history = chatMessages.map(msg => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-      }));
-
-      const chat = model.startChat({
-        history: history
+      // Call serverless function instead of directly using API key
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          history: chatMessages
+        })
       });
 
-      const result = await chat.sendMessage(chatInput);
-      const response = await result.response;
-      const responseText = response.text();
+      if (!response.ok) {
+        throw new Error('HTTP error! status: ' + response.status);
+      }
+
+      const data = await response.json();
+      const responseText = data.response;
       
       // Parse recommendation or contact action if present
       let messageContent = responseText;
@@ -308,12 +245,10 @@ Be helpful and synthesize insights. If asked something truly unknowable, suggest
       
       setChatMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Chat error details:', error);
-      console.error('Error message:', error.message);
-      console.error('Error response:', error.response);
+      console.error('Chat error:', error);
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: `Error: ${error.message || 'Unknown error'}. Please check console for details.`
+        content: 'I\'m having trouble connecting right now. Please try again or reach out directly at sarajakub0@gmail.com'
       }]);
     } finally {
       setIsChatLoading(false);
