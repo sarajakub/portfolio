@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f3b2f819.css",
+    "main.js": "/static/js/main.8a5c94f9.js",
+    "static/js/453.6264690d.chunk.js": "/static/js/453.6264690d.chunk.js",
+    "static/media/hue_hue.mov": "/static/media/hue_hue.10ec49bd16ee03f98422.mov",
+    "static/media/hue_io.mov": "/static/media/hue_io.1ab5c14bf4ff057ba65c.mov",
+    "static/media/v0_gif.GIF": "/static/media/v0_gif.fa6d969f7154e65c8af6.GIF",
+    "static/media/v1_altctrl.jpeg": "/static/media/v1_altctrl.09b1776067610e312470.jpeg",
+    "static/media/mydesk_collabhub.jpeg": "/static/media/mydesk_collabhub.72e897c0cc534cd29cd5.jpeg",
+    "static/media/og_altcontroller.png": "/static/media/og_altcontroller.078065c1454f73d4e0f8.png",
+    "static/media/v2.2_altctrl.jpeg": "/static/media/v2.2_altctrl.ff659a348f4e53dc0826.jpeg",
+    "static/media/foodfighter_architecture.png": "/static/media/foodfighter_architecture.f2d57a055f7de18a30ba.png",
+    "static/media/v2.1_altctrl.jpeg": "/static/media/v2.1_altctrl.bc772b76a529ee704328.jpeg",
+    "static/media/cosmos_earth_des.jpeg": "/static/media/cosmos_earth_des.da2a060942850ff16512.jpeg",
+    "static/media/cosmos_space_des.jpeg": "/static/media/cosmos_space_des.2335f84e64dec227bc02.jpeg",
+    "static/media/cells_study.png": "/static/media/cells_study.31ad64ab55b62de1ab6a.png",
+    "static/media/akvan-16_EDIT.png": "/static/media/akvan-16_EDIT.8f5e8ac17a917c8282ab.png",
+    "static/media/foodfighter_ar.png": "/static/media/foodfighter_ar.51b2c08bb5621478c769.png",
+    "static/media/smartlights1.jpg": "/static/media/smartlights1.c84c4f8a9d0d06d3546c.jpg",
+    "static/media/ai_art.png": "/static/media/ai_art.be8fd9236598477c48cc.png",
+    "static/media/stresscam_iphone2.png": "/static/media/stresscam_iphone2.3d82a6345c2e8ec27899.png",
+    "static/media/cosmos_camera.png": "/static/media/cosmos_camera.c8b42c528ba699c72b13.png",
+    "static/media/stresscam_sim.png": "/static/media/stresscam_sim.064663d7e4ab75be9cd1.png",
+    "static/media/foodfighter_personas.png": "/static/media/foodfighter_personas.a1e5c24468b2d84adcd0.png",
+    "static/media/v0_altctrl.jpg": "/static/media/v0_altctrl.9f6f41d9ab7113631093.jpg",
+    "static/media/courseai_progress.png": "/static/media/courseai_progress.78e5a4e7e58c1e2e0321.png",
+    "static/media/cosmos_teleportation.png": "/static/media/cosmos_teleportation.722f7843839510be1dfe.png",
+    "static/media/v2.0_altctrl.jpg": "/static/media/v2.0_altctrl.abe4249eee288102ac3f.jpg",
+    "static/media/cosmossim.png": "/static/media/cosmossim.88f554637b6a1de3f79b.png",
+    "static/media/foodfighter_homepage.png": "/static/media/foodfighter_homepage.f5c57cf852b431f24275.png",
+    "static/media/stresscam_watch.png": "/static/media/stresscam_watch.00f3d340473e462a5292.png",
+    "static/media/aycet_study.png": "/static/media/aycet_study.ba5accb7c82835657983.png",
+    "index.html": "/index.html",
+    "main.f3b2f819.css.map": "/static/css/main.f3b2f819.css.map",
+    "main.8a5c94f9.js.map": "/static/js/main.8a5c94f9.js.map",
+    "453.6264690d.chunk.js.map": "/static/js/453.6264690d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f3b2f819.css",
+    "static/js/main.8a5c94f9.js"
+  ]
+}
