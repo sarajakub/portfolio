@@ -1062,9 +1062,16 @@ HealthKit authorization and data access patterns are complex - simulator require
   const AboutPage = () => (
     <div className="min-h-screen px-6 pt-32 pb-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
-          About Me
-        </h1>
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+          <img 
+            src={profileImage} 
+            alt="Sara Jakubowicz" 
+            className="w-48 h-48 rounded-full object-cover border-4 border-purple-400/50 shadow-2xl"
+          />
+          <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
+            About Me
+          </h1>
+        </div>
         
         <div className="space-y-8 text-lg text-purple-100 leading-relaxed">
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
