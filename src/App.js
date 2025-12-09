@@ -725,6 +725,7 @@ Students learn spatial concepts like lunar phases from 2D screens using a mouse 
 
 → [Thesis Archive](https://www.ectexpo.info/thesis-archive/spring-2025/sara-jakubowicz)
 → [GitHub Repository](https://github.com/sarajakub/alt-learning-ctrl)
+→ [Published Research: Embodied Game Interactions (JCSG)](https://link.springer.com/chapter/10.1007/978-3-031-74138-8_41)
 
 **The Solution**
 
@@ -1066,10 +1067,10 @@ HealthKit authorization and data access patterns are complex - simulator require
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
             <h2 className="text-2xl font-bold text-white mb-4">What I Do</h2>
             <p className="mb-4">
-              I'm an <span className="text-pink-300 font-semibold">AI Hardware UX Researcher at Exponent</span> and <span className="text-pink-300 font-semibold">Product Designer & Researcher at MIT Media Lab</span>, where I work on <span className="text-purple-300 font-semibold">brain-computer interfaces</span> and <span className="text-purple-300 font-semibold">AI co-creativity tools</span>.
+              I'm a <span className="text-pink-300 font-semibold">UX Researcher & Product Designer</span> creating <span className="text-purple-300 font-semibold">AI-powered learning tools</span>, <span className="text-purple-300 font-semibold">brain-computer interfaces</span>, and <span className="text-purple-300 font-semibold">interactive experiences</span>. I collaborate with researchers at <span className="text-pink-300 font-semibold">MIT Media Lab</span> on cutting-edge BCI and AI co-creativity projects.
             </p>
             <p>
-              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI and GALA on AI-assisted creativity and VR emotional design. My work sits at the intersection of cutting-edge technology and human-centered design.
+              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI, GALA, and JCSG on AI-assisted creativity, VR emotional design, and embodied game interactions. My work sits at the intersection of cutting-edge technology and human-centered design.
             </p>
           </div>
 
