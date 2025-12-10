@@ -246,9 +246,17 @@ export default function Portfolio() {
       setChatMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Chat error:', error);
+      
+      // Try to get more specific error info
+      let errorMessage = 'I\'m having trouble connecting right now. Please try again or reach out directly at sarajakub0@gmail.com';
+      if (error.message) {
+        console.error('Error details:', error.message);
+        // Don't show technical details to user, but log them
+      }
+      
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'I\'m having trouble connecting right now. Please try again or reach out directly at sarajakub0@gmail.com'
+        content: errorMessage
       }]);
     } finally {
       setIsChatLoading(false);
@@ -1062,16 +1070,31 @@ HealthKit authorization and data access patterns are complex - simulator require
   const AboutPage = () => (
     <div className="min-h-screen px-6 pt-32 pb-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
-          <img 
-            src={profileImage} 
-            alt="Sara Jakubowicz" 
-            className="w-48 h-48 rounded-full object-cover border-4 border-purple-400/50 shadow-2xl"
-          />
-          <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent">
-            About Me
-          </h1>
+        {/* Profile Picture - Centered with AI Chat */}
+        <div className="mb-12 flex justify-center">
+          <button 
+            onClick={() => setChatOpen(true)}
+            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+            aria-label="Chat with AI assistant about Sara's work"
+          >
+            <img
+              src={profileImage}
+              alt="Sara Jakubowicz"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+              <span className="text-white text-sm font-bold">Ask about me</span>
+            </div>
+            {/* Sparkle indicator */}
+            <div className="absolute -top-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-2 shadow-lg group-hover:scale-125 transition-transform">
+              <Sparkles size={16} className="text-white" />
+            </div>
+          </button>
         </div>
+
+        <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent text-center">
+          About Me
+        </h1>
         
         <div className="space-y-8 text-lg text-purple-100 leading-relaxed">
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">

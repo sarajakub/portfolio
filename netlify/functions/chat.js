@@ -37,6 +37,16 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Check if API key exists
+    if (!process.env.GEMINI_API_KEY) {
+      console.error('GEMINI_API_KEY is not set');
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'API key not configured' })
+      };
+    }
+
     // Initialize Gemini with API key from environment variable
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
