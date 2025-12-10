@@ -209,7 +209,9 @@ export default function Portfolio() {
       });
 
       if (!response.ok) {
-        throw new Error('HTTP error! status: ' + response.status);
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Server error:', errorData);
+        throw new Error(errorData.details || errorData.error || 'HTTP error! status: ' + response.status);
       }
 
       const data = await response.json();
