@@ -49,7 +49,7 @@ exports.handler = async (event, context) => {
 
     // Initialize Gemini with API key from environment variable
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-3-pro-preview" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" }); // Stable version
 
     const systemPrompt = `You are Sara Jakubowicz's AI assistant, helping visitors learn about her work and experience as a UX Researcher and Product Designer.
 
