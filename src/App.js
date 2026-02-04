@@ -1675,7 +1675,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle Cosmos final product screenshots
                   if (line === '[CAMERA_IMAGE]' && selectedProject.cameraImage) {
-                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR photo documentation camera feature showing captured moon phase evidence for captain's log" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR documentation camera feature showing captured moon phase evidence for captain's log" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[TELEPORT_IMAGE]' && selectedProject.teleportImage) {
                     return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation interface with space, Earth, and Moon perspective buttons plus interactive phase diagram" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
