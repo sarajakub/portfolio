@@ -232,25 +232,27 @@ export default function Portfolio() {
       
       // Parse PROJECT_LINK or SHOW_CONTACT markers
       let messageContent = responseText;
-      let recommendation = null;
+      let recommendations = [];
       let showContact = false;
       
-      // Check for PROJECT_LINK: design|Project Name
-      const projectLinkMatch = responseText.match(/PROJECT_LINK:\s*(\w+)\|([^\n]+)/);
+      // Check for all PROJECT_LINK markers: design|Project Name
+      const projectLinkMatches = [...responseText.matchAll(/PROJECT_LINK:\s*(\w+)\|([^\n]+)/g)];
       // Check for SHOW_CONTACT: true
       const contactMatch = responseText.match(/SHOW_CONTACT:\s*true/i);
       
-      if (projectLinkMatch) {
-        const [, projectType, projectName] = projectLinkMatch;
-        messageContent = responseText.replace(/PROJECT_LINK:.*$/m, '').trim();
-        const projectId = getProjectId(projectType, projectName.trim());
-        if (projectId) {
-          recommendation = {
-            type: projectType,
-            name: projectName.trim(),
-            id: projectId
-          };
-        }
+      if (projectLinkMatches.length > 0) {
+        messageContent = responseText.replace(/PROJECT_LINK:.*$/gm, '').trim();
+        projectLinkMatches.forEach(match => {
+          const [, projectType, projectName] = match;
+          const projectId = getProjectId(projectType, projectName.trim());
+          if (projectId) {
+            recommendations.push({
+              type: projectType,
+              name: projectName.trim(),
+              id: projectId
+            });
+          }
+        });
       }
       
       if (contactMatch) {
@@ -261,7 +263,7 @@ export default function Portfolio() {
       const assistantMessage = {
         role: 'assistant',
         content: messageContent,
-        recommendation: recommendation,
+        recommendations: recommendations,
         showContact: showContact
       };
       
@@ -2598,21 +2600,24 @@ HealthKit authorization and data access patterns are complex - simulator require
                   </div>
                 </div>
                 
-                {/* Recommendation button */}
-                {msg.recommendation && msg.recommendation.id && (
-                  <div className="flex justify-start">
-                    <button
-                      onClick={() => {
-                        setChatOpen(false);
-                        setCurrentPage(msg.recommendation.type);
-                        setSelectedProjectId(msg.recommendation.id);
-                        window.history.pushState({}, '', `/${msg.recommendation.type}/${msg.recommendation.id}`);
-                      }}
-                      className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border border-pink-400/30 rounded-lg text-pink-200 text-sm transition-all"
-                    >
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      <span>View {msg.recommendation.name}</span>
-                    </button>
+                {/* Recommendation buttons */}
+                {msg.recommendations && msg.recommendations.length > 0 && (
+                  <div className="flex justify-start gap-2 flex-wrap">
+                    {msg.recommendations.map((rec, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setChatOpen(false);
+                          setCurrentPage(rec.type);
+                          setSelectedProjectId(rec.id);
+                          window.history.pushState({}, '', `/${rec.type}/${rec.id}`);
+                        }}
+                        className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border border-pink-400/30 rounded-lg text-pink-200 text-sm transition-all"
+                      >
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <span>View {rec.name}</span>
+                      </button>
+                    ))}
                   </div>
                 )}
                 
