@@ -1638,17 +1638,17 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle special image placeholders
                   if (line === '[AR_IMAGE]' && selectedProject.arImage) {
-                    return <img key={idx} src={selectedProject.arImage} alt="AR ingredient collection and avatar customization" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.arImage} alt="Food-Fighter gameplay showing AR ingredient scanning overlaid on meal packaging with avatar customization options" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[ARCH_IMAGE]' && selectedProject.archImage) {
-                    return <img key={idx} src={selectedProject.archImage} alt="Food-Fighter technical architecture" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.archImage} alt="Food-Fighter system architecture diagram showing data flow between AR scanner, nutrition database, and personalization engine" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[PERSONAS_IMAGE]' && selectedProject.personasImage) {
-                    return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user personas" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.personasImage} alt="Food-Fighter user persona cards detailing demographics, goals, pain points, and behaviors of target player segments" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle myDesk image placeholders
                   if (line === '[MYDESK_COLLAB_IMAGE]' && selectedProject.mydeskCollabImage) {
-                    return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk collaboration hub concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk interface featuring shared course materials, team chat, and synchronized study session tools" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle My Desk prototype embed
                   if (line === '[MYDESK_PROTOTYPE]') {
@@ -1668,23 +1668,23 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle Cosmos sketch placeholders
                   if (line === '[SPACE_SKETCH]' && selectedProject.spaceSketch) {
-                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos VR storyboard sketch: Space perspective showing orbital view with interactive phase diagram and moon positioning controls" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos VR space perspective showing orbital view with interactive phase diagram and moon positioning controls" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[EARTH_SKETCH]' && selectedProject.earthSketch) {
-                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos VR storyboard sketch: Earth surface perspective showing ground-level moon phase view with time indicators and teleportation interface" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos VR Earth surface perspective showing ground-level moon phase view with time indicators and teleportation interface" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle Cosmos final product screenshots
                   if (line === '[CAMERA_IMAGE]' && selectedProject.cameraImage) {
-                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR screenshot: Photo documentation camera feature showing captured moon phase evidence for captain's log" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR photo documentation camera feature showing captured moon phase evidence for captain's log" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[TELEPORT_IMAGE]' && selectedProject.teleportImage) {
-                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR in-game screenshot: Teleportation interface with space, Earth, and Moon perspective buttons plus interactive phase diagram" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation interface with space, Earth, and Moon perspective buttons plus interactive phase diagram" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[MYDESK_LMS_IMAGE]' && selectedProject.mydeskLMSImage) {
                     return <img key={idx} src={selectedProject.mydeskLMSImage} alt="myDesk LMS iteration: Early student collaboration hub design before pivoting to AI lesson builder based on educator pain points" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[MYDESK_EXTENSION_IMAGE]' && selectedProject.mydeskExtensionImage) {
-                    return <img key={idx} src={selectedProject.mydeskExtensionImage} alt="myDesk browser extension concept: Chrome extension mockup for collaborative course management prior to research-driven pivot" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.mydeskExtensionImage} alt="myDesk browser extension interface for collaborative course management, an early iteration prior to research-driven pivot to AI lesson builder" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle video placeholders
                   if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
@@ -1695,19 +1695,19 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle altctrl version image placeholders
                   if (line === '[V0_GIF]' && selectedProject.v0Gif) {
-                    return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v0Gif} alt="alt.ctrl.LRN prototype version 0: Gyroscope sensor detecting tilt angles to control on-screen navigation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="Version 1 joystick controller" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="alt.ctrl.LRN prototype version 1: Analog joystick mounted on breadboard with directional movement controls for 2D navigation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
-                    return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v2_0Image} alt="alt.ctrl.LRN prototype version 2.0: Rotary encoder knob with integrated push button for rotation-based selection and confirmation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_1_IMAGE]' && selectedProject.v2_1Image) {
-                    return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v2_1Image} alt="alt.ctrl.LRN prototype version 2.1: Close-up of rotary encoder wiring showing Arduino connections and component integration" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="alt.ctrl.LRN prototype version 2.2: Final rotary encoder design with refined mounting, improved tactile feedback, and polished enclosure" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
@@ -2159,26 +2159,26 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle altctrl version image placeholders
                   if (line === '[V0_GIF]' && selectedProject.v0Gif) {
-                    return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v0Gif} alt="alt.ctrl.LRN prototype version 0: Gyroscope sensor detecting tilt angles to control on-screen navigation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="Version 1 joystick controller" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="alt.ctrl.LRN prototype version 1: Analog joystick mounted on breadboard with directional movement controls for 2D navigation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
-                    return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v2_0Image} alt="alt.ctrl.LRN prototype version 2.0: Rotary encoder knob with integrated push button for rotation-based selection and confirmation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_1_IMAGE]' && selectedProject.v2_1Image) {
-                    return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <img key={idx} src={selectedProject.v2_1Image} alt="alt.ctrl.LRN prototype version 2.1: Close-up of rotary encoder wiring showing Arduino connections and component integration" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="alt.ctrl.LRN prototype version 2.2: Final rotary encoder design with refined mounting, improved tactile feedback, and polished enclosure" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle StressCam image placeholders
                   if (line === '[WATCH_IMAGE]' && selectedProject.watchImage) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.watchImage} alt="StressCam Apple Watch interface: Wearable UI showing real-time heart rate variability and stress level monitoring with haptic feedback" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.watchImage} alt="StressCam Apple Watch showing real-time heart rate variability and stress level monitoring with haptic feedback triggers" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[IPHONE_IMAGE]' && selectedProject.iphoneImage) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.iphoneImage} alt="StressCam iPhone app: Mobile camera interface connecting heart rate data to photography triggers for stress-aware documentation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.iphoneImage} alt="StressCam iPhone camera connecting heart rate variability data to automated photography triggers for biometric-responsive documentation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
