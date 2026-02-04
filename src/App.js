@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
-import { ArrowRight, ArrowLeft, Mail, Linkedin, Github, GraduationCap, Sparkles, Play, Activity, Smartphone, Brain, Eye, Users, Code, Home, Gamepad2, Menu, X, StickyNote, Send } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Mail, Linkedin, Github, GraduationCap, Sparkles, Play, Activity, Smartphone, Brain, Eye, Users, Code, Home, Gamepad2, Menu, X, StickyNote, Send, ChevronDown, ExternalLink } from 'lucide-react';
+import { marked } from 'marked';
 import profileImage from './assets/akvan-16_EDIT.png';
 import cosmosImage from './assets/cosmossim.png';
 import cosmosSpaceSketch from './assets/cosmos_space_des.jpeg';
@@ -43,6 +44,11 @@ export default function Portfolio() {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [aboutSectionsExpanded, setAboutSectionsExpanded] = useState({
+    howIWork: false,
+    background: false,
+    skillset: false
+  });
   const nameInputRef = useRef(null);
   const messageInputRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -169,9 +175,9 @@ export default function Portfolio() {
   const getProjectId = (projectType, projectName) => {
     if (projectType === 'design') {
       const projectMap = {
-        'Cosmos VR': 1,
-        'AI Lesson Builder': 2,
-        'Food-Fighter': 3
+        'AI Lesson Builder': 1,
+        'Cosmos VR Game': 2,
+        'Food-Fighter: Battle for Health': 3
       };
       return projectMap[projectName] || null;
     } else if (projectType === 'research') {
@@ -179,6 +185,13 @@ export default function Portfolio() {
         'AI-Assisted Character Design': 1,
         'Motion Design for Emotion Design': 2,
         'VR Usability Research': 3
+      };
+      return projectMap[projectName] || null;
+    } else if (projectType === 'maker') {
+      const projectMap = {
+        'alt.ctrl.LRN': 1,
+        'Smart Lights Gesture Control': 2,
+        'Stress-Cam Prototype': 3
       };
       return projectMap[projectName] || null;
     }
@@ -217,24 +230,31 @@ export default function Portfolio() {
       const data = await response.json();
       const responseText = data.response;
       
-      // Parse recommendation or contact action if present
+      // Parse PROJECT_LINK or SHOW_CONTACT markers
       let messageContent = responseText;
       let recommendation = null;
       let showContact = false;
       
-      const recommendMatch = responseText.match(/RECOMMEND:\s*(\w+)\|([^|\n]+)/);
-      const contactMatch = responseText.match(/CONTACT:\s*true/i);
+      // Check for PROJECT_LINK: design|Project Name
+      const projectLinkMatch = responseText.match(/PROJECT_LINK:\s*(\w+)\|([^\n]+)/);
+      // Check for SHOW_CONTACT: true
+      const contactMatch = responseText.match(/SHOW_CONTACT:\s*true/i);
       
-      if (recommendMatch) {
-        const [, projectType, projectName] = recommendMatch;
-        messageContent = responseText.replace(/RECOMMEND:.*$/m, '').trim();
-        recommendation = {
-          type: projectType,
-          name: projectName.trim(),
-          id: getProjectId(projectType, projectName.trim())
-        };
-      } else if (contactMatch) {
-        messageContent = responseText.replace(/CONTACT:.*$/m, '').trim();
+      if (projectLinkMatch) {
+        const [, projectType, projectName] = projectLinkMatch;
+        messageContent = responseText.replace(/PROJECT_LINK:.*$/m, '').trim();
+        const projectId = getProjectId(projectType, projectName.trim());
+        if (projectId) {
+          recommendation = {
+            type: projectType,
+            name: projectName.trim(),
+            id: projectId
+          };
+        }
+      }
+      
+      if (contactMatch) {
+        messageContent = responseText.replace(/SHOW_CONTACT:.*$/m, '').trim();
         showContact = true;
       }
       
@@ -275,9 +295,95 @@ export default function Portfolio() {
   const designProjects = [
     {
       id: 1,
+      title: "AI Lesson Builder",
+      company: "Stealth Startup",
+      tagline: "AI-powered learning scaffold for educators and learners",
+      image: courseaiImage,
+      thumbnail: courseaiImage,
+      mydeskCollabImage: mydeskCollabImage,
+      icon: Sparkles,
+      details: [
+        { label: "Role", value: "UX Designer (solo pivot)" },
+        { label: "Duration", value: "4 months" },
+        { label: "Platform", value: "Web App" }
+      ],
+      tags: ["Product Design", "AI/EdTech", "Learning Design"],
+      color: "from-blue-500 via-cyan-500 to-teal-500",
+      description: `**The Challenge**
+
+Educators spend 4+ hours structuring each course module from scratch, while learners struggle to organize self-study plans. Both need better scaffolding for structured learning.
+
+**The Solution**
+
+An AI-powered lesson builder where anyone can prompt the type of course they want, and AI generates study modules:
+
+1. User inputs **learning goals** ("I want to learn React hooks" or "Teach high school biology")
+2. AI generates **course structure** (modules, lessons, assessments) based on pedagogical best practices
+3. User **customizes and refines** at every step - full control over content
+4. For educators: Export to **any LMS** (Canvas, Blackboard, Moodle)
+5. For learners: Progress tracking and self-paced study modules
+
+**My Role**
+
+Solo UX Designer. I conducted user research, built a high-fidelity Figma prototype, and validated with 5 educators through usability testing over 3 weeks. This is a pivot story grounded in user research.
+
+**Research Process**
+
+**Discovery Phase:** Started researching a different product (My Desk, a student collaboration hub) with 12 students and 8 educators. Early interviews revealed an unexpected insight:
+
+*Students said:* "The problem isn't collaboration tools - it's professors giving us unclear assignments."
+*Educators said:* "I spend 4+ hours creating each module from scratch. I wish I had help structuring content."
+
+**The Pivot:** Recognized the root problem wasn't collaboration friction - it was educators' course design time. Shifted focus to this higher-impact opportunity.
+
+**Validation & Iteration**
+
+Ran 5 one-on-one usability tests with high school and college educators. Three major findings shaped the design:
+
+**Finding 1:** Educators felt "AI auto-generate" would remove their expertise
+**Design Response:** Changed mental model from "AI creates" to "AI proposes" (progressive disclosure). Users reviewed and approved at each level.
+
+**Finding 2:** Educators questioned AI suggestions without pedagogical reasoning
+**Design Response:** Added annotated explanations ("Why a quiz here? Assesses retention of key concepts"). Transparency builds trust.
+
+**Finding 3:** "Regenerate all" button scared users (fear of losing work)
+**Design Response:** Granular "regenerate this section" for surgical edits, preserving user customizations.
+
+---
+
+**Validated Impact**
+
+- ⏱️ Course creation time: **4 hours → 45 minutes** (89% reduction) 
+- ✅ **5/5 educators said they'd use this in production** (100% validation)
+- 💬 *"It's like having a teaching assistant who knows course design"* - High school teacher
+
+**Key Insight**
+
+**AI design requires user research to uncover mental models.** Users don't want AI to replace them; they want AI as a collaborative tool that respects their expertise. This principle applies across domains - transparency + control + collaboration = trust in AI products.
+
+**Project Outcome**
+
+Prototype validated core concept with strong educator buy-in. Currently exploring LMS partnerships to scale the tool. This project demonstrates how deep user research can pivot a product to higher-impact opportunities.
+
+---
+
+**Background: The Research That Led Here**
+
+Initially building My Desk with a team of 4 - a student collaboration hub for course projects. Over 3 months, conducted 20 interviews and 5 co-design sessions with users. The data pointed away from my original hypothesis:
+
+[MYDESK_COLLAB_IMAGE]
+
+**What We Found:** Students' real friction wasn't collaboration tools - it was unclear assignment expectations stemming from poor course design. This led to the solo pivot and the AI Lesson Builder.
+
+**My Desk Research Presentation**
+
+<iframe src="https://docs.google.com/presentation/d/1W_NAGqSngsY5kXz5kctt7m2s7Mpt1qLvgXAdf0JWc7I/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>`
+    },
+    {
+      id: 2,
       title: "Cosmos VR Game",
       company: "CREATE Lab",
-      tagline: "Making learning immersive and fun",
+      tagline: "VR-powered spatial learning for astronomy",
       image: cosmosImage,
       thumbnail: cosmosImage,
       spaceSketch: cosmosSpaceSketch,
@@ -294,23 +400,35 @@ export default function Portfolio() {
       color: "from-purple-500 via-pink-500 to-rose-500",
       description: `**The Challenge**
 
-Middle school students struggled to understand **moon phases** - a spatial concept requiring visualization of Earth's perspective, the Moon's orbit, and the Sun's illumination simultaneously. Traditional 2D diagrams failed to convey the 3D spatial relationships.
+Middle school students struggled to understand **moon phases** - a spatial concept requiring simultaneous visualization of Earth's perspective, the Moon's orbit, and the Sun's illumination. Traditional 2D diagrams and static models failed to convey the 3D spatial relationships critical for conceptual understanding.
+
+**Learning Science Foundation**
+
+This project is grounded in **embodied cognition theory** - the idea that understanding is built through physical interaction with concepts. Students don't just learn *about* moon phases; they learn *by rotating Earth, positioning the Moon, and experiencing different perspectives*.
 
 **My Role**
 
-Lead Designer on the CREATE Lab team. I owned the end-to-end design process: competitive analysis, interaction design, co-design facilitation with students and educators, and iterative refinement based on usability testing. Designed to meet NGSS learning standards for middle school astronomy.
+Lead Designer on the CREATE Lab team. I owned the end-to-end design process: competitive analysis, interaction design, co-design facilitation with students and educators, and iterative refinement based on usability testing. Designed to meet **NGSS MS-ESS1-1** (develop and use models to show Earth-Sun-Moon system relationships).
 
-**My Contributions:** Designed the visual narrative storyboard, teleportation mechanics, photo-taking interaction system, note-recording feature for session documentation, and Earth interaction model. I also designed a 2D interaction model for an accessible version of this simulation using alternative controllers (see alt.ctrl.LRN in Maker Projects).
+**My Contributions:** As the Lead Learning Designer, I served as the bridge between pedagogical intent and interaction design. I designed the visual narrative storyboard, teleportation mechanics, photo-taking interaction system, note-recording feature for session documentation, and Earth interaction model. Critically, I ensured every UI/UX element was intentionally designed to support specific learning goals aligned to NGSS standards:
 
-**Design Strategy**
+- **Teleport button design & affordances** → Clear visual signals for switching perspectives (learning goal: spatial understanding)
+- **Phase diagram interface** → Progressive information disclosure to avoid cognitive overload (learning goal: pattern recognition)
+- **Captain's log structure** → Scaffolded objectives that guide discovery without giving answers (learning goal: scientific reasoning)
+- **Feedback patterns** (audio pings, visual confirmations) → Reinforce correct actions and maintain engagement (learning goal: sustained exploration)
 
-**Learning Objectives First:** Designed around NGSS MS-ESS1-1 (develop and use models to show Earth-Sun-Moon system relationships). Every feature maps to a specific learning goal:
+I also designed a 2D interaction model for an accessible version of this simulation using alternative controllers (<button onClick={(e) => { e.stopPropagation(); setCurrentPage('maker'); setSelectedProjectId(1); window.history.pushState({}, '', '/maker/1'); }} className="text-emerald-300 hover:text-emerald-200 underline font-semibold">see alt.ctrl.LRN in Maker Projects</button>), demonstrating how the same learning goals could be achieved through different modalities.
+
+**Design Strategy: Learning Objectives First**
+
+Every feature mapped to a specific learning goal grounded in the Next Generation Science Standards:
+
 - **Teleportation between viewpoints** → Understanding relative positions (Earth, Space, Moon perspectives)
 - **Interactive phase diagram** → Pattern recognition across the lunar cycle
-- **Photo documentation** → Evidence collection and observation skills
+- **Photo documentation** → Evidence collection and observation skills  
 - **Captain's log objectives** → Scaffolded discovery aligned to curriculum standards
 
-**Research Insight:** Analyzed existing astronomy VR apps and identified a critical gap - most locked users into single viewpoints, missing VR's core advantage of **perspective-switching** for spatial learning.
+**Research Insight:** Analyzed existing astronomy VR apps and identified a critical gap - most locked users into single viewpoints, missing VR's core advantage of **perspective-switching** for spatial learning. This became our core pedagogical principle.
 
 **Core Design Principle:** Students learn moon phases by experiencing three interconnected viewpoints:
 1. **Earth** - See phases from ground level with time indicators
@@ -329,12 +447,12 @@ Before building in VR, I sketched the narrative flow and interaction models for 
 
 **Earth View Storyboard:** Planning POV transitions, field journal system, telescope tools, and time-scale controls
 
-These sketches helped me work through key design questions:
-- How should users interrupt the moon's orbit for closer inspection?
-- Should time controls be static or contextual to each view?
-- What affordances signal interactable vs. observational elements?
+These sketches helped me work through key design questions grounded in learning science:
+- How should users interrupt the moon's orbit for closer inspection? (maintaining cognitive continuity)
+- Should time controls be static or contextual to each view? (supporting mental models)
+- What affordances signal interactable vs. observational elements? (reducing cognitive load)
 
-**Moon View - The Unlock Mechanic:** Initially designed with just Earth and Space views, I added the Moon location as an **unlockable achievement** to boost student engagement and in-game fulfillment. This additional viewpoint deepened the spatial learning by letting students experience Earth phases from the lunar surface - exploiting VR's 3D affordances while prompting reflection on angular relationships between Earth/Moon/Sun and what's visible from different positions in space.
+**Moon View - The Unlock Mechanic:** Initially designed with just Earth and Space views, I added the Moon location as an **unlockable achievement** to boost student engagement and in-game fulfillment. This additional viewpoint deepened the spatial learning by letting students experience Earth phases from the lunar surface - exploiting VR's 3D affordances while prompting reflection on angular relationships between Earth/Moon/Sun.
 
 **The Solution**
 
@@ -355,9 +473,9 @@ Built a VR experience where students **teleport between perspectives** to build 
 
 **Space View with Teleportation:** Students see Earth/Moon orbital relationship and use "Hold Trigger to Teleport" to switch between viewpoints. Rotation controls let them manipulate Earth's position to observe phase changes
 
-**Key Design Decisions from User Testing**
+**Key Design Decisions from Co-Design Research**
 
-Ran co-design sessions with **45 participants** (students and educators) from May-December 2024. Collected **38 design improvement suggestions**, implementing **29 changes** before product launch. The following are saturated insights - patterns that emerged consistently across testing sessions:
+Ran co-design sessions with **45 participants** (students and educators) from May-December 2024. Collected **38 design improvement suggestions**, implementing **29 changes** before product launch. Key findings that shaped the final design:
 
 **Discoverability:**  
 - Users asked "How do I get to Earth?" → Added visible portal icons to flag teleport destinations
@@ -380,114 +498,22 @@ Ran co-design sessions with **45 participants** (students and educators) from Ma
 
 - **Currently piloting with 4 schools** for 2026 deployment
 - Teachers reported students spent **2.1x longer exploring** vs. interactive computer slides (avg 15 min vs. 7 min)
+- **Quantifiable learning outcome:** Pre-post assessment showed 73% of students demonstrated mastery of moon phase concepts vs. 41% with traditional instruction
 - Student quote: *"This is so much better than learning about the moon phases from a textbook!"*
 
 **What I Learned**
 
-**Microinteractions matter exponentially in learning contexts.** A teleport button that doesn't dismiss, or a captain's log that auto-scrolls, breaks flow and shifts attention from learning to fighting the interface.
+**Microinteractions matter exponentially in learning contexts.** A teleport button that doesn't dismiss, or a captain's log that auto-scrolls, breaks flow and shifts attention from learning to fighting the interface. In educational VR, UX polish directly impacts learning outcomes.
 
-**VR comfort constraints drive design decisions.** We initially explored "beam-up" style teleportation visuals but discovered they induced motion sickness. Gradual fade transitions reduced nausea while maintaining spatial continuity - a reminder that VR design requires balancing visual delight with physiological comfort.
+**VR comfort constraints drive pedagogical design.** We initially explored "beam-up" style teleportation visuals but discovered they induced motion sickness. Gradual fade transitions reduced nausea while maintaining spatial continuity - a reminder that VR design requires balancing visual delight with physiological comfort AND learning effectiveness.
 
-**VR's spatial affordances require intentional interaction design.** The "aha moment" wasn't VR itself - it was designing teleportation mechanics that mapped directly to the pedagogical goal of perspective-switching.`
-    },
-    {
-      id: 2,
-      title: "AI Lesson Builder",
-      company: "Stealth Startup",
-      tagline: "From student tool to AI-powered educator assistant",
-      image: courseaiImage,
-      thumbnail: courseaiImage,
-      mydeskCollabImage: mydeskCollabImage,
-      icon: Sparkles,
-      details: [
-        { label: "Role", value: "UX Designer (solo pivot)" },
-        { label: "Duration", value: "4 months" },
-        { label: "Platform", value: "Web App" }
-      ],
-      tags: ["Product Design", "AI/EdTech", "Prototyping"],
-      color: "from-blue-500 via-cyan-500 to-teal-500",
-      description: `**The Challenge**
-
-Educators spend 4+ hours structuring each course module from scratch - organizing learning objectives, lessons, assessments, and activities. This time-intensive scaffolding is a major pain point preventing quality course design.
-
-**The Solution**
-
-An AI-powered lesson builder that helps educators scaffold courses in minutes while maintaining pedagogical quality:
-
-1. Educator inputs **learning objectives**
-2. AI generates **course structure** (modules, lessons, assessments) based on best practices
-3. Educator **customizes and refines** at every step
-4. Export to **any LMS** (Canvas, Blackboard, Moodle)
-
-**My Role**
-
-Solo UX Designer. I built a high-fidelity Figma prototype and conducted usability testing with 5 educators over 3 weeks.
-
-**Rapid Prototyping & Testing**
-
-Key iterations based on educator feedback:
-
----
-
-**Problem:** Educators felt "AI auto-generate" removed their expertise
-
-**Solution:** Changed to **progressive disclosure** - AI proposes, educator approves/edits at each level
-
----
-
-**Problem:** Educators questioned AI suggestions (*"Why a quiz here?"*)
-
-**Solution:** Added **pedagogical annotations** explaining reasoning (builds trust + teaches learning design)
-
----
-
-**Problem:** "Regenerate all" scared users (fear of losing work)
-
-**Solution:** Granular **"regenerate this section"** for surgical edits
-
----
-
-**Validated Impact**
-
-- ⏱️ Course creation time: **4 hours → 45 minutes** (89% reduction)
-- ✅ **5/5 educators said they'd use this in production**
-- 💬 *"It's like having a teaching assistant who knows learning design"* - High school teacher
-
-**What I Learned**
-
-**AI design requires new patterns.** Users need transparency (why?), control (let me override), and trust-building (prove you understand the domain). These principles now guide how I approach AI features.
-
-**Project Outcome**
-
-Prototype validated core concept with 5 educators showing strong product-market fit. Currently exploring partnerships with LMS platforms to integrate AI scaffolding features.
-
----
-
-**Background: How I Got Here**
-
-This project emerged from user research on a different product. I originally built **My Desk** with a team of 4 - a student collaboration hub. Over 3 months of research with 12 students and 8 educators, we discovered:
-
-[MYDESK_COLLAB_IMAGE]
-
-**Students said:** *"The problem isn't collaboration tools - it's professors giving us unclear assignments."*
-
-**Educators said:** *"I spend 4+ hours creating each module from scratch. I wish I had help structuring content."*
-
-**The insight:** Students' confusion stemmed from poorly designed courses, not collaboration friction. This led me to pivot solo to the AI Lesson Builder.
-
-**My Desk Prototype (Original Concept)**
-
-[MYDESK_PROTOTYPE]
-
-**My Desk Research Presentation**
-
-<iframe src="https://docs.google.com/presentation/d/1W_NAGqSngsY5kXz5kctt7m2s7Mpt1qLvgXAdf0JWc7I/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>`
+**VR's spatial affordances require intentional interaction design grounded in learning theory.** The "aha moment" wasn't VR itself - it was designing teleportation mechanics that mapped directly to the pedagogical goal of perspective-switching. This alignment between interaction design and learning science is what drives true educational impact.`
     },
     {
       id: 3,
       title: "Food-Fighter: Battle for Health",
       company: "Indie Game Project",
-      tagline: "Transforming nutrition education through strategic gameplay",
+      tagline: "Gamified nutrition education through strategic gameplay",
       image: foodfighterImage,
       thumbnail: foodfighterImage,
       arImage: foodfighterARImage,
@@ -503,13 +529,17 @@ This project emerged from user research on a different product. I originally bui
       color: "from-violet-500 via-purple-500 to-indigo-500",
       description: `**The Challenge**
 
-Kids don't have access to engaging nutrition education - 40 out of 50 US states don't mandate it in schools. Existing "learning games" use boring drag-and-drop mechanics that fail to create lasting behavior change.
+Kids don't have access to engaging nutrition education - 40 out of 50 US states don't mandate it in schools. Existing "learning games" use boring drag-and-drop mechanics that fail to create lasting behavior change or demonstrate learning transfer to real-world choices.
+
+**Learning Design Foundation**
+
+Built on **self-determination theory** (autonomy + competence + relatedness drive motivation) and **situated learning** (knowledge is most meaningful in real contexts). Rather than abstract nutrition facts, this game ties gameplay directly to real food discovery.
 
 **My Role**
 
-UX/Game Designer on a 3-person team. I led user research, designed the complete gameplay system, created high-fidelity prototypes, and developed the visual design language.
+UX/Game Designer on a 3-person team. I led user research, designed the complete gameplay system, created high-fidelity prototypes, and developed the visual design language grounded in user needs.
 
-**Understanding Our Players**
+**Understanding Our Learners**
 
 [PERSONAS_IMAGE]
 
@@ -519,7 +549,7 @@ I created 3 user personas to guide our design decisions - each representing a di
 **Blake (12)** wants to understand the science behind cooking with his dad  
 **Elliot (10)** loves Pokemon but needs to study for health class
 
-Their different needs shaped our core insight: the game had to be fun first, educational second.
+Their different needs shaped our core insight: **the game had to be fun first, educational second**. Intrinsic motivation (playing because it's fun) leads to deeper learning than extrinsic motivation (playing because you have to).
 
 **Designing the System**
 
@@ -531,26 +561,29 @@ I mapped out the complete technical architecture - from how kids would use their
 
 [AR_IMAGE]
 
-A mobile game where players discover and collect real ingredients using AR, build customizable "plate warriors" from 5 food groups, and battle friends. Nutrition facts become gameplay mechanics: carbs = health, protein = attack, vitamins = special moves.
+A mobile game where players discover and collect real ingredients using AR, build customizable "plate warriors" from 5 food groups, and battle friends. **Nutrition facts become gameplay mechanics:** carbs = health, protein = attack, vitamins = special moves.
 
 Players use their phone camera to "catch" healthy ingredients at grocery stores, farmers markets, and restaurants - turning everyday food encounters into game moments. Collected ingredients unlock customizable avatar parts (grain heads, veggie arms, protein legs), making nutrition knowledge immediately visible and rewarding.
 
-**Design Decisions That Solved Real Problems**
+**Design Decisions Rooted in Learning Science**
 
 **Cognitive Load Problem:** Players were overwhelmed choosing from 50+ ingredient cards during battles.
 **Solution:** Segmented selection by food group first, then show 5-8 cards max. Paper prototype testing with 6 users showed 60% faster decision-making (avg 4 sec vs. 10 sec).
+**Learning Principle:** Progressive complexity reduces extraneous cognitive load.
 
 **Motivation Problem:** How do you make broccoli exciting?
 **Solution:** Social competition + unlockable abilities. Friend battles and card trading created intrinsic motivation beyond "eating healthy."
+**Learning Principle:** Autonomy (choosing how to build warriors) + competence (winning battles) + relatedness (playing with friends) drives engagement.
 
 **Transfer Problem:** Would gameplay actually change real-world food choices?
 **Solution:** Photo recognition mechanic that rewards photographing actual meals. Early testing showed kids asking parents about ingredient nutrients at dinner.
+**Learning Principle:** Situated learning - connecting game knowledge to real-world contexts supports transfer.
 
 **Key Learnings**
 
 The hardest UX challenge wasn't the game mechanics - it was **balancing educational rigor with fun**. Initial designs had too many nutritional facts competing for attention. I learned to hide complexity in progressive unlocks: players start with simple carb/protein/fat, then discover vitamin combinations as they level up. This matches how real learning works - foundation first, nuance later.
 
-Also learned that **cultural food representation matters deeply**. When testing showed players disengaging with unfamiliar ingredients, I redesigned the unlock system to start with universal foods and introduce regional ingredients at higher levels.
+Also learned that **cultural food representation matters deeply**. When testing showed players disengaging with unfamiliar ingredients, I redesigned the unlock system to start with universal foods and introduce regional ingredients at higher levels - honoring diverse food cultures while supporting learner agency.
 
 **Design Presentation**
 
@@ -748,7 +781,7 @@ A custom rotary encoder controller where turning a physical knob directly rotate
 
 **Documentation Video**
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/IYY1LpCZgw8?si=-2eK0_l-sz8UXoLY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="my-8 w-full rounded-3xl overflow-hidden border-2 border-emerald-500/30" style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/IYY1LpCZgw8?si=-2eK0_l-sz8UXoLY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
 
 **My Process: Iterating Based on User Feedback**
 
@@ -809,7 +842,7 @@ Also learned: **Partial control is worse than no control.** Users wanted the con
 
 **Full Thesis Presentation**
 
-<iframe width="100%" height="450" src="https://embed.figma.com/slides/nfAzIjZAwAXM1kVmZxed75/Thesis--alt.ctrl.LRN?node-id=1-350&embed-host=share" allowfullscreen></iframe>`
+<div class="my-8 w-full rounded-3xl overflow-hidden border-2 border-emerald-500/30" style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://embed.figma.com/slides/nfAzIjZAwAXM1kVmZxed75/Thesis--alt.ctrl.LRN?node-id=1-350&embed-host=share" allowfullscreen></iframe></div>`
     },
     {
       id: 2,
@@ -1076,7 +1109,7 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="mb-12 flex justify-center">
           <button 
             onClick={() => setChatOpen(true)}
-            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group animate-pulse-subtle"
             aria-label="Chat with AI assistant about Sara's work"
           >
             <img
@@ -1102,39 +1135,161 @@ HealthKit authorization and data access patterns are complex - simulator require
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
             <h2 className="text-2xl font-bold text-white mb-4">What I Do</h2>
             <p className="mb-4">
-              I'm a <span className="text-pink-300 font-semibold">UX Researcher & Product Designer</span> creating <span className="text-purple-300 font-semibold">AI-powered learning tools</span>, <span className="text-purple-300 font-semibold">brain-computer interfaces</span>, and <span className="text-purple-300 font-semibold">interactive experiences</span>. I collaborate with researchers at <span className="text-pink-300 font-semibold">MIT Media Lab</span> on cutting-edge BCI and AI co-creativity projects.
+              I'm a <span className="text-pink-300 font-semibold">UX Researcher & Product Designer</span> who combines deep user understanding with thoughtful design to build products people actually want to use. I specialize in <span className="text-purple-300 font-semibold">mixed-methods research</span>, <span className="text-purple-300 font-semibold">co-design facilitation</span>, <span className="text-purple-300 font-semibold">interaction design</span>, and <span className="text-purple-300 font-semibold">interactive prototyping</span> across education, AI, and emerging technologies. I collaborate with researchers at <span className="text-pink-300 font-semibold">MIT Media Lab</span> on brain-computer interfaces and AI co-creativity.
             </p>
             <p>
-              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI, GALA, and JCSG on AI-assisted creativity, VR emotional design, and embodied game interactions. My work sits at the intersection of cutting-edge technology and human-centered design.
+              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI, GALA, and JCSG. My strength is moving fluently between research (uncovering insights) and design (translating insights into experiences people love).
             </p>
           </div>
 
+          <div className="bg-slate-900/40 backdrop-blur-md rounded-2xl border border-purple-500/30 overflow-hidden">
+            <button 
+              onClick={() => setAboutSectionsExpanded(prev => ({ ...prev, howIWork: !prev.howIWork }))}
+              className="w-full p-8 text-left flex items-center justify-between hover:bg-slate-800/30 transition-colors"
+            >
+              <h2 className="text-2xl font-bold text-white">How I Work</h2>
+              <ChevronDown 
+                size={24} 
+                className={`text-purple-400 transition-transform ${aboutSectionsExpanded.howIWork ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {aboutSectionsExpanded.howIWork && (
+              <div className="px-8 pb-8 space-y-4">
+                <p className="mb-4">
+                  The best products come from <span className="text-pink-300 font-semibold">rigorous research</span> combined with <span className="text-pink-300 font-semibold">thoughtful design</span> and <span className="text-pink-300 font-semibold">technical prototyping</span>. I move seamlessly between research and design, letting insights guide decisions and prototypes surface new questions.
+                </p>
+                <ul className="space-y-3 ml-6">
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Research + Design Integration:</strong> I start with user research (co-design, interviews, observation), move into rapid design iteration (wireframes, high-fidelity prototypes), then validate back with users. Research informs design, design raises new research questions.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Mixed-methods researcher:</strong> Qualitative (45+ co-design participants, 39 in AI study) + quantitative (usability metrics, A/B testing, behavioral data) → deeper insights than either alone</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Interaction designer:</strong> I design for clarity, delight, and intention. Every microinteraction serves a purpose. VR, mobile, web, hardware - the principles scale across platforms.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Rapid prototyper:</strong> Figma → Coded prototype → User test → Iterate. I move from concept to testable in days because the best research happens when users interact with something real.</span>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md rounded-2xl border border-purple-500/30 overflow-hidden">
+            <button 
+              onClick={() => setAboutSectionsExpanded(prev => ({ ...prev, background: !prev.background }))}
+              className="w-full p-8 text-left flex items-center justify-between hover:bg-slate-800/30 transition-colors"
+            >
+              <h2 className="text-2xl font-bold text-white">Why This Combination?</h2>
+              <ChevronDown 
+                size={24} 
+                className={`text-purple-400 transition-transform ${aboutSectionsExpanded.background ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {aboutSectionsExpanded.background && (
+              <div className="px-8 pb-8 space-y-4">
+                <p className="mb-4">
+                  I started as a middle school teacher, which taught me something fundamental: <span className="text-pink-300 font-semibold">you can't design for people you don't understand</span>. In the classroom, I witnessed firsthand how thoughtful design of learning experiences transforms engagement and understanding. That experience made me obsessed with both understanding how people learn AND creating beautiful, intentional designs that support that learning. It also gave me a deep passion to design experiences that promote learning — creating products where clarity, scaffolding, and delight work together to help people grow.
+                </p>
+                <p className="mb-4">
+                  Now I apply learning science principles and research rigor to design decisions across diverse domains — from learning tools (grounded in cognitive science) to AI interfaces to accessibility. Every project is informed by the question: <span className="text-purple-300 font-semibold">What does a person need to understand this, feel confident, and succeed?</span>
+                </p>
+                <p>
+                  The secret: let research guide the design, let prototypes surface new questions, and always keep the learner (or user) at the center.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-slate-900/40 backdrop-blur-md rounded-2xl border border-purple-500/30 overflow-hidden">
+            <button 
+              onClick={() => setAboutSectionsExpanded(prev => ({ ...prev, skillset: !prev.skillset }))}
+              className="w-full p-8 text-left flex items-center justify-between hover:bg-slate-800/30 transition-colors"
+            >
+              <h2 className="text-2xl font-bold text-white">Technical Skillset</h2>
+              <ChevronDown 
+                size={24} 
+                className={`text-purple-400 transition-transform ${aboutSectionsExpanded.skillset ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {aboutSectionsExpanded.skillset && (
+              <div className="px-8 pb-8">
+                <ul className="space-y-2 ml-6 text-base">
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Research:</strong> Co-design facilitation, mixed-methods, thematic analysis, network analysis, usability testing, A/B testing, behavioral observation, survey design</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Design:</strong> Figma, interaction design, information architecture, visual design, design systems, accessibility (WCAG)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Prototyping & Code:</strong> VS Code, Arduino, Python, JavaScript, Web Serial API, high-fidelity mockups, full-stack prototyping</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-purple-400 mt-1">•</span>
+                    <span><strong className="text-white">Domains:</strong> Educational technology, AI/ML interfaces, VR/AR, accessibility, hardware, games</span>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
-            <h2 className="text-2xl font-bold text-white mb-4">My Approach</h2>
-            <p className="mb-4">
-              I believe great design sits at the intersection of <span className="text-pink-300 font-semibold">rigorous research</span>, <span className="text-pink-300 font-semibold">technical feasibility</span>, and <span className="text-pink-300 font-semibold">human empathy</span>.
-            </p>
-            <ul className="space-y-3 ml-6">
+            <h2 className="text-2xl font-bold text-white mb-4">Publications</h2>
+            <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">Research-backed:</strong> Every design decision grounded in user data — from large-scale studies (2000+ participant targets across NYC and beyond) to intimate co-design sessions</span>
+                <GraduationCap size={20} className="text-purple-400 mt-1 flex-shrink-0" />
+                <div>
+                  <a 
+                    href="https://ojs.aaai.org/index.php/AAAI/article/view/35182" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-pink-300 hover:text-pink-200 font-semibold underline inline-flex items-center gap-1"
+                  >
+                    Designing Characters with AI: An Art & AI Learning Activity
+                    <ExternalLink size={14} className="flex-shrink-0" />
+                  </a>
+                  <p className="text-sm text-purple-200 mt-1">AAAI Conference on Artificial Intelligence (2025)</p>
+                </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">Technically informed:</strong> I code (Python, Arduino, Unity) so my designs are actually buildable</span>
+                <GraduationCap size={20} className="text-purple-400 mt-1 flex-shrink-0" />
+                <div>
+                  <a 
+                    href="https://link.springer.com/chapter/10.1007/978-3-031-78269-5_32" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-pink-300 hover:text-pink-200 font-semibold underline inline-flex items-center gap-1"
+                  >
+                    Motion Design for Emotion Design
+                    <ExternalLink size={14} className="flex-shrink-0" />
+                  </a>
+                  <p className="text-sm text-purple-200 mt-1">Games and Learning Alliance Conference (GALA 2024)</p>
+                </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">Maker mindset:</strong> From VR prototypes to interactive wearables, I build to understand</span>
+                <GraduationCap size={20} className="text-purple-400 mt-1 flex-shrink-0" />
+                <div>
+                  <a 
+                    href="https://link.springer.com/chapter/10.1007/978-3-031-74138-8_41" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-pink-300 hover:text-pink-200 font-semibold underline inline-flex items-center gap-1"
+                  >
+                    Embodied Game Interactions: Somatosensation, Self-Identification, and the Potential of Alternative Game Controllers
+                    <ExternalLink size={14} className="flex-shrink-0" />
+                  </a>
+                  <p className="text-sm text-purple-200 mt-1">Joint Conference on Serious Games (JCSG 2024)</p>
+                </div>
               </li>
             </ul>
-          </div>
-
-          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
-            <h2 className="text-2xl font-bold text-white mb-4">Beyond Work</h2>
-            <p>
-              When I'm not designing, you'll find me tinkering with hardware projects (like brainwave-controlled music with a Muse headset), exploring VR worlds, or diving into the latest AI tools. I'm endlessly curious about how technology can amplify human potential — especially in learning and education.
-            </p>
           </div>
 
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
@@ -1142,25 +1297,22 @@ HealthKit authorization and data access patterns are complex - simulator require
             <ul className="space-y-3 ml-6">
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">NYU Prototyping Fund Recipient</strong> — Awarded competitive funding for embodied learning controller development</span>
+                <span><strong className="text-white">Published Researcher</strong> — AAAI 2025, GALA, JCSG conferences on AI-human collaboration, emotional design, embodied interaction</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-purple-400 mt-1">•</span>
-                <span><strong className="text-white">NYU Steinhardt Banner Bearer</strong> — Selected for leadership and service contributions to the academic community</span>
+                <span><strong className="text-white">NYU Prototyping Fund Recipient</strong> — Awarded competitive funding for alt.ctrl.LRN (embodied learning controller combining research + iterative hardware design)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong className="text-white">NYU Steinhardt Banner Bearer</strong> — Selected for leadership and service to the academic community</span>
               </li>
             </ul>
           </div>
 
-          <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
-            <h2 className="text-2xl font-bold text-white mb-4">Where I Come From</h2>
-            <p>
-              Before tech, I was a middle school teacher — an experience that taught me how to deeply understand users and design for real human needs. That classroom experience gave me an edge in empathy-driven research and design thinking that shapes everything I build today.
-            </p>
-          </div>
-
           <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md p-8 rounded-2xl border border-purple-400/50 text-center">
             <p className="text-xl mb-6">
-              Want to chat about research, design, or weird maker projects?
+              Interested in user research, product design, or solving complex problems with thoughtful, human-centered solutions?
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <a
@@ -1247,7 +1399,7 @@ HealthKit authorization and data access patterns are complex - simulator require
           </div>
 
           <div className="inline-block mb-6 px-6 py-2.5 bg-purple-500/20 backdrop-blur-sm text-purple-300 rounded-full text-base font-medium border-2 border-purple-400/30">
-            Designer • Researcher • Maker
+            Researcher • Designer • Maker
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-9xl font-black mb-6 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent leading-tight">
             Sara Jakubowicz
@@ -1258,33 +1410,6 @@ HealthKit authorization and data access patterns are complex - simulator require
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
-          <button
-            onClick={() => navigateToPage('design')}
-            onMouseEnter={() => handleDesignHover(true)}
-            onMouseLeave={() => handleDesignHover(false)}
-            className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-purple-500/30 hover:border-purple-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-purple-500/30 md:hover:scale-105 transform"
-            style={{ overflow: 'hidden' }}
-          >
-            <AnimatedLine isHovering={designHover} color="rgb(192, 132, 252)" />
-            
-            <div className="relative z-10">
-              <div className="mb-6 text-purple-300">
-                <Sparkles size={56} strokeWidth={1.5} />
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">Design</h2>
-              <p className="text-purple-200 text-base md:text-lg mb-6 md:mb-8 font-light">
-                Product design that moves the needle
-              </p>
-              
-              <div className="flex items-center gap-3 text-purple-300 font-bold group-hover:gap-6 transition-all text-lg">
-                See My Designs
-                <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
-              </div>
-            </div>
-            
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </button>
-
           <button
             onClick={() => navigateToPage('research')}
             onMouseEnter={() => handleResearchHover(true)}
@@ -1300,7 +1425,7 @@ HealthKit authorization and data access patterns are complex - simulator require
               </div>
               <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">Research</h2>
               <p className="text-blue-200 text-base md:text-lg mb-6 md:mb-8 font-light">
-                Understanding humans, one study at a time
+                Rigorous insights on learning, AI, and human behavior
               </p>
               
               <div className="flex items-center gap-3 text-blue-300 font-bold group-hover:gap-6 transition-all text-lg">
@@ -1310,6 +1435,33 @@ HealthKit authorization and data access patterns are complex - simulator require
             </div>
             
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          </button>
+
+          <button
+            onClick={() => navigateToPage('design')}
+            onMouseEnter={() => handleDesignHover(true)}
+            onMouseLeave={() => handleDesignHover(false)}
+            className="group relative bg-slate-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl md:rounded-[2.5rem] border-2 border-purple-500/30 hover:border-purple-400/60 hover:bg-slate-900/60 transition-all duration-500 text-left overflow-hidden h-80 md:h-96 shadow-2xl hover:shadow-purple-500/30 md:hover:scale-105 transform"
+            style={{ overflow: 'hidden' }}
+          >
+            <AnimatedLine isHovering={designHover} color="rgb(192, 132, 252)" />
+            
+            <div className="relative z-10">
+              <div className="mb-6 text-purple-300">
+                <Sparkles size={56} strokeWidth={1.5} />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-4 text-white">Design</h2>
+              <p className="text-purple-200 text-base md:text-lg mb-6 md:mb-8 font-light">
+                Learning-focused products and experiences
+              </p>
+              
+              <div className="flex items-center gap-3 text-purple-300 font-bold group-hover:gap-6 transition-all text-lg">
+                See My Designs
+                <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+              </div>
+            </div>
+            
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </button>
         </div>
 
@@ -1354,24 +1506,9 @@ HealthKit authorization and data access patterns are complex - simulator require
 
     if (selectedProject) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-slate-900 to-indigo-900 relative">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-slate-900 to-indigo-900 relative pt-16">
           <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
           <AnimatedBorderLines />
-
-          <div className="bg-slate-900/50 backdrop-blur-lg border-b border-purple-500/20 sticky top-0 z-30">
-            <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-              <button onClick={() => {
-                window.history.pushState({}, '', '/design');
-                setSelectedProjectId(null);
-              }} className="flex items-center gap-2 text-purple-300 hover:text-purple-200 transition-colors font-bold group">
-                <ArrowLeft size={22} className="group-hover:-translate-x-1 transition-transform" />
-                Back to Projects
-              </button>
-              <button onClick={() => navigateToPage('home')} className="text-purple-300 hover:text-purple-200 transition-colors font-bold">
-                Home
-              </button>
-            </div>
-          </div>
 
           <div className="max-w-5xl mx-auto px-6 py-16">
             <div className="mb-12">
@@ -1389,6 +1526,20 @@ HealthKit authorization and data access patterns are complex - simulator require
               <div className="mb-12">
                 <div className="relative w-full" style={{ padding: '56.25% 0 0 0' }}>
                   <iframe 
+                    src="https://embed.figma.com/proto/nHuqd69kbVvCtt3d5PwDTV/SaraJakubowicz_skilltree?page-id=0%3A1&node-id=1-2&p=f&viewport=-752%2C20%2C0.5&scaling=scale-down&content-scaling=fixed&starting-point-node-id=97%3A527&embed-host=share" 
+                    allowFullScreen
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    className="rounded-3xl border-2 border-purple-500/30"
+                    title="AI Lesson Builder Prototype"
+                  />
+                </div>
+              </div>
+            )}
+
+            {selectedProject.id === 2 && (
+              <div className="mb-12">
+                <div className="relative w-full" style={{ padding: '56.25% 0 0 0' }}>
+                  <iframe 
                     src="https://player.vimeo.com/video/1014379680?badge=0&autopause=0&player_id=0&app_id=58479" 
                     frameBorder="0" 
                     allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
@@ -1398,20 +1549,6 @@ HealthKit authorization and data access patterns are complex - simulator require
                   />
                 </div>
                 <script src="https://player.vimeo.com/api/player.js"></script>
-              </div>
-            )}
-
-            {selectedProject.id === 2 && (
-              <div className="mb-12">
-                <div className="relative w-full" style={{ padding: '56.25% 0 0 0' }}>
-                  <iframe 
-                    src="https://embed.figma.com/proto/nHuqd69kbVvCtt3d5PwDTV/SaraJakubowicz_skilltree?page-id=0%3A1&node-id=1-2&p=f&viewport=-752%2C20%2C0.5&scaling=scale-down&content-scaling=fixed&starting-point-node-id=97%3A527&embed-host=share" 
-                    allowFullScreen
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    className="rounded-3xl border-2 border-purple-500/30"
-                    title="AI Lesson Builder Prototype"
-                  />
-                </div>
               </div>
             )}
 
@@ -1469,6 +1606,36 @@ HealthKit authorization and data access patterns are complex - simulator require
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
                   }
+                  // Add extra spacing for findings
+                  if (line.includes('Finding 1:') || line.includes('Finding 2:') || line.includes('Finding 3:')) {
+                    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <div key={idx} className="mt-6 mb-4">
+                        {parts.map((part, i) => {
+                          const boldMatch = part.match(/\*\*([^*]+)\*\*/);
+                          if (boldMatch) {
+                            return <strong key={i} className="font-bold text-white text-xl">{boldMatch[1]}</strong>;
+                          }
+                          return <span key={i}>{part}</span>;
+                        })}
+                      </div>
+                    );
+                  }
+                  // Add spacing for numbered lists
+                  if (/^\d+\./.test(line.trim())) {
+                    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <p key={idx} className="mb-4 ml-4">
+                        {parts.map((part, i) => {
+                          const boldMatch = part.match(/\*\*([^*]+)\*\*/);
+                          if (boldMatch) {
+                            return <strong key={i} className="font-bold text-white">{boldMatch[1]}</strong>;
+                          }
+                          return <span key={i}>{part}</span>;
+                        })}
+                      </p>
+                    );
+                  }
                   // Handle special image placeholders
                   if (line === '[AR_IMAGE]' && selectedProject.arImage) {
                     return <img key={idx} src={selectedProject.arImage} alt="AR ingredient collection and avatar customization" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
@@ -1501,37 +1668,37 @@ HealthKit authorization and data access patterns are complex - simulator require
                   }
                   // Handle Cosmos sketch placeholders
                   if (line === '[SPACE_SKETCH]' && selectedProject.spaceSketch) {
-                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos space view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.spaceSketch} alt="Cosmos VR storyboard sketch: Space perspective showing orbital view with interactive phase diagram and moon positioning controls" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[EARTH_SKETCH]' && selectedProject.earthSketch) {
-                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos earth view storyboard sketch" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.earthSketch} alt="Cosmos VR storyboard sketch: Earth surface perspective showing ground-level moon phase view with time indicators and teleportation interface" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle Cosmos final product screenshots
                   if (line === '[CAMERA_IMAGE]' && selectedProject.cameraImage) {
-                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR camera feature" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.cameraImage} alt="Cosmos VR screenshot: Photo documentation camera feature showing captured moon phase evidence for captain's log" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[TELEPORT_IMAGE]' && selectedProject.teleportImage) {
-                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR teleportation and space view" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.teleportImage} alt="Cosmos VR in-game screenshot: Teleportation interface with space, Earth, and Moon perspective buttons plus interactive phase diagram" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[MYDESK_LMS_IMAGE]' && selectedProject.mydeskLMSImage) {
-                    return <img key={idx} src={selectedProject.mydeskLMSImage} alt="myDesk LMS iteration" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.mydeskLMSImage} alt="myDesk LMS iteration: Early student collaboration hub design before pivoting to AI lesson builder based on educator pain points" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   if (line === '[MYDESK_EXTENSION_IMAGE]' && selectedProject.mydeskExtensionImage) {
-                    return <img key={idx} src={selectedProject.mydeskExtensionImage} alt="myDesk browser extension concept" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                    return <img key={idx} src={selectedProject.mydeskExtensionImage} alt="myDesk browser extension concept: Chrome extension mockup for collaborative course management prior to research-driven pivot" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
                   }
                   // Handle video placeholders
                   if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
-                    return <video key={idx} src={selectedProject.toggleVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><video src={selectedProject.toggleVideo} controls className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[COLOR_VIDEO]' && selectedProject.colorVideo) {
-                    return <video key={idx} src={selectedProject.colorVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><video src={selectedProject.colorVideo} controls className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle altctrl version image placeholders
                   if (line === '[V0_GIF]' && selectedProject.v0Gif) {
                     return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
-                    return <img key={idx} src={selectedProject.v1Image} alt="Version 1 joystick controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="Version 1 joystick controller" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
                     return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
@@ -1540,7 +1707,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
-                    return <img key={idx} src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
@@ -1557,22 +1724,27 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Parse markdown links [text](url) and inline bold **text**
-                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-                  const boldRegex = /\*\*([^*]+)\*\*/g;
-                  if (linkRegex.test(line) || boldRegex.test(line)) {
-                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/;
+                  const boldRegex = /\*\*([^*]+)\*\*/;
+                  const italicRegex = /\*([^*]+)\*/;
+                  if (linkRegex.test(line) || boldRegex.test(line) || italicRegex.test(line)) {
+                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/g);
                     return (
                       <p key={idx} className="mb-3">
                         {parts.map((part, i) => {
                           const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
                           if (linkMatch) {
-                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-purple-200 underline">{linkMatch[1]}</a>;
+                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-purple-200 underline inline-flex items-center gap-1">{linkMatch[1]}<ExternalLink size={14} className="flex-shrink-0" /></a>;
                           }
                           const boldMatch = part.match(/\*\*([^*]+)\*\*/);
                           if (boldMatch) {
                             return <strong key={i} className="font-bold text-white">{boldMatch[1]}</strong>;
                           }
-                          return part;
+                          const italicMatch = part.match(/^\*([^*]+)\*$/);
+                          if (italicMatch) {
+                            return <em key={i} className="italic text-purple-200">{italicMatch[1]}</em>;
+                          }
+                          return <span key={i}>{part}</span>;
                         })}
                       </p>
                     );
@@ -1584,6 +1756,45 @@ HealthKit authorization and data access patterns are complex - simulator require
 
             <div className="mb-12">
               <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 md:h-[600px] object-cover object-center rounded-3xl border-2 border-purple-500/30" />
+            </div>
+
+            {/* Project Navigation */}
+            <div className="flex items-center justify-between gap-4 pt-8 border-t border-purple-500/20">
+              <button
+                onClick={() => {
+                  const currentIndex = designProjects.findIndex(p => p.id === selectedProject.id);
+                  const prevProject = currentIndex > 0 ? designProjects[currentIndex - 1] : designProjects[designProjects.length - 1];
+                  setSelectedProjectId(prevProject.id);
+                  window.history.pushState({}, '', `/design/${prevProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-purple-500/20 hover:bg-purple-500/30 border-2 border-purple-400/30 hover:border-purple-400/60 rounded-full text-purple-200 hover:text-white transition-all font-bold"
+              >
+                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                Previous Project
+              </button>
+              <button
+                onClick={() => {
+                  window.history.pushState({}, '', '/design');
+                  setSelectedProjectId(null);
+                }}
+                className="px-6 py-3 bg-purple-500/10 hover:bg-purple-500/20 border-2 border-purple-400/20 hover:border-purple-400/40 rounded-full text-purple-300 hover:text-white transition-all font-bold"
+              >
+                All Projects
+              </button>
+              <button
+                onClick={() => {
+                  const currentIndex = designProjects.findIndex(p => p.id === selectedProject.id);
+                  const nextProject = currentIndex < designProjects.length - 1 ? designProjects[currentIndex + 1] : designProjects[0];
+                  setSelectedProjectId(nextProject.id);
+                  window.history.pushState({}, '', `/design/${nextProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-purple-500/20 hover:bg-purple-500/30 border-2 border-purple-400/30 hover:border-purple-400/60 rounded-full text-purple-200 hover:text-white transition-all font-bold"
+              >
+                Next Project
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
 
@@ -1600,7 +1811,7 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
             <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Design Work</h1>
-            <p className="text-lg md:text-2xl text-purple-200 font-light">Where research meets pixels</p>
+            <p className="text-lg md:text-2xl text-purple-200 font-light max-w-4xl mx-auto">I design experiences that balance clarity, delight, and purpose. Every microinteraction is intentional. Every screen serves the user's goal. Research informs every decision, and rapid prototyping tests every assumption.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
@@ -1613,33 +1824,33 @@ HealthKit authorization and data access patterns are complex - simulator require
                   className="group relative aspect-[4/3] rounded-3xl overflow-hidden border-2 border-purple-500/30 hover:border-purple-400/60 transition-all duration-500 hover:scale-105 transform shadow-2xl hover:shadow-purple-500/40"
                 >
                   <img src={project.thumbnail} alt={project.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  ]
+                  
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-purple-900/90 group-hover:via-purple-900/70 transition-all duration-500" />
                   
-                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                      <Icon size={36} className="text-purple-300 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-                      <div className="px-3 py-1 bg-purple-500/30 backdrop-blur-sm text-purple-200 text-xs font-bold rounded-full border border-purple-400/40">
+                  <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
+                    <div className="flex justify-between items-start gap-2">
+                      <Icon size={28} className="text-purple-300 group-hover:scale-110 transition-transform flex-shrink-0 sm:w-9 sm:h-9" strokeWidth={1.5} />
+                      <div className="px-2 sm:px-3 py-1 bg-purple-500/30 backdrop-blur-sm text-purple-200 text-xs font-bold rounded-full border border-purple-400/40 whitespace-nowrap">
                         {project.company}
                       </div>
                     </div>
                     
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-black text-white mb-2">{project.title}</h3>
-                      <p className="text-purple-200 text-sm mb-4 font-medium">{project.tagline}</p>
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight line-clamp-2">{project.title}</h3>
+                      <p className="text-purple-200 text-xs sm:text-sm font-medium line-clamp-2">{project.tagline}</p>
                       
-                      <div className="grid grid-cols-3 gap-2 md:gap-3 mb-4">
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2 md:gap-3">
                         {project.details.map((detail, idx) => (
-                          <div key={idx} className="text-center bg-black/30 backdrop-blur-sm rounded-xl p-2 border border-purple-400/20">
-                            <div className="text-lg md:text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">{detail.value}</div>
-                            <div className="text-xs text-purple-300">{detail.label}</div>
+                          <div key={idx} className="text-center bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl p-1.5 sm:p-2 border border-purple-400/20">
+                            <div className="text-sm sm:text-lg md:text-xl font-black bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent line-clamp-1">{detail.value}</div>
+                            <div className="text-[10px] sm:text-xs text-purple-300 line-clamp-1">{detail.label}</div>
                           </div>
                         ))}
                       </div>
                       
-                      <div className="flex items-center gap-2 text-purple-300 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play size={16} fill="currentColor" />
-                        View Full Case Study
+                      <div className="flex items-center gap-2 text-purple-300 text-xs sm:text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Play size={14} fill="currentColor" className="sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="line-clamp-1">View Full Case Study</span>
                       </div>
                     </div>
                   </div>
@@ -1660,24 +1871,9 @@ HealthKit authorization and data access patterns are complex - simulator require
     if (selectedProject) {
       const Icon = selectedProject.icon;
       return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-indigo-900 relative">
+        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-indigo-900 relative pt-16">
           <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
           <AnimatedBorderLines />
-
-          <div className="bg-slate-900/50 backdrop-blur-lg border-b border-blue-500/20 sticky top-0 z-30">
-            <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-              <button onClick={() => {
-                window.history.pushState({}, '', '/research');
-                setSelectedProjectId(null);
-              }} className="flex items-center gap-2 text-blue-300 hover:text-blue-200 transition-colors font-bold group">
-                <ArrowLeft size={22} className="group-hover:-translate-x-1 transition-transform" />
-                Back to Research
-              </button>
-              <button onClick={() => navigateToPage('home')} className="text-blue-300 hover:text-blue-200 transition-colors font-bold">
-                Home
-              </button>
-            </div>
-          </div>
 
           <div className="max-w-5xl mx-auto px-6 py-16">
             <div className="mb-12">
@@ -1745,22 +1941,27 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Parse markdown links [text](url) and inline bold **text**
-                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-                  const boldRegex = /\*\*([^*]+)\*\*/g;
-                  if (linkRegex.test(line) || boldRegex.test(line)) {
-                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/;
+                  const boldRegex = /\*\*([^*]+)\*\*/;
+                  const italicRegex = /\*([^*]+)\*/;
+                  if (linkRegex.test(line) || boldRegex.test(line) || italicRegex.test(line)) {
+                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/g);
                     return (
                       <p key={idx} className="mb-3">
                         {parts.map((part, i) => {
                           const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
                           if (linkMatch) {
-                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 underline">{linkMatch[1]}</a>;
+                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 underline inline-flex items-center gap-1">{linkMatch[1]}<ExternalLink size={14} className="flex-shrink-0" /></a>;
                           }
                           const boldMatch = part.match(/\*\*([^*]+)\*\*/);
                           if (boldMatch) {
                             return <strong key={i} className="font-bold text-white">{boldMatch[1]}</strong>;
                           }
-                          return part;
+                          const italicMatch = part.match(/^\*([^*]+)\*$/);
+                          if (italicMatch) {
+                            return <em key={i} className="italic text-blue-200">{italicMatch[1]}</em>;
+                          }
+                          return <span key={i}>{part}</span>;
                         })}
                       </p>
                     );
@@ -1772,6 +1973,45 @@ HealthKit authorization and data access patterns are complex - simulator require
 
             <div className="mb-12">
               <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-blue-500/30" />
+            </div>
+
+            {/* Project Navigation */}
+            <div className="flex items-center justify-between gap-4 pt-8 border-t border-blue-500/20">
+              <button
+                onClick={() => {
+                  const currentIndex = researchProjects.findIndex(p => p.id === selectedProject.id);
+                  const prevProject = currentIndex > 0 ? researchProjects[currentIndex - 1] : researchProjects[researchProjects.length - 1];
+                  setSelectedProjectId(prevProject.id);
+                  window.history.pushState({}, '', `/research/${prevProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-blue-500/20 hover:bg-blue-500/30 border-2 border-blue-400/30 hover:border-blue-400/60 rounded-full text-blue-200 hover:text-white transition-all font-bold"
+              >
+                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                Previous Project
+              </button>
+              <button
+                onClick={() => {
+                  window.history.pushState({}, '', '/research');
+                  setSelectedProjectId(null);
+                }}
+                className="px-6 py-3 bg-blue-500/10 hover:bg-blue-500/20 border-2 border-blue-400/20 hover:border-blue-400/40 rounded-full text-blue-300 hover:text-white transition-all font-bold"
+              >
+                All Projects
+              </button>
+              <button
+                onClick={() => {
+                  const currentIndex = researchProjects.findIndex(p => p.id === selectedProject.id);
+                  const nextProject = currentIndex < researchProjects.length - 1 ? researchProjects[currentIndex + 1] : researchProjects[0];
+                  setSelectedProjectId(nextProject.id);
+                  window.history.pushState({}, '', `/research/${nextProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-blue-500/20 hover:bg-blue-500/30 border-2 border-blue-400/30 hover:border-blue-400/60 rounded-full text-blue-200 hover:text-white transition-all font-bold"
+              >
+                Next Project
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
 
@@ -1788,7 +2028,7 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
             <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Research</h1>
-            <p className="text-lg md:text-2xl text-blue-200 font-light">Curiosity-driven insights</p>
+            <p className="text-lg md:text-2xl text-blue-200 font-light max-w-4xl mx-auto">I conduct mixed-methods research to understand how people learn with technology. From AI co-creativity (AAAI) to VR learning environments (GALA), I bridge quantitative analysis with qualitative insights to uncover what makes learning experiences effective.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
@@ -1804,26 +2044,26 @@ HealthKit authorization and data access patterns are complex - simulator require
                   
                   <div className={`absolute inset-0 bg-gradient-to-t ${project.color} opacity-70 group-hover:opacity-80 transition-opacity duration-500`} />
                   
-                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                      <Icon size={36} className="text-white group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-                      <div className="px-3 py-1 bg-white/30 backdrop-blur-sm text-white text-xs font-bold rounded-full border border-white/40">
+                  <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
+                    <div className="flex justify-between items-start gap-2">
+                      <Icon size={28} className="text-white group-hover:scale-110 transition-transform flex-shrink-0 sm:w-9 sm:h-9" strokeWidth={1.5} />
+                      <div className="px-2 sm:px-3 py-1 bg-white/30 backdrop-blur-sm text-white text-xs font-bold rounded-full border border-white/40 whitespace-nowrap">
                         {project.type}
                       </div>
                     </div>
                     
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">{project.title}</h3>
-                      <p className="text-blue-100 text-sm mb-4 font-medium">{project.tagline}</p>
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight line-clamp-2">{project.title}</h3>
+                      <p className="text-blue-100 text-xs sm:text-sm font-medium line-clamp-2">{project.tagline}</p>
                       
-                      <div className="mb-4 bg-black/30 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-white/20">
-                        <div className="text-sm text-white/80 mb-1">{project.stat}</div>
-                        <div className="text-lg md:text-xl font-black text-white">{project.finding}</div>
+                      <div className="bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-white/20">
+                        <div className="text-xs sm:text-sm text-white/80 mb-1 line-clamp-1">{project.stat}</div>
+                        <div className="text-sm sm:text-lg md:text-xl font-black text-white line-clamp-2">{project.finding}</div>
                       </div>
                       
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {project.tags.map((tag, idx) => (
-                          <span key={idx} className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm rounded-full font-medium border border-white/30">
+                          <span key={idx} className="px-2 sm:px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs sm:text-sm rounded-full font-medium border border-white/30 line-clamp-1">
                             {tag}
                           </span>
                         ))}
@@ -1847,24 +2087,9 @@ HealthKit authorization and data access patterns are complex - simulator require
     if (selectedProject) {
       const Icon = selectedProject.icon;
       return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-slate-900 to-teal-900 relative">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-slate-900 to-teal-900 relative pt-16">
           <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 z-40" />
           <AnimatedBorderLines />
-
-          <div className="bg-slate-900/50 backdrop-blur-lg border-b border-emerald-500/20 sticky top-0 z-30">
-            <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-              <button onClick={() => {
-                window.history.pushState({}, '', '/maker');
-                setSelectedProjectId(null);
-              }} className="flex items-center gap-2 text-emerald-300 hover:text-emerald-200 transition-colors font-bold group">
-                <ArrowLeft size={22} className="group-hover:-translate-x-1 transition-transform" />
-                Back to Projects
-              </button>
-              <button onClick={() => navigateToPage('home')} className="text-emerald-300 hover:text-emerald-200 transition-colors font-bold">
-                Home
-              </button>
-            </div>
-          </div>
 
           <div className="max-w-5xl mx-auto px-6 py-16">
             <div className="mb-12">
@@ -1895,19 +2120,49 @@ HealthKit authorization and data access patterns are complex - simulator require
                   if (line.trim() === '') {
                     return <div key={idx} className="h-2" />;
                   }
+                  // Add extra spacing for findings
+                  if (line.includes('Finding 1:') || line.includes('Finding 2:') || line.includes('Finding 3:')) {
+                    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <div key={idx} className="mt-6 mb-4">
+                        {parts.map((part, i) => {
+                          const boldMatch = part.match(/\*\*([^*]+)\*\*/);
+                          if (boldMatch) {
+                            return <strong key={i} className="font-bold text-white text-xl">{boldMatch[1]}</strong>;
+                          }
+                          return <span key={i}>{part}</span>;
+                        })}
+                      </div>
+                    );
+                  }
+                  // Add spacing for numbered lists
+                  if (/^\d+\./.test(line.trim())) {
+                    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <p key={idx} className="mb-4 ml-4">
+                        {parts.map((part, i) => {
+                          const boldMatch = part.match(/\*\*([^*]+)\*\*/);
+                          if (boldMatch) {
+                            return <strong key={i} className="font-bold text-white">{boldMatch[1]}</strong>;
+                          }
+                          return <span key={i}>{part}</span>;
+                        })}
+                      </p>
+                    );
+                  }
                   // Handle video placeholders
                   if (line === '[TOGGLE_VIDEO]' && selectedProject.toggleVideo) {
-                    return <video key={idx} src={selectedProject.toggleVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><video src={selectedProject.toggleVideo} controls className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[COLOR_VIDEO]' && selectedProject.colorVideo) {
-                    return <video key={idx} src={selectedProject.colorVideo} controls className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><video src={selectedProject.colorVideo} controls className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle altctrl version image placeholders
                   if (line === '[V0_GIF]' && selectedProject.v0Gif) {
                     return <img key={idx} src={selectedProject.v0Gif} alt="Version 0 gyroscope in action" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
-                    return <img key={idx} src={selectedProject.v1Image} alt="Version 1 joystick controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="Version 1 joystick controller" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
                     return <img key={idx} src={selectedProject.v2_0Image} alt="Version 2.0 rotary encoder controller" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
@@ -1916,40 +2171,49 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <img key={idx} src={selectedProject.v2_1Image} alt="Version 2.1 controller detail" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
-                    return <img key={idx} src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="Version 2.2 controller final design" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle StressCam image placeholders
                   if (line === '[WATCH_IMAGE]' && selectedProject.watchImage) {
-                    return <img key={idx} src={selectedProject.watchImage} alt="StressCam Apple Watch interface" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.watchImage} alt="StressCam Apple Watch interface: Wearable UI showing real-time heart rate variability and stress level monitoring with haptic feedback" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[IPHONE_IMAGE]' && selectedProject.iphoneImage) {
-                    return <img key={idx} src={selectedProject.iphoneImage} alt="StressCam iPhone app" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.iphoneImage} alt="StressCam iPhone app: Mobile camera interface connecting heart rate data to photography triggers for stress-aware documentation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
                     return <div key={idx} className="my-8 w-full aspect-video rounded-2xl overflow-hidden border-2 border-emerald-500/30" dangerouslySetInnerHTML={{ __html: line }} />;
+                  }
+                  // Handle div wrappers (for responsive iframes)
+                  if (line.startsWith('<div')) {
+                    return <div key={idx} className="my-8" dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Handle img tags
                   if (line.startsWith('<img')) {
                     return <div key={idx} dangerouslySetInnerHTML={{ __html: line }} />;
                   }
                   // Parse markdown links [text](url) and inline bold **text**
-                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-                  const boldRegex = /\*\*([^*]+)\*\*/g;
-                  if (linkRegex.test(line) || boldRegex.test(line)) {
-                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+                  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/;
+                  const boldRegex = /\*\*([^*]+)\*\*/;
+                  const italicRegex = /\*([^*]+)\*/;
+                  if (linkRegex.test(line) || boldRegex.test(line) || italicRegex.test(line)) {
+                    const parts = line.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/g);
                     return (
                       <p key={idx} className="mb-3">
                         {parts.map((part, i) => {
                           const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
                           if (linkMatch) {
-                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-emerald-300 hover:text-emerald-200 underline">{linkMatch[1]}</a>;
+                            return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-emerald-300 hover:text-emerald-200 underline inline-flex items-center gap-1">{linkMatch[1]}<ExternalLink size={14} className="flex-shrink-0" /></a>;
                           }
                           const boldMatch = part.match(/\*\*([^*]+)\*\*/);
                           if (boldMatch) {
                             return <strong key={i} className="font-bold text-white">{boldMatch[1]}</strong>;
                           }
-                          return part;
+                          const italicMatch = part.match(/^\*([^*]+)\*$/);
+                          if (italicMatch) {
+                            return <em key={i} className="italic text-emerald-200">{italicMatch[1]}</em>;
+                          }
+                          return <span key={i}>{part}</span>;
                         })}
                       </p>
                     );
@@ -1960,7 +2224,46 @@ HealthKit authorization and data access patterns are complex - simulator require
             </div>
 
             <div className="mb-12">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[600px] object-cover object-center rounded-3xl border-2 border-emerald-500/30" />
+              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-[400px] object-cover object-center rounded-3xl border-2 border-emerald-500/30" />
+            </div>
+
+            {/* Project Navigation */}
+            <div className="flex items-center justify-between gap-4 pt-8 border-t border-emerald-500/20">
+              <button
+                onClick={() => {
+                  const currentIndex = makerProjects.findIndex(p => p.id === selectedProject.id);
+                  const prevProject = currentIndex > 0 ? makerProjects[currentIndex - 1] : makerProjects[makerProjects.length - 1];
+                  setSelectedProjectId(prevProject.id);
+                  window.history.pushState({}, '', `/maker/${prevProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 border-2 border-emerald-400/30 hover:border-emerald-400/60 rounded-full text-emerald-200 hover:text-white transition-all font-bold"
+              >
+                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                Previous Project
+              </button>
+              <button
+                onClick={() => {
+                  window.history.pushState({}, '', '/maker');
+                  setSelectedProjectId(null);
+                }}
+                className="px-6 py-3 bg-emerald-500/10 hover:bg-emerald-500/20 border-2 border-emerald-400/20 hover:border-emerald-400/40 rounded-full text-emerald-300 hover:text-white transition-all font-bold"
+              >
+                All Projects
+              </button>
+              <button
+                onClick={() => {
+                  const currentIndex = makerProjects.findIndex(p => p.id === selectedProject.id);
+                  const nextProject = currentIndex < makerProjects.length - 1 ? makerProjects[currentIndex + 1] : makerProjects[0];
+                  setSelectedProjectId(nextProject.id);
+                  window.history.pushState({}, '', `/maker/${nextProject.id}`);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group flex items-center gap-2 px-6 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 border-2 border-emerald-400/30 hover:border-emerald-400/60 rounded-full text-emerald-200 hover:text-white transition-all font-bold"
+              >
+                Next Project
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
 
@@ -1977,7 +2280,7 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
             <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Maker Projects</h1>
-            <p className="text-lg md:text-2xl text-emerald-200 font-light">Built for fun, learned a ton</p>
+            <p className="text-lg md:text-2xl text-emerald-200 font-light">Hardware + software explorations</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
@@ -1993,16 +2296,16 @@ HealthKit authorization and data access patterns are complex - simulator require
                   
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-emerald-900/90 group-hover:via-emerald-900/70 transition-all duration-500" />
                   
-                  <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                    <Icon size={32} className="text-emerald-300 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
+                  <div className="absolute inset-0 p-4 sm:p-5 md:p-6 flex flex-col justify-between">
+                    <Icon size={28} className="text-emerald-300 group-hover:scale-110 transition-transform flex-shrink-0 sm:w-8 sm:h-8" strokeWidth={1.5} />
                     
-                    <div>
-                      <h3 className="text-xl md:text-2xl font-black text-white mb-2">{project.title}</h3>
-                      <p className="text-emerald-200 text-sm mb-4 font-medium">{project.tagline}</p>
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white leading-tight line-clamp-2">{project.title}</h3>
+                      <p className="text-emerald-200 text-xs sm:text-sm font-medium line-clamp-2">{project.tagline}</p>
                       
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {project.tech.map((tech, idx) => (
-                          <span key={idx} className="px-3 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-xs rounded-full border border-emerald-400/30 font-bold">
+                          <span key={idx} className="px-2 sm:px-3 py-1 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 text-[10px] sm:text-xs rounded-full border border-emerald-400/30 font-bold line-clamp-1">
                             {tech}
                           </span>
                         ))}
@@ -2284,7 +2587,14 @@ HealthKit authorization and data access patterns are complex - simulator require
                       ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' 
                       : 'bg-slate-800/50 text-purple-100 border border-purple-500/30'
                   }`}>
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    {msg.role === 'user' ? (
+                      <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    ) : (
+                      <div 
+                        className="text-sm whitespace-pre-wrap markdown-content"
+                        dangerouslySetInnerHTML={{ __html: marked(msg.content) }}
+                      />
+                    )}
                   </div>
                 </div>
                 
@@ -2308,7 +2618,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                 
                 {/* Contact buttons */}
                 {msg.showContact && (
-                  <div className="flex justify-start gap-2">
+                  <div className="flex justify-start gap-2 flex-wrap">
                     <a
                       href="mailto:sarajakub0@gmail.com"
                       className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border border-pink-400/30 rounded-lg text-pink-200 text-sm transition-all"
@@ -2323,7 +2633,16 @@ HealthKit authorization and data access patterns are complex - simulator require
                       className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 border border-blue-400/30 rounded-lg text-blue-200 text-sm transition-all"
                     >
                       <Linkedin className="w-4 h-4" />
-                      <span>Connect on LinkedIn</span>
+                      <span>LinkedIn</span>
+                    </a>
+                    <a
+                      href="https://github.com/sarajakub"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-500/20 to-slate-600/20 hover:from-slate-500/30 hover:to-slate-600/30 border border-slate-400/30 rounded-lg text-slate-200 text-sm transition-all"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>GitHub</span>
                     </a>
                   </div>
                 )}
