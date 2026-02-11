@@ -299,7 +299,7 @@ export default function Portfolio() {
       id: 1,
       title: "AI Lesson Builder",
       company: "Stealth Startup",
-      tagline: "AI-powered learning scaffold for educators and learners",
+      tagline: "AI-powered content generation tool for structured workflows",
       image: courseaiImage,
       thumbnail: courseaiImage,
       mydeskCollabImage: mydeskCollabImage,
@@ -385,7 +385,7 @@ Initially building My Desk with a team of 4 - a student collaboration hub for co
       id: 2,
       title: "Cosmos VR Game",
       company: "CREATE Lab",
-      tagline: "VR-powered spatial learning for astronomy",
+      tagline: "Immersive VR experience with perspective-based interaction design",
       image: cosmosImage,
       thumbnail: cosmosImage,
       spaceSketch: cosmosSpaceSketch,
@@ -600,7 +600,7 @@ Also learned that **cultural food representation matters deeply**. When testing 
       id: 1,
       title: "AI-Assisted Character Design",
       type: "Mixed Methods (AAAI 2025)",
-      tagline: "How students integrate AI into creative art-making workflows",
+      tagline: "How users integrate AI into creative workflows: Behavioral personas & adoption patterns",
       image: aiArtImage,
       stat: "39 participants",
       finding: "95% adopted AI in personalized creative workflows",
@@ -1137,10 +1137,10 @@ HealthKit authorization and data access patterns are complex - simulator require
           <div className="bg-slate-900/40 backdrop-blur-md p-8 rounded-2xl border border-purple-500/30">
             <h2 className="text-2xl font-bold text-white mb-4">What I Do</h2>
             <p className="mb-4">
-              I'm a <span className="text-pink-300 font-semibold">UX Researcher & Product Designer</span> who combines deep user understanding with thoughtful design to build products people actually want to use. I specialize in <span className="text-purple-300 font-semibold">mixed-methods research</span>, <span className="text-purple-300 font-semibold">co-design facilitation</span>, <span className="text-purple-300 font-semibold">interaction design</span>, and <span className="text-purple-300 font-semibold">interactive prototyping</span> across education, AI, and emerging technologies. I collaborate with researchers at <span className="text-pink-300 font-semibold">MIT Media Lab</span> on brain-computer interfaces and AI co-creativity.
+              I'm a <span className="text-pink-300 font-semibold">UX Researcher & Product Designer</span> who combines deep user understanding with thoughtful design to build products people actually want to use. I specialize in <span className="text-purple-300 font-semibold">mixed-methods research</span>, <span className="text-purple-300 font-semibold">behavioral analysis</span>, <span className="text-purple-300 font-semibold">co-design facilitation</span>, and <span className="text-purple-300 font-semibold">product strategy</span> across AI, emerging technologies, and human-computer interaction. I collaborate with researchers at <span className="text-pink-300 font-semibold">MIT Media Lab</span> on brain-computer interfaces and AI co-creativity.
             </p>
             <p>
-              I recently completed my M.A. in Learning Technology & Experience Design at NYU (May 2025), where I published research at AAAI, GALA, and JCSG. My strength is moving fluently between research (uncovering insights) and design (translating insights into experiences people love).
+              I recently completed my M.A. at NYU (May 2025) focused on human-computer interaction and user research, where I published at AAAI, GALA, and JCSG conferences. My strength is moving fluently between research (uncovering behavioral insights and product opportunities) and design (translating insights into experiences people love).
             </p>
           </div>
 
@@ -2030,7 +2030,7 @@ HealthKit authorization and data access patterns are complex - simulator require
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-16">
           <div className="mb-12 text-center">
             <h1 className="text-4xl md:text-6xl font-black mb-4 text-white">Research</h1>
-            <p className="text-lg md:text-2xl text-blue-200 font-light max-w-4xl mx-auto">I conduct mixed-methods research to understand how people learn with technology. From AI co-creativity (AAAI) to VR learning environments (GALA), I bridge quantitative analysis with qualitative insights to uncover what makes learning experiences effective.</p>
+            <p className="text-lg md:text-2xl text-blue-200 font-light max-w-4xl mx-auto">I conduct mixed-methods research to understand user behavior, identify product opportunities, and validate design decisions. From AI adoption patterns (AAAI) to behavioral impact studies (GALA), I combine quantitative rigor with qualitative depth to uncover insights that drive product strategy.</p>
           </div>
 
           <div className="grid grid-cols-1 gap-8 max-w-2xl mx-auto">
