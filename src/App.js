@@ -1114,25 +1114,23 @@ HealthKit authorization and data access patterns are complex - simulator require
     <div className="min-h-screen px-6 pt-32 pb-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-4xl mx-auto">
         {/* Profile Picture - Centered with AI Chat */}
-        <div className="mb-12 flex justify-center relative">
+        <div className="mb-12 flex justify-center">
           <button 
             onClick={() => setChatOpen(true)}
-            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+            className="relative inline-block group"
             aria-label="Chat with AI assistant about Sara's work"
           >
-            <img
-              src={profileImage}
-              alt="Sara Jakubowicz"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white text-base font-bold">💬 Ask AI</span>
+            <div className={`profile-image w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 hover:border-pink-400/70 relative ${!chatOpen ? 'profile-glow' : ''}`}>
+              <img
+                src={profileImage}
+                alt="Sara Jakubowicz"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-white text-base font-bold">Questions?</span>
+              </div>
             </div>
           </button>
-          {/* Floating pulsing AI badge */}
-          <div className="absolute -bottom-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-3 shadow-2xl animate-float-pulse cursor-pointer" onClick={() => setChatOpen(true)}>
-            <Sparkles size={20} className="text-white" />
-          </div>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent text-center">
@@ -1385,25 +1383,23 @@ HealthKit authorization and data access patterns are complex - simulator require
       <div className="max-w-6xl w-full relative z-10">
         <div className="text-center mb-20">
           {/* Profile Picture */}
-          <div className="mb-8 flex justify-center relative">
+<div className="mb-8 flex justify-center">
             <button 
               onClick={() => setChatOpen(true)}
-              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
+              className="relative inline-block group"
               aria-label="Chat with AI assistant about Sara's work"
             >
-              <img
-                src={profileImage}
-                alt="Sara Jakubowicz"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <span className="text-white text-base font-bold">💬 Ask AI</span>
+              <div className={`profile-image w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 hover:border-pink-400/70 relative ${!chatOpen ? 'profile-glow' : ''}`}>
+                <img
+                  src={profileImage}
+                  alt="Sara Jakubowicz"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span className="text-white text-base font-bold">Questions?</span>
+                </div>
               </div>
             </button>
-            {/* Floating pulsing AI badge */}
-            <div className="absolute -bottom-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-3 shadow-2xl animate-float-pulse cursor-pointer" onClick={() => setChatOpen(true)}>
-              <Sparkles size={20} className="text-white" />
-            </div>
           </div>
 
           <div className="inline-block mb-6 px-6 py-2.5 bg-purple-500/20 backdrop-blur-sm text-purple-300 rounded-full text-base font-medium border-2 border-purple-400/30">
