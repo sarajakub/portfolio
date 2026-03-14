@@ -159,6 +159,28 @@
   box-shadow: 0 0 0 0 rgba(192, 132, 252, 0);
 }
 
+/* Floating pulse animation for AI chat indicator - combines bounce, scale, and glow */
+@keyframes float-pulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.6);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 8px 30px rgba(236, 72, 153, 0.9);
+  }
+}
+
+.animate-float-pulse {
+  animation: float-pulse 2s ease-in-out infinite;
+}
+
+.animate-float-pulse:hover {
+  animation: none;
+  transform: scale(1.15);
+  box-shadow: 0 8px 35px rgba(236, 72, 153, 1);
+}
+
 /* First load bounce animation for profile picture */
 @keyframes bounce-in {
   0% {

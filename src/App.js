@@ -26,6 +26,7 @@ import altctrlV1Image from './assets/v1_altctrl.jpeg';
 import altctrlV2_0Image from './assets/v2.0_altctrl.jpg';
 import altctrlV2_1Image from './assets/v2.1_altctrl.jpeg';
 import altctrlV2_2Image from './assets/v2.2_altctrl.jpeg';
+import altctrlFinalCropImage from './assets/final-des-altctrlcrop.jpeg';
 import aycetImage from './assets/aycet_study.png';
 import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
@@ -762,6 +763,7 @@ This research established VR-specific usability heuristics our team applied to f
       v2_0Image: altctrlV2_0Image,
       v2_1Image: altctrlV2_1Image,
       v2_2Image: altctrlV2_2Image,
+      finalImage: altctrlFinalCropImage,
       icon: Gamepad2,
       tech: ["Arduino Nano", "Rotary Encoder", "Web Serial API", "JavaScript"],
       description: `**The Challenge**
@@ -777,7 +779,7 @@ Students learn spatial concepts like lunar phases from 2D screens using a mouse 
 
 **The Solution**
 
-[V2_2_IMAGE]
+[SOLUTION_IMAGE_ROW]
 
 A custom rotary encoder controller where turning a physical knob directly rotates the moon/Earth in the simulation - creating a 1:1 mapping between physical and digital motion. Users physically feel the orbital relationship through the controller's form: a thermoplastic moon connected to an upcycled Earth stress ball via metal rod.
 
@@ -812,6 +814,10 @@ I built and tested three hardware versions, each informed by user testing and us
 [V2_0_IMAGE]
 
 [V2_1_IMAGE]
+
+[FINAL_CONTROLLER_IMAGE]
+
+*Final controller design with laser-cut enclosure for the circuit/perfboard.*
 
 - **Concept:** Turn a physical knob to rotate the moon/Earth - 1:1 mapping of physical to digital motion
 - **Built:** Custom perfboard circuit, laser-cut enclosure, thermoplastic moon connected to upcycled Earth stress ball via metal rod
@@ -1108,10 +1114,10 @@ HealthKit authorization and data access patterns are complex - simulator require
     <div className="min-h-screen px-6 pt-32 pb-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="max-w-4xl mx-auto">
         {/* Profile Picture - Centered with AI Chat */}
-        <div className="mb-12 flex justify-center">
+        <div className="mb-12 flex justify-center relative">
           <button 
             onClick={() => setChatOpen(true)}
-            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group animate-pulse-subtle"
+            className="w-48 h-48 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
             aria-label="Chat with AI assistant about Sara's work"
           >
             <img
@@ -1119,14 +1125,14 @@ HealthKit authorization and data access patterns are complex - simulator require
               alt="Sara Jakubowicz"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-              <span className="text-white text-sm font-bold">Ask about me</span>
-            </div>
-            {/* Sparkle indicator */}
-            <div className="absolute -top-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-2 shadow-lg group-hover:scale-125 transition-transform">
-              <Sparkles size={16} className="text-white" />
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <span className="text-white text-base font-bold">💬 Ask AI</span>
             </div>
           </button>
+          {/* Floating pulsing AI badge */}
+          <div className="absolute -bottom-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-3 shadow-2xl animate-float-pulse cursor-pointer" onClick={() => setChatOpen(true)}>
+            <Sparkles size={20} className="text-white" />
+          </div>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-purple-200 via-pink-200 to-blue-200 bg-clip-text text-transparent text-center">
@@ -1379,10 +1385,10 @@ HealthKit authorization and data access patterns are complex - simulator require
       <div className="max-w-6xl w-full relative z-10">
         <div className="text-center mb-20">
           {/* Profile Picture */}
-          <div className="mb-8 flex justify-center">
+          <div className="mb-8 flex justify-center relative">
             <button 
               onClick={() => setChatOpen(true)}
-              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group animate-pulse-subtle"
+              className="w-44 h-44 rounded-full border-4 border-purple-400/50 overflow-hidden shadow-2xl hover:scale-110 transition-transform duration-300 cursor-pointer hover:border-pink-400/70 relative group"
               aria-label="Chat with AI assistant about Sara's work"
             >
               <img
@@ -1390,14 +1396,14 @@ HealthKit authorization and data access patterns are complex - simulator require
                 alt="Sara Jakubowicz"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                <span className="text-white text-sm font-bold">Ask about me</span>
-              </div>
-              {/* Sparkle indicator */}
-              <div className="absolute -top-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-2 shadow-lg group-hover:scale-125 transition-transform">
-                <Sparkles size={16} className="text-white" />
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-white text-base font-bold">💬 Ask AI</span>
               </div>
             </button>
+            {/* Floating pulsing AI badge */}
+            <div className="absolute -bottom-2 -right-2 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full p-3 shadow-2xl animate-float-pulse cursor-pointer" onClick={() => setChatOpen(true)}>
+              <Sparkles size={20} className="text-white" />
+            </div>
           </div>
 
           <div className="inline-block mb-6 px-6 py-2.5 bg-purple-500/20 backdrop-blur-sm text-purple-300 rounded-full text-base font-medium border-2 border-purple-400/30">
@@ -1700,7 +1706,7 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <img key={idx} src={selectedProject.v0Gif} alt="alt.ctrl.LRN prototype version 0: Gyroscope sensor detecting tilt angles to control on-screen navigation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V1_IMAGE]' && selectedProject.v1Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="alt.ctrl.LRN prototype version 1: Analog joystick mounted on breadboard with directional movement controls for 2D navigation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v1Image} alt="alt.ctrl.LRN prototype version 1: Analog joystick mounted on breadboard with directional movement controls for 2D navigation" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[V2_0_IMAGE]' && selectedProject.v2_0Image) {
                     return <img key={idx} src={selectedProject.v2_0Image} alt="alt.ctrl.LRN prototype version 2.0: Rotary encoder knob with integrated push button for rotation-based selection and confirmation" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
@@ -2173,14 +2179,29 @@ HealthKit authorization and data access patterns are complex - simulator require
                     return <img key={idx} src={selectedProject.v2_1Image} alt="alt.ctrl.LRN prototype version 2.1: Close-up of rotary encoder wiring showing Arduino connections and component integration" className="w-full rounded-2xl my-6 border-2 border-emerald-500/30" />;
                   }
                   if (line === '[V2_2_IMAGE]' && selectedProject.v2_2Image) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="alt.ctrl.LRN prototype version 2.2: Final rotary encoder design with refined mounting, improved tactile feedback, and polished enclosure" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.v2_2Image} alt="alt.ctrl.LRN prototype version 2.2: Final rotary encoder design with refined mounting, improved tactile feedback, and polished enclosure" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" /></div>;
+                  }
+                  if (line === '[SOLUTION_IMAGE_ROW]' && selectedProject.v2_2Image && selectedProject.finalImage) {
+                    return (
+                      <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-2 my-6">
+                        <div className="flex justify-center">
+                          <img src={selectedProject.v2_2Image} alt="alt.ctrl.LRN prototype version 2.2: Final rotary encoder design with refined mounting, improved tactile feedback, and polished enclosure" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" />
+                        </div>
+                        <div className="flex justify-center">
+                          <img src={selectedProject.finalImage} alt="alt.ctrl.LRN final controller design with laser-cut enclosure for the circuit and perfboard" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" />
+                        </div>
+                      </div>
+                    );
+                  }
+                  if (line === '[FINAL_CONTROLLER_IMAGE]' && selectedProject.finalImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.finalImage} alt="alt.ctrl.LRN final controller design with laser-cut enclosure for the circuit and perfboard" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle StressCam image placeholders
                   if (line === '[WATCH_IMAGE]' && selectedProject.watchImage) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.watchImage} alt="StressCam Apple Watch showing real-time heart rate variability and stress level monitoring with haptic feedback triggers" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.watchImage} alt="StressCam Apple Watch showing real-time heart rate variability and stress level monitoring with haptic feedback triggers" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   if (line === '[IPHONE_IMAGE]' && selectedProject.iphoneImage) {
-                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.iphoneImage} alt="StressCam iPhone camera connecting heart rate variability data to automated photography triggers for biometric-responsive documentation" className="max-h-[400px] rounded-2xl border-2 border-emerald-500/30" /></div>;
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.iphoneImage} alt="StressCam iPhone camera connecting heart rate variability data to automated photography triggers for biometric-responsive documentation" className="max-h-[400px] w-auto object-contain rounded-2xl border-2 border-emerald-500/30" /></div>;
                   }
                   // Handle iframe embeds
                   if (line.startsWith('<iframe')) {
