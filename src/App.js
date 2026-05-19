@@ -459,7 +459,7 @@ Rather than traditional user research, I invested deeply in design system resear
 
 **Current State**
 
-FlyAway is in active development (3 months in, v1.0 beta). The design system research is complete, core features are functional, and early users report positive feedback. Next phase: App Store submissions. No formal feedback yet, but users appreciate the simplicity and privacy-first approach.
+FlyAway is in active development (3 months in, v1.0 beta). The design system research is complete, core features are functional, and early users report positive feedback. Next phase: App Store submission.
 
 **The Philosophy**
 
