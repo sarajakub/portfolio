@@ -413,21 +413,25 @@ Initially building My Desk with a team of 4 - a student collaboration hub for co
       ],
       tags: ["Product Design", "Mental Health", "Privacy-First", "Accessibility"],
       color: "from-indigo-500 via-purple-500 to-pink-500",
-      description: `**The Problem**
+      description: `**The Origin**
 
-Most mental health apps exploit vulnerability. They use dark patterns, engagement-driven notifications, and data monetization to maximize growth. Users seeking emotional processing tools face a choice between addiction-engineered apps or nothing.
+I built FlyAway for myself after going through a breakup. I wanted a tool to scaffold my own healing — somewhere to process thoughts, track my emotional state, and work through things at my own pace. Nothing in the App Store felt right: existing apps were either too clinical, notification-heavy, or designed to keep me engaged rather than help me actually heal. So I built what I needed.
 
-**Why I Built It Differently**
+Building from personal need gave me deep empathy for the user. But I knew that wasn't enough on its own.
 
-I started with a simple principle: mental health tools should prioritize user agency and privacy, not metrics. This meant designing *against* common patterns:
-- No algorithmic feeds (users control their content)
-- No mandatory check-ins (optional, never guilt-based)
-- No data monetization (no third-party integrations)
-- No addiction mechanics (no streaks, badges, or social comparison)
+**Research Process**
 
-**Design System Research Foundation**
+Throughout development I spoke with product designers, mental health practitioners, and people navigating their own hardships to pressure-test my assumptions and assess the design at every phase. The mix of domain expertise (practitioners) and lived experience (users) kept the product grounded in both emotional validity and real-world use.
 
-Rather than traditional user research, I invested deeply in design system research: studying calming aesthetics, non-overstimulating color palettes, and minimal UI patterns. The goal was to create an interface that soothes rather than overwhelms—every visual choice (soft purples, rounded forms, negative space) is intentional.
+**A Key Finding: Community Features Made Healing Performative**
+
+Early versions included community features — a shared space for users to connect over their healing journeys. User testing revealed something important: the community made the experience *performative*. Users started thinking about how their thoughts would land with others, which undermined the whole point. The vulnerability that makes healing possible disappeared when an audience entered the picture.
+
+I removed the feature entirely. FlyAway became a solo journey — and that constraint became its defining strength.
+
+**Visual Design Foundation**
+
+With the emotional context well understood from research, I focused the visual design on calming aesthetics, trauma-informed UI patterns, and non-overstimulating color palettes. The goal was an interface that soothes rather than stimulates — every choice (soft purples, rounded forms, generous negative space) is intentional.
 
 **Core Design Decisions**
 
@@ -435,42 +439,35 @@ Rather than traditional user research, I invested deeply in design system resear
 
 [THROW_IMAGE]
 
-2. **Non-Prescriptive Mood Tracking** — Optional mood check-ins (1-5 scale) with mood history visualization. No streaks, no guilt for skipping. Users see patterns emerge naturally; insights are observational, not judgmental ("You felt calmer after evening writes").
+2. **Non-Prescriptive Mood Tracking** — Optional mood check-ins (1-5 scale) with mood history visualization. No streaks, no guilt for skipping. Insights are observational, not judgmental ("You felt calmer after evening writes").
 
 [MOOD_IMAGE]
 
-3. **Private Letters for Unsent Words** — Compose letters to people you can't reach (estranged family, lost loved ones). Letters stored locally on device, never shared. This validates that healing doesn't require an external witness.
+3. **Private Letters for Unsent Words** — Compose letters to people you can't reach — estranged family, lost loved ones. Letters live on device, never shared. Healing doesn't require an external witness.
 
 [LETTER_IMAGE]
 
-4. **Multiple Breathing Techniques** — Not just one rigid pattern. Choose from 4-7-8 breathing, box breathing, 5-minute calm, morning gratitude, evening reflection. Visual + haptic guidance for grounding. Breathing isn't one-size-fits-all; it's personalized.
+4. **Multiple Breathing Techniques** — Choose from 4-7-8 breathing, box breathing, 5-minute calm, morning gratitude, evening reflection. Visual + haptic guidance for grounding. Breathing isn't one-size-fits-all.
 
 [BREATHING_IMAGE]
 
-5. **Voice Journaling** — Record audio directly in the app. Some emotions are easier to speak than write. Audio stored locally; never transcribed or uploaded without permission.
+5. **Voice Journaling, Stored On-Device** — Some emotions are easier to speak than write. Early builds uploaded audio to Firebase — but storage costs at scale made this unsustainable for a free app. Moving to local device storage solved both the cost problem and a privacy one: no cloud exposure, full user ownership of sensitive recordings.
 
 [VOICE_IMAGE]
 
-6. **Accessibility-First Design** — WCAG AAA compliance (95%+). VoiceOver support, Dynamic Type, reduced motion support, haptics toggle. Crisis resources (988 Lifeline, Crisis Text Line) always accessible. Accessibility isn't compliance theater; it's foundational.
+6. **Accessibility-First** — WCAG AAA compliance (95%+). VoiceOver support, Dynamic Type, reduced motion, haptics toggle. Crisis resources (988 Lifeline, Crisis Text Line) always accessible. In a mental health context, accessibility isn't optional.
 
 [SETTINGS_IMAGE]
 
-7. **Security & Privacy Transparent** — Biometric lock, end-to-end encryption, data export anytime. Firestore security rules are auditable in the GitHub repo. Privacy is a human right, especially for health data.
+**What I Learned**
+
+The most important design decision I made was removing community features. It felt like a reduction at first — less product, fewer features. But user testing showed it was the right call: the constraint sharpened the product's identity and protected the experience it was built around. Sometimes the best design work is knowing what to cut.
+
+I also learned that building for yourself is a double-edged sword. Deep empathy for the user, but constant risk of designing for an audience of one. Bringing in practitioners and real users throughout the process was what kept this honest.
 
 **Current State**
 
-FlyAway is in active development (3 months in, v1.0 beta). The design system research is complete, core features are functional, and early users report positive feedback. Next phase: App Store submission.
-
-**The Philosophy**
-
-Unlike engagement-driven health apps, FlyAway competes on **trust, not addiction**. The design prioritizes user agency, local storage, and transparent privacy over growth metrics. This means rethinking what success means: depth and safety matter more than daily active users and engagement streaks.
-
-**What This Demonstrates**
-
-- Prioritizing mental health ethics over engagement metrics
-- Using design system research to create calming, non-overstimulating UIs
-- Shipping production code with privacy, security, and accessibility baked in from day one
-- Understanding that the best health products are those that don't exploit vulnerability
+FlyAway is in active beta (v1.0). Next phase: App Store submission.
 
 **Links:** [Beta Website](https://sarajakub.github.io/flyaway/)`
     },
