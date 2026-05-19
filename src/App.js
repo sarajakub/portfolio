@@ -31,6 +31,15 @@ import aycetImage from './assets/aycet_study.png';
 import cellsImage from './assets/cells_study.png';
 import aiArtImage from './assets/ai_art.png';
 import mydeskCollabImage from './assets/mydesk_collabhub.jpeg';
+import flyawayHero from './assets/flyaway-homescreen.png';
+import flyawayThumbnail from './assets/flyaway-homescreen.png';
+import flyawayThrow from './assets/flyaway-throwmechanic.png';
+import flyawayMoodTracking from './assets/flyaway-moodtracking.png';
+import flyawayLetters from './assets/flyaway-letters.png';
+import flyawayBreathing from './assets/flyaway-breathing.png';
+import flyawayVoice from './assets/flyaway-voicerecording.png';
+import flyawaySettings from './assets/flyaway-settings.png';
+import flyawayWalkthrough from './assets/flyaway-walkthrough.mov';
 import { supabase } from './supabaseClient';
 
 export default function Portfolio() {
@@ -384,6 +393,89 @@ Initially building My Desk with a team of 4 - a student collaboration hub for co
     },
     {
       id: 2,
+      title: "FlyAway",
+      company: "Independent Project",
+      tagline: "Privacy-first iOS app for emotional healing and thought release",
+      image: flyawayHero,
+      thumbnail: flyawayThumbnail,
+      throwImage: flyawayThrow,
+      moodImage: flyawayMoodTracking,
+      letterImage: flyawayLetters,
+      breathingImage: flyawayBreathing,
+      voiceImage: flyawayVoice,
+      settingsImage: flyawaySettings,
+      walkthrough: flyawayWalkthrough,
+      icon: Brain,
+      details: [
+        { label: "Role", value: "Product Designer & iOS Engineer" },
+        { label: "Duration", value: "3 months (v1.0, In Beta)" },
+        { label: "Platform", value: "iOS 17+ (SwiftUI, Firebase)" }
+      ],
+      tags: ["Product Design", "Mental Health", "Privacy-First", "Accessibility"],
+      color: "from-indigo-500 via-purple-500 to-pink-500",
+      description: `**The Problem**
+
+Most mental health apps exploit vulnerability. They use dark patterns, engagement-driven notifications, and data monetization to maximize growth. Users seeking emotional processing tools face a choice between addiction-engineered apps or nothing.
+
+**Why I Built It Differently**
+
+I started with a simple principle: mental health tools should prioritize user agency and privacy, not metrics. This meant designing *against* common patterns:
+- No algorithmic feeds (users control their content)
+- No mandatory check-ins (optional, never guilt-based)
+- No data monetization (no third-party integrations)
+- No addiction mechanics (no streaks, badges, or social comparison)
+
+**Design System Research Foundation**
+
+Rather than traditional user research, I invested deeply in design system research: studying calming aesthetics, non-overstimulating color palettes, and minimal UI patterns. The goal was to create an interface that soothes rather than overwhelms—every visual choice (soft purples, rounded forms, negative space) is intentional.
+
+**Core Design Decisions**
+
+1. **Thought Release: Send or Keep** — Two simple paths for every thought. Send to ether (disappears instantly, a release) or keep it (stored locally until you consciously delete it). No expiry timers, no gamification. Just agency.
+
+[THROW_IMAGE]
+
+2. **Non-Prescriptive Mood Tracking** — Optional mood check-ins (1-5 scale) with mood history visualization. No streaks, no guilt for skipping. Users see patterns emerge naturally; insights are observational, not judgmental ("You felt calmer after evening writes").
+
+[MOOD_IMAGE]
+
+3. **Private Letters for Unsent Words** — Compose letters to people you can't reach (estranged family, lost loved ones). Letters stored locally on device, never shared. This validates that healing doesn't require an external witness.
+
+[LETTER_IMAGE]
+
+4. **Multiple Breathing Techniques** — Not just one rigid pattern. Choose from 4-7-8 breathing, box breathing, 5-minute calm, morning gratitude, evening reflection. Visual + haptic guidance for grounding. Breathing isn't one-size-fits-all; it's personalized.
+
+[BREATHING_IMAGE]
+
+5. **Voice Journaling** — Record audio directly in the app. Some emotions are easier to speak than write. Audio stored locally; never transcribed or uploaded without permission.
+
+[VOICE_IMAGE]
+
+6. **Accessibility-First Design** — WCAG AAA compliance (95%+). VoiceOver support, Dynamic Type, reduced motion support, haptics toggle. Crisis resources (988 Lifeline, Crisis Text Line) always accessible. Accessibility isn't compliance theater; it's foundational.
+
+[SETTINGS_IMAGE]
+
+7. **Security & Privacy Transparent** — Biometric lock, end-to-end encryption, data export anytime. Firestore security rules are auditable in the GitHub repo. Privacy is a human right, especially for health data.
+
+**Current State**
+
+FlyAway is in active development (3 months in, v1.0 beta). The design system research is complete, core features are functional, and early users report positive feedback. Next phase: App Store submissions. No formal feedback yet, but users appreciate the simplicity and privacy-first approach.
+
+**The Philosophy**
+
+Unlike engagement-driven health apps, FlyAway competes on **trust, not addiction**. The design prioritizes user agency, local storage, and transparent privacy over growth metrics. This means rethinking what success means: depth and safety matter more than daily active users and engagement streaks.
+
+**What This Demonstrates**
+
+- Prioritizing mental health ethics over engagement metrics
+- Using design system research to create calming, non-overstimulating UIs
+- Shipping production code with privacy, security, and accessibility baked in from day one
+- Understanding that the best health products are those that don't exploit vulnerability
+
+**Links:** [Beta Website](https://sarajakub.github.io/flyaway/) • [GitHub](https://github.com/sarajakub/flyaway)`
+    },
+    {
+      id: 3,
       title: "Cosmos VR Game",
       company: "CREATE Lab",
       tagline: "Immersive VR experience with perspective-based interaction design",
@@ -513,7 +605,7 @@ Ran co-design sessions with **45 participants** (students and educators) from Ma
 **VR's spatial affordances require intentional interaction design grounded in learning theory.** The "aha moment" wasn't VR itself - it was designing teleportation mechanics that mapped directly to the pedagogical goal of perspective-switching. This alignment between interaction design and learning science is what drives true educational impact.`
     },
     {
-      id: 3,
+      id: 4,
       title: "Food-Fighter: Battle for Health",
       company: "Indie Game Project",
       tagline: "Gamified nutrition education through strategic gameplay",
@@ -1409,7 +1501,7 @@ HealthKit authorization and data access patterns are complex - simulator require
             Sara Jakubowicz
           </h1>
           <p className="text-xl md:text-2xl lg:text-3xl text-purple-200 max-w-3xl mx-auto font-light px-4">
-            I design delightful experiences & uncover insights that make products sing
+            I research how people learn. Design with intention. Build products that matter.
           </p>
         </div>
 
@@ -1540,13 +1632,25 @@ HealthKit authorization and data access patterns are complex - simulator require
               </div>
             )}
 
-            {selectedProject.id === 2 && (
+            {selectedProject.id === 2 && selectedProject.walkthrough && (
+              <div className="mb-12 flex justify-center">
+                <video
+                  src={selectedProject.walkthrough}
+                  controls
+                  playsInline
+                  className="w-64 rounded-3xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20"
+                  title="FlyAway App Walkthrough"
+                />
+              </div>
+            )}
+
+            {selectedProject.id === 3 && (
               <div className="mb-12">
                 <div className="relative w-full" style={{ padding: '56.25% 0 0 0' }}>
-                  <iframe 
-                    src="https://player.vimeo.com/video/1014379680?badge=0&autopause=0&player_id=0&app_id=58479" 
-                    frameBorder="0" 
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
+                  <iframe
+                    src="https://player.vimeo.com/video/1014379680?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                     className="rounded-3xl border-2 border-purple-500/30"
                     title="Cosmos VR Game Demo"
@@ -1556,13 +1660,13 @@ HealthKit authorization and data access patterns are complex - simulator require
               </div>
             )}
 
-            {selectedProject.id === 3 && (
+            {selectedProject.id === 4 && (
               <div className="mb-12">
-                <iframe 
-                  width="100%" 
-                  height="450" 
-                  src="https://embed.figma.com/proto/dUTMJG7mBeAO0riVJJ05oD/FoodFighter?page-id=0%3A1&node-id=14-2&p=f&viewport=606%2C343%2C0.08&scaling=scale-down&content-scaling=fixed&starting-point-node-id=14%3A2&embed-host=share" 
-                  frameBorder="0" 
+                <iframe
+                  width="100%"
+                  height="450"
+                  src="https://embed.figma.com/proto/dUTMJG7mBeAO0riVJJ05oD/FoodFighter?page-id=0%3A1&node-id=14-2&p=f&viewport=606%2C343%2C0.08&scaling=scale-down&content-scaling=fixed&starting-point-node-id=14%3A2&embed-host=share"
+                  frameBorder="0"
                   allowFullScreen
                   className="rounded-3xl border-2 border-purple-500/30"
                   title="Food-Fighter Interactive Prototype"
@@ -1653,6 +1757,42 @@ HealthKit authorization and data access patterns are complex - simulator require
                   // Handle myDesk image placeholders
                   if (line === '[MYDESK_COLLAB_IMAGE]' && selectedProject.mydeskCollabImage) {
                     return <img key={idx} src={selectedProject.mydeskCollabImage} alt="My Desk interface featuring shared course materials, team chat, and synchronized study session tools" className="w-full rounded-2xl my-6 border-2 border-purple-500/30" />;
+                  }
+                  // Handle FlyAway image placeholders
+                  if (line === '[THROW_IMAGE]' && selectedProject.throwImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.throwImage} alt="FlyAway thought release interface with animated paper airplane throw interaction" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  if (line === '[MOOD_IMAGE]' && selectedProject.moodImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.moodImage} alt="FlyAway mood tracking calendar with visual mood history and pattern insights" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  if (line === '[LETTER_IMAGE]' && selectedProject.letterImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.letterImage} alt="FlyAway private letters feature for unsent words to important people" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  if (line === '[BREATHING_IMAGE]' && selectedProject.breathingImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.breathingImage} alt="FlyAway breathing exercises with visual and haptic guidance for anxiety relief" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  if (line === '[VOICE_IMAGE]' && selectedProject.voiceImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.voiceImage} alt="FlyAway voice journaling interface for audio-based emotional expression" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  if (line === '[SETTINGS_IMAGE]' && selectedProject.settingsImage) {
+                    return <div key={idx} className="flex justify-center my-6"><img src={selectedProject.settingsImage} alt="FlyAway accessibility-first settings with WCAG AAA compliance and privacy controls" className="w-64 rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20" /></div>;
+                  }
+                  // Handle FlyAway walkthrough video
+                  if (line === '[WALKTHROUGH_VIDEO]' && selectedProject.walkthrough) {
+                    return (
+                      <div key={idx} className="my-8 flex justify-center">
+                        <video 
+                          src={selectedProject.walkthrough}
+                          controls
+                          autoPlay
+                          muted
+                          loop
+                          style={{ width: '290px', maxWidth: '100%', height: 'auto' }}
+                          className="rounded-3xl border-2 border-purple-500/30"
+                          title="FlyAway App Walkthrough"
+                        />
+                      </div>
+                    );
                   }
                   // Handle My Desk prototype embed
                   if (line === '[MYDESK_PROTOTYPE]') {
