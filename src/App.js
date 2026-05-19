@@ -472,7 +472,7 @@ Unlike engagement-driven health apps, FlyAway competes on **trust, not addiction
 - Shipping production code with privacy, security, and accessibility baked in from day one
 - Understanding that the best health products are those that don't exploit vulnerability
 
-**Links:** [Beta Website](https://sarajakub.github.io/flyaway/) • [GitHub](https://github.com/sarajakub/flyaway)`
+**Links:** [Beta Website](https://sarajakub.github.io/flyaway/)`
     },
     {
       id: 3,
